@@ -9,8 +9,8 @@ public class UserDAO {
     Statement statement;
 
     public UserDAO() throws SQLException {
-            this.connection = SQL.getConnection();
-            this.statement = connection.createStatement();
+            this.connection = SQL.getConnection();//this is a method that is used to get the connection to the database.
+            this.statement = connection.createStatement();//this is a method that is used to create a statement object that will be used to execute sql queries.
     }
 
     public void createUser(String username, String password, String email) throws UserDAOException {
@@ -28,6 +28,7 @@ public class UserDAO {
     }
 
     public boolean userExist_username(String username) throws UserDAOException {
+        //this method is used to check if a user exists in the database by username.
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "SELECT * FROM users WHERE username = ?"
@@ -41,6 +42,7 @@ public class UserDAO {
     }
 
     public boolean userExist_email(String email) throws UserDAOException {
+        //this method is like the previous one but it checks if the user exists by email.
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "SELECT * FROM users WHERE email = ?"
@@ -55,7 +57,7 @@ public class UserDAO {
 
     public boolean checkUserPassword(String username, String password) throws UserDAOException {
         if (!userExist_username(username)) {
-            throw new UserDAOException("User does not exist");
+            throw new UserDAOException("User does not exist");//if the user does not exist, we throw an exception.
         }
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -119,7 +121,9 @@ public class UserDAO {
             throw new UserDAOException("Error getting user email by username");
         }
     }
-
+    //for simplify the code ,previous methods didn't need password to check the user.
+    //but for deleting and updating the user we need the password.
+    //and checking that may throw an exception that we need to handle in server or client side.
     public void deleteUser(String username , String password) throws UserDAOException {
         try {
             if (!checkUserPassword(username, password)) {
