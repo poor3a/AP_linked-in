@@ -1,5 +1,7 @@
 package DAO;
 
+import exceptions.UserDAOException;
+
 import java.sql.*;
 
 public class UserDAO {
@@ -7,141 +9,156 @@ public class UserDAO {
     Statement statement;
 
     public UserDAO() throws SQLException {
-        this.connection = SQL.getConnection();
-        this.statement = connection.createStatement();
-    }//in this constructor we connect to the database using the getConnection method from the SQL class
-
-public String createUser(String username, String password, String email)
-{
-    //user just need username and password and email for being created
-    //other things like name and family etc... can be added later
-    //id is auto increment, so we don't need to add it
-    try {
-        PreparedStatement preparedStatement = connection.prepareStatement(
-                "INSERT INTO users(username ,password ,email) values (?,?,?)"
-        );
-        preparedStatement.setString(1, username);
-        preparedStatement.setString(2, password);
-        preparedStatement.setString(3, email);
-        preparedStatement.execute();
-    } catch (SQLException e) {
-        if (e.getMessage().contains("password length"))
-        {
-            return "short password";//I used this to check if the password is short in mysql app
-        } else {
-           return "error";
-        }
-    }
-        return "success";
-}
-
-    public boolean userExist_username(String username) throws SQLException
-    {
-        //this method is used to check if the username is already exist in the database
-        //if it exists, it will return true, otherwise it will return false
-        PreparedStatement preparedStatement = connection.prepareStatement(
-                "SELECT * FROM users WHERE username = ?"
-        );
-        preparedStatement.setString(1, username);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        return resultSet.next();
+            this.connection = SQL.getConnection();
+            this.statement = connection.createStatement();
     }
 
-    public boolean userExist_email(String email) throws SQLException
-    {
-        //this is the same as the userExist_username method, but it checks the email instead of the username
-        PreparedStatement preparedStatement = connection.prepareStatement(
-                "SELECT * FROM users WHERE email = ?"
-        );
-        preparedStatement.setString(1, email);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        return resultSet.next();
-    }
-    public boolean checkUserPassword(String username, String password) throws SQLException
-    {
-        //this method is used to check if the password is correct or not
-        //it will return true if the password is correct, otherwise it will return false
-        PreparedStatement preparedStatement = connection.prepareStatement(
-                "SELECT * FROM users WHERE username = ? AND password = ?"
-        );
-        preparedStatement.setString(1, username);
-        preparedStatement.setString(2, password);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        return resultSet.next();
-    }
-    public int getUserId_username(String username) throws SQLException
-    {
-        //this method is used to get the id of the user
-        //it will return the id of the user
-        PreparedStatement preparedStatement = connection.prepareStatement(
-                "SELECT id FROM users WHERE username = ?"
-        );
-        preparedStatement.setString(1, username);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        resultSet.next();
-        return resultSet.getInt("id");
-    }
-    public String getEmail_username(String username) throws SQLException
-    {
-        //this method is used to get the email of the user
-        //it will return the email of the user
-        PreparedStatement preparedStatement = connection.prepareStatement(
-                "SELECT email FROM users WHERE username = ?"
-        );
-        preparedStatement.setString(1, username);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        resultSet.next();
-        return resultSet.getString("email");
-    }
-    public String deleteUser(String username , String password) throws SQLException
-    {
-        //this method is used to delete the account of the user
-        //it will return "success" if the account is deleted successfully
-        //it will return "error" if there is an error
-        if (!checkUserPassword(username, password))
-        {
-            return "access denied";
+    public void createUser(String username, String password, String email) throws UserDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "INSERT INTO users(username ,password ,email) values (?,?,?)"
+            );
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            preparedStatement.setString(3, email);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new UserDAOException("Error creating user");
         }
-        PreparedStatement preparedStatement = connection.prepareStatement(
-                "DELETE FROM users WHERE username = ? AND password = ?"
-        );
-        preparedStatement.setString(1, username);
-        preparedStatement.setString(2, password);
-        preparedStatement.execute();
-        return "success";
     }
-    public String changePassword(String username , String oldPassword , String newPassword) throws SQLException
-    {
-        //this method is used to change the password of the user
-        //it will return "success" if the password is changed successfully
-        //it will return "error" if there is an error
-        if (!checkUserPassword(username, oldPassword))
-        {
-            return "access denied";
+
+    public boolean userExist_username(String username) throws UserDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM users WHERE username = ?"
+            );
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException e) {
+            throw new UserDAOException("Error checking if user exists by username");
         }
-        PreparedStatement preparedStatement = connection.prepareStatement(
-                "UPDATE users SET password = ? WHERE username = ?"
-        );
-        preparedStatement.setString(1, newPassword);
-        preparedStatement.setString(2, username);
-        preparedStatement.execute();
-        return "success";
     }
-    public String changeEmail(String username , String password , String newEmail) throws SQLException
-    {
-        //this method is used to change the email of the user
-        //it will return "success" if the email is changed successfully
-        //it will return "error" if there is an error
-        if (!checkUserPassword(username, password))
-        {
-            return "access denied";
+
+    public boolean userExist_email(String email) throws UserDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM users WHERE email = ?"
+            );
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException e) {
+            throw new UserDAOException("Error checking if user exists by email");
         }
-        PreparedStatement preparedStatement = connection.prepareStatement(
-                "UPDATE users SET email = ? WHERE username = ?"
-        );
-        preparedStatement.setString(1, newEmail);
-        preparedStatement.setString(2, username);
-        preparedStatement.execute();
-        return "success";
+    }
+
+    public boolean checkUserPassword(String username, String password) throws UserDAOException {
+        if (!userExist_username(username)) {
+            throw new UserDAOException("User does not exist");
+        }
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM users WHERE username = ? AND password = ?"
+            );
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException e) {
+            throw new UserDAOException("Error checking user password");
+        }
+    }
+
+    public int getUserId(String username) throws UserDAOException {
+        if (!userExist_username(username)) {
+            throw new UserDAOException("User does not exist");
+        }
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT id FROM users WHERE username = ?"
+            );
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getInt("id");
+        } catch (SQLException e) {
+            throw new UserDAOException("Error getting user id by username");
+        }
+    }
+    public String getUserPassword(String username) throws UserDAOException {
+        if (!userExist_username(username)) {
+            throw new UserDAOException("User does not exist");
+        }
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT password FROM users WHERE username = ?"
+            );
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getString("password");
+        } catch (SQLException e) {
+            throw new UserDAOException("Error getting user password by username");
+        }
+    }
+
+    public String getUserEmail(String username) throws UserDAOException {
+        if (!userExist_username(username)) {
+            throw new UserDAOException("User does not exist");
+        }
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT email FROM users WHERE username = ?"
+            );
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getString("email");
+        } catch (SQLException e) {
+            throw new UserDAOException("Error getting user email by username");
+        }
+    }
+
+    public void deleteUser(String username , String password) throws UserDAOException {
+        try {
+            if (!checkUserPassword(username, password)) {
+                throw new UserDAOException("Access denied");
+            }else if (!userExist_username(username)){
+                throw new UserDAOException("User does not exist");
+            }
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "DELETE FROM users WHERE username = ? AND password = ?"
+            );
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new UserDAOException("Error deleting user");
+        }
+    }
+    public void updatePassword(String username , String newPassword) throws UserDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "UPDATE users SET password = ? WHERE username = ?"
+            );
+            preparedStatement.setString(1, newPassword);
+            preparedStatement.setString(2, username);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new UserDAOException("Error updating user password");
+        }
+    }
+    public void updateEmail(String username , String newEmail) throws UserDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "UPDATE users SET email = ? WHERE username = ?"
+            );
+            preparedStatement.setString(1, newEmail);
+            preparedStatement.setString(2, username);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new UserDAOException("Error updating user email");
+        }
     }
 }
