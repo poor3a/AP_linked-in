@@ -17,5 +17,6 @@ public class UserDAO
         preparedStatement.setString(2 ,password);
         preparedStatement.setString(3 ,email);
         preparedStatement.execute();
+        
     }
 }
