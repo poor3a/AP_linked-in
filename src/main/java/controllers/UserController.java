@@ -1,9 +1,9 @@
 package controllers;
 
-import DAO.*;
+import DAO.UserDAO;
+import models.User;
 import com.google.gson.Gson;
 import exceptions.UserDAOException;
-import models.User;
 
 import java.sql.SQLException;
 
