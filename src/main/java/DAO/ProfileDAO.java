@@ -375,4 +375,5 @@ public class ProfileDAO {
             throw new ProfileDAOException("Error adding contact info to profile");
         }
     }
+    
 }
