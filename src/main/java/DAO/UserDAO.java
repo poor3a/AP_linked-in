@@ -42,7 +42,7 @@ public class UserDAO {
     }
 
     public boolean userExist_email(String email) throws UserDAOException {
-        //this method is like the previous one but it checks if the user exists by email.
+        //this method is like the previous one ,but it checks if the user exists by email.
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "SELECT * FROM users WHERE email = ?"
