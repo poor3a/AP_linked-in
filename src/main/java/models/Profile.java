@@ -5,7 +5,7 @@ public class Profile
     private int id;
     private String firstName;
     private String lastName;
-    private String additonalName;
+    private String additionalName;
     private String birthDate;
     private String profilePicture;
     private String bg_picture;
@@ -14,11 +14,11 @@ public class Profile
     private String career;
     private String jobAiming;
 
-    public Profile(int id, String firstName, String lastName, String additonalName, String birthDate, String profilePicture, String bg_picture, String title, String place, String career, String jobAiming) {
+    public Profile(int id, String firstName, String lastName, String additionalName, String birthDate, String profilePicture, String bg_picture, String title, String place, String career, String jobAiming) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.additonalName = additonalName;
+        this.additionalName = additionalName;
         this.birthDate = birthDate;
         this.profilePicture = profilePicture;
         this.bg_picture = bg_picture;
@@ -53,11 +53,11 @@ public class Profile
     }
 
     public String getAdditonalName() {
-        return additonalName;
+        return additionalName;
     }
 
-    public void setAdditonalName(String additonalName) {
-        this.additonalName = additonalName;
+    public void setAdditonalName(String additionalName) {
+        this.additionalName = additionalName;
     }
 
     public String getBirthDate() {
