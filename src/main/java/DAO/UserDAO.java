@@ -125,6 +125,22 @@ public class UserDAO {
             throw new UserDAOException("Error getting user email by username");
         }
     }
+    public String getUserCreationDate(String username) throws UserDAOException {
+        if (!userExist_username(username)) {
+            throw new UserDAOException("User does not exist");
+        }
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT creation_date FROM users WHERE username = ?"
+            );
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getString("createing_date");
+        } catch (SQLException e) {
+            throw new UserDAOException("Error getting user creation date by username");
+        }
+    }
     //for simplify the code ,previous methods didn't need password to check the user.
     //but for deleting and updating the user we need the password.
     //and checking that may throw an exception that we need to handle in server or client side.

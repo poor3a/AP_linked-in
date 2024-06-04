@@ -5,19 +5,19 @@ public class ContactInfo {
     private String address;
     private String email;
     private String phoneNumber_home;
-    private String phoneNumber_mobile;
+    private String phoneNumber_personal;
     private String phoneNumber_work;
     private String socialMedia1;
     private String socialMedia2;
     private String socialMedia3;
     private String website;
 
-    public ContactInfo(int id, String address, String email, String phoneNumber_home, String phoneNumber_mobile, String phoneNumber_work, String socialMedia1, String socialMedia2, String socialMedia3, String website) {
+    public ContactInfo(int id, String address, String email, String phoneNumber_home, String phoneNumber_work, String phoneNumber_personal, String socialMedia1, String socialMedia2, String socialMedia3, String website) {
         this.id = id;
         this.address = address;
         this.email = email;
         this.phoneNumber_home = phoneNumber_home;
-        this.phoneNumber_mobile = phoneNumber_mobile;
+        this.phoneNumber_personal = phoneNumber_personal;
         this.phoneNumber_work = phoneNumber_work;
         this.socialMedia1 = socialMedia1;
         this.socialMedia2 = socialMedia2;
@@ -58,11 +58,11 @@ public class ContactInfo {
     }
 
     public String getPhoneNumber_mobile() {
-        return phoneNumber_mobile;
+        return phoneNumber_personal;
     }
 
-    public void setPhoneNumber_mobile(String phoneNumber_mobile) {
-        this.phoneNumber_mobile = phoneNumber_mobile;
+    public void setPhoneNumber_mobile(String phoneNumber_personal) {
+        this.phoneNumber_personal = phoneNumber_personal;
     }
 
     public String getPhoneNumber_work() {

@@ -5,7 +5,7 @@ import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import models.*;
 import exceptions.ProfileDAOException;
 
 public class ProfileDAO {
@@ -23,7 +23,7 @@ public class ProfileDAO {
     public void createSchooling(int id, String schoolName, String degree, String fieldOfStudy, String start, String end, double grade, String description, String activities) throws ProfileDAOException {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "INSERT INTO schooling(sc_id, schoolName, degree, fieldOfStudy, start, end ,grade ,description ,activities) VALUES (?, ?, ?, ?, ? ,? ,? ,? ,?)"
+                    "INSERT INTO schooling(userId, schoolName, degree, fieldOfStudy, start, end ,grade ,description ,activities) VALUES (?, ?, ?, ?, ? ,? ,? ,? ,?)"
             );
             preparedStatement.setInt(1, id);
             preparedStatement.setString(2, schoolName);
@@ -58,18 +58,7 @@ public class ProfileDAO {
             throw new ProfileDAOException("Error updating schooling");
         }
     }
-    public boolean schoolingExist(int id) throws ProfileDAOException {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT * FROM schooling WHERE sc_id = ?"
-            );
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            return resultSet.next();
-        } catch (SQLException e) {
-            throw new ProfileDAOException("Error checking if schooling exists");
-        }
-    }
+
     public void deleteSchooling(int id) throws ProfileDAOException {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -97,17 +86,17 @@ public class ProfileDAO {
             throw new ProfileDAOException("Error getting schooling id");
         }
     }
-    public void createJobStatement(int id, String title,String workingState, String companyName, String companyAddress, String workongType, byte isWorking, String start, String end, String description) throws ProfileDAOException {
+    public void createJobStatement(int id, String title,String workingState, String companyName, String companyAddress, String workingType, byte isWorking, String start, String end, String description) throws ProfileDAOException {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "INSERT INTO jobstatement(js_id, title ,workingState , companyName, companyAddress, workingType, isWorking, start, end, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)"
+                    "INSERT INTO jobstatement(userId, title ,workingState , companyName, companyAddress, workingType, isWorking, start, end, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)"
             );
             preparedStatement.setInt(1, id);
             preparedStatement.setString(2, title);
             preparedStatement.setString(3, workingState);
             preparedStatement.setString(4, companyName);
             preparedStatement.setString(5, companyAddress);
-            preparedStatement.setString(6, workongType);
+            preparedStatement.setString(6, workingType);
             preparedStatement.setByte(7, isWorking);
             preparedStatement.setString(8, start);
             preparedStatement.setString(9, end);
@@ -116,7 +105,7 @@ public class ProfileDAO {
             throw new ProfileDAOException("Error creating job statement");
         }
     }
-    public void updateJobStatement(int id, String title,String workingState, String companyName, String companyAddress, String workongType, byte isWorking, String start, String end, String description) throws ProfileDAOException {
+    public void updateJobStatement(int id, String title,String workingState, String companyName, String companyAddress, String workingType, byte isWorking, String start, String end, String description) throws ProfileDAOException {
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -126,7 +115,7 @@ public class ProfileDAO {
             preparedStatement.setString(2, workingState);
             preparedStatement.setString(3, companyName);
             preparedStatement.setString(4, companyAddress);
-            preparedStatement.setString(5, workongType);
+            preparedStatement.setString(5, workingType);
             preparedStatement.setByte(6, isWorking);
             preparedStatement.setString(7, start);
             preparedStatement.setString(8, end);
@@ -137,18 +126,7 @@ public class ProfileDAO {
             throw new ProfileDAOException("Error updating job statement");
         }
     }
-    public boolean jobStatementExist(int id) throws ProfileDAOException {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT * FROM jobstatement WHERE js_id = ?"
-            );
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            return resultSet.next();
-        } catch (SQLException e) {
-            throw new ProfileDAOException("Error checking if job statement exists");
-        }
-    }
+
     public int getJobStatementId(String title) throws ProfileDAOException {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -176,17 +154,17 @@ public class ProfileDAO {
             throw new ProfileDAOException("Error deleting job statement");
         }
     }
-    public void createContactInfo(int id ,String address, String email, String phoneNumber_home, String phoneNumber_mobile, String phoneNumber_work, String socialMedia1, String socialMedia2, String socialMedia3, String website) throws ProfileDAOException {
+    public void createContactInfo(int id ,String address, String email, String phoneNumber_home, String phoneNumber_work, String phoneNumber_personal, String socialMedia1, String socialMedia2, String socialMedia3, String website) throws ProfileDAOException {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "INSERT INTO contactinfo(ci_id, address, email, phoneNumber_home, phoneNumber_mobile, phoneNumber_work, socialMedia1, socialMedia2, socialMedia3, website) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                    "INSERT INTO contactinfo(userId, address, email, phoneNumber_home, phoneNumber_work, phoneNumber_personal, socialMedia1, socialMedia2, socialMedia3, website) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
             );
             preparedStatement.setInt(1, id);
             preparedStatement.setString(2, address);
             preparedStatement.setString(3, email);
             preparedStatement.setString(4, phoneNumber_home);
-            preparedStatement.setString(5, phoneNumber_mobile);
-            preparedStatement.setString(6, phoneNumber_work);
+            preparedStatement.setString(5, phoneNumber_work);
+            preparedStatement.setString(6, phoneNumber_personal);
             preparedStatement.setString(7, socialMedia1);
             preparedStatement.setString(8, socialMedia2);
             preparedStatement.setString(9, socialMedia3);
@@ -198,16 +176,16 @@ public class ProfileDAO {
 
 
     }
-    public void updateContactInfo(int id ,String address, String email, String phoneNumber_home, String phoneNumber_mobile, String phoneNumber_work, String socialMedia1, String socialMedia2, String socialMedia3, String website) throws ProfileDAOException {
+    public void updateContactInfo(int id ,String address, String email, String phoneNumber_home, String phoneNumber_work, String phoneNumber_personal, String socialMedia1, String socialMedia2, String socialMedia3, String website) throws ProfileDAOException {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "UPDATE contactinfo SET address = ?, email = ?, phoneNumber_home = ?, phoneNumber_mobile = ?, phoneNumber_work = ?, socialMedia1 = ?, socialMedia2 = ?, socialMedia3 = ?, website = ? WHERE ci_id = ?"
+                    "UPDATE contactinfo SET address = ?, email = ?, phoneNumber(home) = ?, phoneNumber(work) = ?, phoneNumber(personal) = ?, socialMedia1 = ?, socialMedia2 = ?, socialMedia3 = ?, website = ? WHERE ci_id = ?"
             );
             preparedStatement.setString(1, address);
             preparedStatement.setString(2, email);
             preparedStatement.setString(3, phoneNumber_home);
-            preparedStatement.setString(4, phoneNumber_mobile);
-            preparedStatement.setString(5, phoneNumber_work);
+            preparedStatement.setString(4, phoneNumber_work);
+            preparedStatement.setString(5, phoneNumber_personal);
             preparedStatement.setString(6, socialMedia1);
             preparedStatement.setString(7, socialMedia2);
             preparedStatement.setString(8, socialMedia3);
@@ -218,18 +196,7 @@ public class ProfileDAO {
             throw new ProfileDAOException("Error updating contact info");
         }
     }
-    public boolean contactInfoExist(int id) throws ProfileDAOException {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT * FROM contactinfo WHERE ci_id = ?"
-            );
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            return resultSet.next();
-        } catch (SQLException e) {
-            throw new ProfileDAOException("Error checking if contact info exists");
-        }
-    }
+
     public void deleteContactInfo(int id) throws ProfileDAOException {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -351,6 +318,17 @@ public class ProfileDAO {
             throw new ProfileDAOException("Error adding schooling to profile");
         }
     }
+    public void removeSchoolingFromProfile(int id) throws ProfileDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "update profile set last_schooling = null  where profileId = ?; "
+            );
+            preparedStatement.setInt(1, id);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new ProfileDAOException("Error removing schooling from profile");
+        }
+    }
     public void addJobStatementToProfile(int id, int js_id) throws ProfileDAOException {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -361,6 +339,17 @@ public class ProfileDAO {
             preparedStatement.execute();
         } catch (SQLException e) {
             throw new ProfileDAOException("Error adding job statement to profile");
+        }
+    }
+    public void removeJobStatementFromProfile(int id) throws ProfileDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "update profile set current_job = null  where profileId = ?; "
+            );
+            preparedStatement.setInt(1, id);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new ProfileDAOException("Error removing job statement from profile");
         }
     }
     public void addContactInfoToProfile(int id, int co_id) throws ProfileDAOException {
@@ -375,5 +364,51 @@ public class ProfileDAO {
             throw new ProfileDAOException("Error adding contact info to profile");
         }
     }
-    
+    public void removeContactInfoFromProfile(int id) throws ProfileDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "update profile set contact_info = null  where profileId = ?; "
+            );
+            preparedStatement.setInt(1, id);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new ProfileDAOException("Error removing contact info from profile");
+        }
+    }
+    public boolean contactInfoExistInProfile(int id) throws ProfileDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM profile WHERE contact_info = ?"
+            );
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException e) {
+            throw new ProfileDAOException("Error checking if contact info exists in profile");
+        }
+    }
+    public boolean schoolingExistInProfile(int id) throws ProfileDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM profile WHERE last_schooling = ?"
+            );
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException e) {
+            throw new ProfileDAOException("Error checking if schooling exists in profile");
+        }
+    }
+    public boolean jobStatementExistInProfile(int id) throws ProfileDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM profile WHERE current_job = ?"
+            );
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException e) {
+            throw new ProfileDAOException("Error checking if job statement exists in profile");
+        }
+    }
 }

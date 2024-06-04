@@ -4,7 +4,6 @@ import DAO.UserDAO;
 import models.User;
 import com.google.gson.Gson;
 import exceptions.UserDAOException;
-
 import java.sql.SQLException;
 
 public class UserController {
@@ -67,6 +66,9 @@ public class UserController {
         } else {
             throw new UserDAOException("User does not exist");
         }
+    }
+    public String getUserCreationDate(String username) throws UserDAOException {
+        return gson.toJson(userDAO.getUserCreationDate(username));
     }
 
 }
