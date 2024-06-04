@@ -81,6 +81,22 @@ public class ProfileDAO {
             throw new ProfileDAOException("Error deleting schooling");
         }
     }
+    public int getSchoolingId(String schoolName) throws ProfileDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT sc_id FROM schooling WHERE schoolName = ?"
+            );
+            preparedStatement.setString(1, schoolName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("sc_id");
+            } else {
+                throw new ProfileDAOException("Schooling does not exist");
+            }
+        } catch (SQLException e) {
+            throw new ProfileDAOException("Error getting schooling id");
+        }
+    }
     public void createJobStatement(int id, String title,String workingState, String companyName, String companyAddress, String workongType, byte isWorking, String start, String end, String description) throws ProfileDAOException {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -131,6 +147,22 @@ public class ProfileDAO {
             return resultSet.next();
         } catch (SQLException e) {
             throw new ProfileDAOException("Error checking if job statement exists");
+        }
+    }
+    public int getJobStatementId(String title) throws ProfileDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT js_id FROM jobstatement WHERE title = ?"
+            );
+            preparedStatement.setString(1, title);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("js_id");
+            } else {
+                throw new ProfileDAOException("Job statement does not exist");
+            }
+        } catch (SQLException e) {
+            throw new ProfileDAOException("Error getting job statement id");
         }
     }
     public void deleteJobStatement(int id) throws ProfileDAOException {
@@ -209,6 +241,139 @@ public class ProfileDAO {
             throw new ProfileDAOException("Error deleting contact info");
         }
     }
+    public int getContactInfoId(String address) throws ProfileDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT ci_id FROM contactinfo WHERE address = ?"
+            );
+            preparedStatement.setString(1, address);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("ci_id");
+            } else {
+                throw new ProfileDAOException("Contact info does not exist");
+            }
+        } catch (SQLException e) {
+            throw new ProfileDAOException("Error getting contact info id");
+        }
+    }
 
+    public void createProfile(int id, String firstName, String lastName, String additionalName, String birthDate, String profilePicture, String bg_picture, String title, String place, String career, String jobAiming) throws ProfileDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "INSERT INTO profile(profileId, name, lastname, additionalName, birthDate, profile-picture, bg_picture, title, place, career, job_aiming) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )"
+            );
+            preparedStatement.setInt(1, id);
+            preparedStatement.setString(2, firstName);
+            preparedStatement.setString(3, lastName);
+            preparedStatement.setString(4, additionalName);
+            preparedStatement.setString(5, birthDate);
+            preparedStatement.setString(6, profilePicture);
+            preparedStatement.setString(7, bg_picture);
+            preparedStatement.setString(8, title);
+            preparedStatement.setString(9, place);
+            preparedStatement.setString(10, career);
+            preparedStatement.setString(11, jobAiming);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new ProfileDAOException("Error creating profile");
+        }
+    }
+    public void updateProfile(int id, String firstName, String lastName, String additionalName, String birthDate, String profilePicture, String bg_picture, String title, String place, String career, String jobAiming) throws ProfileDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "UPDATE profile SET name = ?, lastname = ?, additionalName = ?, birthDate = ?, profile-picture = ?, bg_picture = ?, title = ?, place = ?, career = ?, job_aiming = ? WHERE profileId = ?"
+            );
+            preparedStatement.setString(1, firstName);
+            preparedStatement.setString(2, lastName);
+            preparedStatement.setString(3, additionalName);
+            preparedStatement.setString(4, birthDate);
+            preparedStatement.setString(5, profilePicture);
+            preparedStatement.setString(6, bg_picture);
+            preparedStatement.setString(7, title);
+            preparedStatement.setString(8, place);
+            preparedStatement.setString(9, career);
+            preparedStatement.setString(10, jobAiming);
+            preparedStatement.setInt(11, id);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new ProfileDAOException("Error updating profile");
+        }
+    }
+    public boolean profileExist(int id) throws ProfileDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM profile WHERE profileId = ?"
+            );
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException e) {
+            throw new ProfileDAOException("Error checking if profile exists");
+        }
+    }
+    public void deleteProfile(int id) throws ProfileDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "DELETE FROM profile WHERE profileId = ?"
+            );
+            preparedStatement.setInt(1, id);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new ProfileDAOException("Error deleting profile");
+        }
+    }
+    public int getProfileId(String firstName) throws ProfileDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT profileId FROM profile WHERE name = ?"
+            );
+            preparedStatement.setString(1, firstName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("profileId");
+            } else {
+                throw new ProfileDAOException("Profile does not exist");
+            }
+        } catch (SQLException e) {
+            throw new ProfileDAOException("Error getting profile id");
+        }
+    }
+    public void addSchoolingToProfile(int id, int sc_id) throws ProfileDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "update profile set last_schooling = ?  where profileId = ?; "
+            );
+            preparedStatement.setInt(1, sc_id);
+            preparedStatement.setInt(2, id);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new ProfileDAOException("Error adding schooling to profile");
+        }
+    }
+    public void addJobStatementToProfile(int id, int js_id) throws ProfileDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "update profile set current_job = ?  where profileId = ?; "
+            );
+            preparedStatement.setInt(1, js_id);
+            preparedStatement.setInt(2, id);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new ProfileDAOException("Error adding job statement to profile");
+        }
+    }
+    public void addContactInfoToProfile(int id, int co_id) throws ProfileDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "update profile set contact_info = ?  where profileId = ?; "
+            );
+            preparedStatement.setInt(1, co_id);
+            preparedStatement.setInt(2, id);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new ProfileDAOException("Error adding contact info to profile");
+        }
+    }
     
 }
