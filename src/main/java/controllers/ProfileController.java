@@ -2,6 +2,7 @@ package controllers;
 import DAO.ProfileDAO;
 import DAO.UserDAO;
 import exceptions.ProfileDAOException;
+import models.Profile;
 import models.User;
 import com.google.gson.Gson;
 import java.sql.SQLException;
@@ -192,7 +193,42 @@ public class ProfileController
     }
 
 
-//get methods will be added in the future.
+    public String getprofile(String username) throws UserDAOException, ProfileDAOException {
+        if (!userDAO.userExist_username(username)) {
+            throw new ProfileDAOException("User does not exist");
+        } else if (!profileDAO.profileExist(userDAO.getUserId(username))) {
+            throw new ProfileDAOException("Profile does not exist");
+        } else {
+            return gson.toJson(profileDAO.getProfile(userDAO.getUserId(username)));
+        }
+    }
+    public String getSchooling(String username) throws UserDAOException, ProfileDAOException {
+        if (!userDAO.userExist_username(username)) {
+            throw new ProfileDAOException("User does not exist");
+        } else if (!profileDAO.profileExist(userDAO.getUserId(username))) {
+            throw new ProfileDAOException("Profile does not exist");
+        } else {
+            return gson.toJson(profileDAO.getSchooling(userDAO.getUserId(username)));
+        }
+    }
+    public String getJob_Statement(String username) throws UserDAOException, ProfileDAOException {
+        if (!userDAO.userExist_username(username)) {
+            throw new ProfileDAOException("User does not exist");
+        } else if (!profileDAO.profileExist(userDAO.getUserId(username))) {
+            throw new ProfileDAOException("Profile does not exist");
+        } else {
+            return gson.toJson(profileDAO.getJobStatement(userDAO.getUserId(username)));
+        }
+    }
+    public String getContact_info(String username) throws UserDAOException, ProfileDAOException {
+        if (!userDAO.userExist_username(username)) {
+            throw new ProfileDAOException("User does not exist");
+        } else if (!profileDAO.profileExist(userDAO.getUserId(username))) {
+            throw new ProfileDAOException("Profile does not exist");
+        } else {
+            return gson.toJson(profileDAO.getContactInfo(userDAO.getUserId(username)));
+        }
+    }
 
 
 

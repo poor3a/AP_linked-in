@@ -5,6 +5,8 @@ import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import exceptions.UserDAOException;
 import models.*;
 import exceptions.ProfileDAOException;
 
@@ -14,10 +16,12 @@ public class ProfileDAO {
 
     Connection connection;
     Statement statement;
+    UserDAO userDAO;
 
     public ProfileDAO() throws SQLException {
         this.connection = SQL.getConnection();//this is a method that is used to get the connection to the database.
         this.statement = connection.createStatement();//this is a method that is used to create a statement object that will be used to execute sql queries.
+        this.userDAO = new UserDAO();
     }
 
     public void createSchooling(int id, String schoolName, String degree, String fieldOfStudy, String start, String end, double grade, String description, String activities) throws ProfileDAOException {
@@ -70,12 +74,12 @@ public class ProfileDAO {
             throw new ProfileDAOException("Error deleting schooling");
         }
     }
-    public int getSchoolingId(String schoolName) throws ProfileDAOException {
+    public int getSchoolingId(String userId) throws ProfileDAOException, UserDAOException {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT sc_id FROM schooling WHERE schoolName = ?"
+                    "SELECT sc_id FROM schooling WHERE sc_id = ?"
             );
-            preparedStatement.setString(1, schoolName);
+            preparedStatement.setInt(1, userDAO.getUserId(userId));
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return resultSet.getInt("sc_id");
@@ -127,12 +131,12 @@ public class ProfileDAO {
         }
     }
 
-    public int getJobStatementId(String title) throws ProfileDAOException {
+    public int getJobStatementId(String userId) throws ProfileDAOException, UserDAOException {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT js_id FROM jobstatement WHERE title = ?"
+                    "SELECT js_id FROM jobstatement WHERE js_id = ?"
             );
-            preparedStatement.setString(1, title);
+            preparedStatement.setInt(1, userDAO.getUserId(userId));
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return resultSet.getInt("js_id");
@@ -208,12 +212,12 @@ public class ProfileDAO {
             throw new ProfileDAOException("Error deleting contact info");
         }
     }
-    public int getContactInfoId(String address) throws ProfileDAOException {
+    public int getContactInfoId(String userId) throws ProfileDAOException, UserDAOException {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT ci_id FROM contactinfo WHERE address = ?"
+                    "SELECT ci_id FROM contactinfo WHERE co_id = ?"
             );
-            preparedStatement.setString(1, address);
+            preparedStatement.setInt(1, userDAO.getUserId(userId));
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return resultSet.getInt("ci_id");
@@ -290,12 +294,12 @@ public class ProfileDAO {
             throw new ProfileDAOException("Error deleting profile");
         }
     }
-    public int getProfileId(String firstName) throws ProfileDAOException {
+    public int getProfileId(String userId) throws ProfileDAOException, UserDAOException {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT profileId FROM profile WHERE name = ?"
+                    "SELECT profileId FROM profile WHERE profileId = ?"
             );
-            preparedStatement.setString(1, firstName);
+            preparedStatement.setInt(1, userDAO.getUserId(userId));
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return resultSet.getInt("profileId");
@@ -409,6 +413,114 @@ public class ProfileDAO {
             return resultSet.next();
         } catch (SQLException e) {
             throw new ProfileDAOException("Error checking if job statement exists in profile");
+        }
+    }
+    public Profile getProfile(int id) throws ProfileDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM profile WHERE profileId = ?"
+            );
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return new Profile(
+                        resultSet.getInt("profileId"),
+                        resultSet.getString("name"),
+                        resultSet.getString("lastname"),
+                        resultSet.getString("additionalName"),
+                        resultSet.getString("birthDate"),
+                        resultSet.getString("profile-picture"),
+                        resultSet.getString("bg_picture"),
+                        resultSet.getString("title"),
+                        resultSet.getString("place"),
+                        resultSet.getString("career"),
+                        resultSet.getString("job_aiming")
+                );
+            } else {
+                throw new ProfileDAOException("Profile does not exist");
+            }
+        } catch (SQLException e) {
+            throw new ProfileDAOException("Error getting profile");
+        }
+    }
+    public JobStatement getJobStatement(int id) throws ProfileDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM jobstatement WHERE js_id = ?"
+            );
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return new JobStatement(
+                        resultSet.getInt("js_id"),
+                        resultSet.getString("title"),
+                        resultSet.getString("companyName"),
+                        resultSet.getString("companyAddress"),
+                        resultSet.getString("workingType"),
+                        resultSet.getString("workingState"),
+                        resultSet.getByte("isWorking"),
+                        resultSet.getString("start"),
+                        resultSet.getString("end"),
+                        resultSet.getString("description")
+                );
+            } else {
+                throw new ProfileDAOException("Job statement does not exist");
+            }
+        } catch (SQLException e) {
+            throw new ProfileDAOException("Error getting job statement");
+        }
+    }
+    public ContactInfo getContactInfo(int id) throws ProfileDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM contactinfo WHERE ci_id = ?"
+            );
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return new ContactInfo(
+                        resultSet.getInt("co_id"),
+                        resultSet.getString("address"),
+                        resultSet.getString("email"),
+                        resultSet.getString("phoneNumber_home"),
+                        resultSet.getString("phoneNumber_work"),
+                        resultSet.getString("phoneNumber_personal"),
+                        resultSet.getString("socialMedia1"),
+                        resultSet.getString("socialMedia2"),
+                        resultSet.getString("socialMedia3"),
+                        resultSet.getString("website")
+                );
+            } else {
+                throw new ProfileDAOException("Contact info does not exist");
+            }
+        } catch (SQLException e) {
+            throw new ProfileDAOException("Error getting contact info");
+        }
+    }
+    public Schooling getSchooling(int id) throws ProfileDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM schooling WHERE sc_id = ?"
+            );
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return new Schooling(
+                        resultSet.getInt("sc_id"),
+                        resultSet.getString("schoolName"),
+                        resultSet.getString("fieldOfStudy"),
+                        resultSet.getString("degree"),
+                        resultSet.getString("start"),
+                        resultSet.getString("end"),
+                        resultSet.getDouble("grade"),
+                        resultSet.getString("description"),
+                        resultSet.getString("activities")
+                );
+            } else {
+                throw new ProfileDAOException("Schooling does not exist");
+            }
+        } catch (SQLException e) {
+            throw new ProfileDAOException("Error getting schooling");
         }
     }
 }

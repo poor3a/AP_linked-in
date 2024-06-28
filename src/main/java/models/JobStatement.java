@@ -7,21 +7,31 @@ public class JobStatement
     private String companyName;
     private String location;
     private String workType;
+    private String workingState;
     private byte isWorking;
     private String start;
     private String end;
     private String description;
 
-    public JobStatement(int id, String jobTitle, String companyName, String location, String workType, byte isWorking, String start, String end, String description) {
+    public JobStatement(int id, String jobTitle, String companyName, String location, String workType,String workingState ,byte isWorking, String start, String end, String description) {
         this.id = id;
         this.jobTitle = jobTitle;
         this.companyName = companyName;
         this.location = location;
         this.workType = workType;
+        this.workingState = workingState;
         this.isWorking = isWorking;
         this.start = start;
         this.end = end;
         this.description = description;
+    }
+
+    public String getWorkingState() {
+        return workingState;
+    }
+
+    public void setWorkingState(String workingState) {
+        this.workingState = workingState;
     }
 
     public void setId(int id) {

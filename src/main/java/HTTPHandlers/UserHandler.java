@@ -3,6 +3,7 @@ package HTTPHandlers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import controllers.UserController;
+import exceptions.ProfileDAOException;
 import exceptions.UserDAOException;
 import org.json.JSONObject;
 
@@ -25,7 +26,8 @@ public class UserHandler implements HttpHandler {
         String response;
 
         try {
-            switch (requestMethod) {
+            switch (requestMethod)
+            {
                 case "GET":
                     response = handleGetRequest(pathElements);
                     break;
