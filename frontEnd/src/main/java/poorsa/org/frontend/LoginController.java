@@ -30,6 +30,8 @@ public class LoginController {
     @FXML
     private ImageView emailpic;
     @FXML
+    private Hyperlink forgotPassword;
+    @FXML
     public void initialize() {
         password.setOnMouseEntered(event -> {
             keypic.setImage(new Image(getClass().getResource("/whitekey.png").toString()));
@@ -119,6 +121,8 @@ public class LoginController {
         );
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
+        //#
+        //now check login conditions.
 
     }
     public void createAccountButtonOnAction() {
@@ -143,6 +147,12 @@ public class LoginController {
         );
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
+        //#
+        //check if username and password are not already exist, go to create account page.
+    }
+    public void forgotPasswordOnAction() {
+        //#
+        //go to forgot password page.
     }
 
     public void buttonAnimation(Button createAccountButton) {
