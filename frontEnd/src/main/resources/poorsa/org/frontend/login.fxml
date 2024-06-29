@@ -84,7 +84,7 @@
                               <Insets />
                            </HBox.margin>
                         </TextField>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView id="emailPic" fx:id="emailpic" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <HBox.margin>
                               <Insets left="-390.0" />
                            </HBox.margin>
@@ -107,7 +107,7 @@
                               <Insets left="45.0" />
                            </padding>
                         </PasswordField>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView id="keypic" fx:id="keypic" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <HBox.margin>
                               <Insets left="-390.0" />
                            </HBox.margin>
@@ -127,7 +127,7 @@
                   </Hyperlink>
                   <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="500.0">
                      <children>
-                        <Button id="loginB" mnemonicParsing="false" prefHeight="45.0" prefWidth="185.0" text="Login">
+                        <Button id="loginB" fx:id="loginButton" mnemonicParsing="false" onAction="#loginButtonOnAction" prefHeight="45.0" prefWidth="185.0" text="Login">
                            <HBox.margin>
                               <Insets left="50.0" top="10.0" />
                            </HBox.margin>
@@ -161,7 +161,7 @@
                               </LinearGradient>
                            </textFill>
                         </Button>
-                        <Button id="createB" mnemonicParsing="false" prefHeight="45.0" prefWidth="185.0" text="create account" textFill="WHITE">
+                        <Button id="createB" fx:id="createAccountButton" mnemonicParsing="false" onAction="#createAccountButtonOnAction" prefHeight="45.0" prefWidth="185.0" text="create account" textFill="WHITE">
                            <HBox.margin>
                               <Insets left="30.0" top="10.0" />
                            </HBox.margin>

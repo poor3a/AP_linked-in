@@ -1,13 +1,13 @@
 package poorsa.org.frontend;
 
 import javafx.animation.KeyFrame;
+import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
 public class LoginController {
@@ -21,9 +21,35 @@ public class LoginController {
     private TextField username;
     @FXML
     private PasswordField password;
-
+    @FXML
+    private Button loginButton;
+    @FXML
+    private Button createAccountButton;
+    @FXML
+    private ImageView keypic;
+    @FXML
+    private ImageView emailpic;
     @FXML
     public void initialize() {
+        password.setOnMouseEntered(event -> {
+            keypic.setImage(new Image(getClass().getResource("/whitekey.png").toString()));
+        });
+
+        password.setOnMouseExited(event -> {
+            keypic.setImage(new Image(getClass().getResource("/icons8-key-48.png").toString()));
+        });
+        username.setOnMouseEntered(event -> {
+            emailpic.setImage(new Image(getClass().getResource("/white email.png").toString()));
+        });
+        username.setOnMouseExited(event -> {
+            emailpic.setImage(new Image(getClass().getResource("/icons8-email-64.png").toString()));
+        });
+        username.setOnMouseClicked(event -> {
+            getHeartbeat(username).play();
+        });
+        password.setOnMouseClicked(event -> {
+            getHeartbeat(password).play();
+        });
 
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.millis(0), event -> {
@@ -60,5 +86,72 @@ public class LoginController {
         timeline.play();
         username.setFocusTraversable(false);
         password.setFocusTraversable(false);
+    }
+
+    private static ScaleTransition getHeartbeat(Node node) {
+        ScaleTransition heartbeat = new ScaleTransition(Duration.millis(75), node);
+        heartbeat.setByX(0.15);
+        heartbeat.setByY(0.15);
+        heartbeat.setAutoReverse(true);
+        heartbeat.setCycleCount(2);
+        return heartbeat;
+    }
+
+    public void loginButtonOnAction() {
+        buttonAnimation(loginButton);
+        createAccountButton.setDisable(true);
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.millis(0), event -> {
+                    loginButton.setText("Logging in");
+                }),
+                new KeyFrame(Duration.millis(333), event -> {
+                    loginButton.setText("Logging in.");
+                }),
+                new KeyFrame(Duration.millis(666), event -> {
+                    loginButton.setText("Logging in..");
+                }),
+                new KeyFrame(Duration.millis(1000), event -> {
+                    loginButton.setText("Logging in...");
+                }),
+                new KeyFrame(Duration.millis(1500), event -> {
+                    loginButton.setText("Logging in...");
+                })
+        );
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+
+    }
+    public void createAccountButtonOnAction() {
+        buttonAnimation(createAccountButton);
+        loginButton.setDisable(true);
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.millis(0), event -> {
+                    createAccountButton.setText("Creating Account");
+                }),
+                new KeyFrame(Duration.millis(333), event -> {
+                    createAccountButton.setText("Creating Account.");
+                }),
+                new KeyFrame(Duration.millis(666), event -> {
+                    createAccountButton.setText("Creating Account..");
+                }),
+                new KeyFrame(Duration.millis(1000), event -> {
+                    createAccountButton.setText("Creating Account...");
+                }),
+                new KeyFrame(Duration.millis(1500), event -> {
+                    createAccountButton.setText("Creating Account...");
+                })
+        );
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+    }
+
+    public void buttonAnimation(Button createAccountButton) {
+        createAccountButton.setDisable(true);
+        ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(300), createAccountButton);
+        scaleTransition.setByX(0.1);
+        scaleTransition.setByY(0.1);
+        scaleTransition.setCycleCount(2);
+        scaleTransition.setAutoReverse(true);
+        scaleTransition.play();
     }
 }
