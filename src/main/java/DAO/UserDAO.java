@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import models.User;
 
 public class UserDAO {
     Connection connection;
@@ -183,6 +184,227 @@ public class UserDAO {
             preparedStatement.execute();
         } catch (SQLException e) {
             throw new UserDAOException("Error updating user email");
+        }
+    }
+    public boolean following_sysContains(String follower , String followed) throws UserDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM following_sys WHERE follower = ? AND followed = ?"
+            );
+            preparedStatement.setString(1, follower);
+            preparedStatement.setString(2, followed);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException e) {
+            throw new UserDAOException("Error checking if following_sys contains follower and followed");
+        }
+    }
+    public void followUser(String username , String followedUsername) throws UserDAOException {
+        try {
+            if (!userExist_username(username)) {
+                throw new UserDAOException("User does not exist");
+            }else if (!userExist_username(followedUsername)){
+                throw new UserDAOException("Followed user does not exist");
+            } else if (following_sysContains(username , followedUsername)) {
+                throw new UserDAOException("Already following user");
+            }
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "INSERT INTO following_sys(follower ,followed) values (?,?)"
+            );
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, followedUsername);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new UserDAOException("Error following user");
+        }
+    }
+    public void unfollowUser(String username , String followedUsername) throws UserDAOException {
+        try {
+            if (!userExist_username(username)) {
+                throw new UserDAOException("User does not exist");
+            }else if (!userExist_username(followedUsername)){
+                throw new UserDAOException("Followed user does not exist");
+            } else if (!following_sysContains(username , followedUsername)) {
+                throw new UserDAOException("Not following user");
+            }
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "DELETE FROM following_sys WHERE follower = ? AND followed = ?"
+            );
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, followedUsername);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new UserDAOException("Error unfollowing user");
+        }
+    }
+    public User[] getFollowers(String username) throws UserDAOException {
+        try {
+            if (!userExist_username(username)) {
+                throw new UserDAOException("User does not exist");
+            }
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT follower FROM following_sys WHERE followed = ?"
+            );
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.last();
+            int size = resultSet.getRow();
+            resultSet.beforeFirst();
+            User[] followers = new User[size];
+            int i = 0;
+            while (resultSet.next()) {
+                followers[i] = new User(resultSet.getInt("id"), resultSet.getString("username"), resultSet.getString("password"), resultSet.getString("email"));
+                i++;
+            }
+            return followers;
+        } catch (SQLException e) {
+            throw new UserDAOException("Error getting followers");
+        }
+    }
+    public User[] getFollowings(String username) throws UserDAOException {
+        try {
+            if (!userExist_username(username)) {
+                throw new UserDAOException("User does not exist");
+            }
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT followed FROM following_sys WHERE follower = ?"
+            );
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.last();
+            int size = resultSet.getRow();
+            resultSet.beforeFirst();
+            User[] following = new User[size];
+            int i = 0;
+            while (resultSet.next()) {
+                following[i] = new User(resultSet.getInt("id"), resultSet.getString("username"), resultSet.getString("password"), resultSet.getString("email"));
+                i++;
+            }
+            return following;
+        } catch (SQLException e) {
+            throw new UserDAOException("Error getting following");
+        }
+    }
+    public void createUserConnection(String user1 ,String user2) throws UserDAOException {
+        try {
+            if (!userExist_username(user1)) {
+                throw new UserDAOException("User1 does not exist");
+            }else if (!userExist_username(user2)){
+                throw new UserDAOException("User2 does not exist");
+            } else if (user1.equals(user2)) {
+                throw new UserDAOException("Users are the same");
+            }
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "INSERT INTO user_connections(user1 ,user2) values (?,?)"
+            );
+            preparedStatement.setString(1, user1);
+            preparedStatement.setString(2, user2);
+            preparedStatement.execute();
+            preparedStatement.setString(1, user2);
+            preparedStatement.setString(2, user1);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new UserDAOException("Error creating user connection");
+        }
+    }
+    public boolean connection_exist(String user1 , String user2) throws UserDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM user_connections WHERE user1 = ? AND user2 = ?"
+            );
+            preparedStatement.setString(1, user1);
+            preparedStatement.setString(2, user2);
+            ResultSet resultSet1 = preparedStatement.executeQuery();
+            return (resultSet1.next());
+        } catch (SQLException e) {
+            throw new UserDAOException("Error checking if connection exists");
+        }
+    }
+    public void deleteUserConnection(String user1 , String user2) throws UserDAOException {
+        try {
+            if (!connection_exist(user1 , user2)) {
+                throw new UserDAOException("Connection does not exist");
+            }
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "DELETE FROM user_connections WHERE user1 = ? AND user2 = ?"
+            );
+            preparedStatement.setString(1, user1);
+            preparedStatement.setString(2, user2);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            try {
+                PreparedStatement preparedStatement = connection.prepareStatement(
+                        "DELETE FROM user_connections WHERE user1 = ? AND user2 = ?"
+                );
+                preparedStatement.setString(1, user2);
+                preparedStatement.setString(2, user1);
+                preparedStatement.execute();
+            }catch (SQLException e1)
+            {
+                throw new UserDAOException("Error deleting user connection");
+            }
+        }
+    }
+    public User[] getConnections(String username) throws UserDAOException {
+        try {
+            if (!userExist_username(username)) {
+                throw new UserDAOException("User does not exist");
+            }
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT user2 FROM user_connections WHERE user1 = ?"
+            );
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.last();
+            int size = resultSet.getRow();
+            resultSet.beforeFirst();
+            User[] connections = new User[size];
+            int i = 0;
+            while (resultSet.next()) {
+                connections[i] = new User(resultSet.getInt("id"), resultSet.getString("username"), resultSet.getString("password"), resultSet.getString("email"));
+                i++;
+            }
+            return connections;
+        } catch (SQLException e) {
+            throw new UserDAOException("Error getting connections");
+        }
+    }
+    public void deleteAllConnections(String username) throws UserDAOException {
+        try {
+            if (!userExist_username(username)) {
+                throw new UserDAOException("User does not exist");
+            }
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "DELETE FROM user_connections WHERE user1 = ?"
+            );
+            preparedStatement.setString(1, username);
+            preparedStatement.execute();
+            preparedStatement = connection.prepareStatement(
+                    "DELETE FROM user_connections WHERE user2 = ?"
+            );
+            preparedStatement.setString(1, username);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new UserDAOException("Error deleting all connections");
+        }
+    }
+    public void deleteAllFollowersAndFollowings(String username) throws UserDAOException {
+        try {
+            if (!userExist_username(username)) {
+                throw new UserDAOException("User does not exist");
+            }
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "DELETE FROM following_sys WHERE follower = ?"
+            );
+            preparedStatement.setString(1, username);
+            preparedStatement.execute();
+            preparedStatement = connection.prepareStatement(
+                    "DELETE FROM following_sys WHERE followed = ?"
+            );
+            preparedStatement.setString(1, username);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new UserDAOException("Error deleting all followers and followings");
         }
     }
 }

@@ -42,6 +42,8 @@ public class UserController {
 
     public void deleteUser(String username, String password) throws UserDAOException {
         userDAO.deleteUser(username, password);
+        userDAO.deleteAllFollowersAndFollowings(username);
+        userDAO.deleteAllConnections(username);
     }
 
     public void updatePassword(String username, String password, String newPassword) throws UserDAOException {
@@ -69,6 +71,27 @@ public class UserController {
     }
     public String getUserCreationDate(String username) throws UserDAOException {
         return gson.toJson(userDAO.getUserCreationDate(username));
+    }
+    public void followUser(String username, String userToFollow) throws UserDAOException {
+            userDAO.followUser(username, userToFollow);
+    }
+    public void unfollowUser(String username, String userToUnfollow) throws UserDAOException {
+        userDAO.unfollowUser(username, userToUnfollow);
+    }
+    public String getFollowers(String username) throws UserDAOException {
+        return gson.toJson(userDAO.getFollowers(username));
+    }
+    public String getFollowings(String username) throws UserDAOException {
+        return gson.toJson(userDAO.getFollowings(username));
+    }
+    public String getConnections(String username) throws UserDAOException {
+        return gson.toJson(userDAO.getConnections(username));
+    }
+    public void addConnection(String username, String connection) throws UserDAOException {
+        userDAO.createUserConnection(username, connection);
+    }
+    public void removeConnection(String username, String connection) throws UserDAOException {
+        userDAO.deleteUserConnection(username, connection);
     }
 
 }
