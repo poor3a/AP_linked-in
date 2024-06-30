@@ -19,37 +19,36 @@ public class UserController {
         //userController is a class that is used to interact with the UserDAO class and help us to access the users in database.
         //for giving server some information about the user we use gson.
         //gson is a library that is used to convert java objects to json objects.
+
     }
 
-    public void createUser(String username, String password, String email) throws UserDAOException {
+    public void createUser(String email, String password) throws UserDAOException {
 
-        if (userDAO.userExist_username(username)) {//if the username already exists in the database, we throw an exception.
-            throw new UserDAOException("Username already exists");
-        } else if (userDAO.userExist_email(email)) {//if the email already exists in the database, we throw an exception.
+        if (userDAO.userExist(email)) {//if the email already exists in the database, we throw an exception.
             throw new UserDAOException("Email already exists");
         } else {
-            userDAO.createUser(username, password, email);
+            userDAO.createUser(email, password);
         }
     }
 
-    public String getUser(String username) throws UserDAOException {
+    public String getUser(String email) throws UserDAOException {
         //this method is used to get the user from the database and return it as a json object.
         //if somewhere in the process an exception is thrown, we catch it and return the message of the exception.
         //the exception will be caught in the server class and the message will be sent to the client.
-        User user = new User(userDAO.getUserId(username), username, userDAO.getUserPassword(username), userDAO.getUserEmail(username));
+        User user = new User(userDAO.getUserId(email), email, userDAO.getUserPassword(email));
         return gson.toJson(user);
     }
 
-    public void deleteUser(String username, String password) throws UserDAOException {
-        userDAO.deleteUser(username, password);
-        userDAO.deleteAllFollowersAndFollowings(username);
-        userDAO.deleteAllConnections(username);
+    public void deleteUser(String email, String password) throws UserDAOException {
+        userDAO.deleteUser(email, password);
+        userDAO.deleteAllFollowersAndFollowings(email);
+        userDAO.deleteAllConnections(email);
     }
 
-    public void updatePassword(String username, String password, String newPassword) throws UserDAOException {
-        if (userDAO.userExist_username(username)) {
-            if (userDAO.checkUserPassword(username, password)) {
-                userDAO.updatePassword(username, newPassword);
+    public void updatePassword(String email, String password, String newPassword) throws UserDAOException {
+        if (userDAO.userExist(email)) {
+            if (userDAO.checkUserPassword(email, password)) {
+                userDAO.updatePassword(email, newPassword);
             } else {
                 throw new UserDAOException("Password is incorrect");
             }
@@ -58,10 +57,10 @@ public class UserController {
         }
     }
 
-    public void updateEmail(String username, String password, String newEmail) throws UserDAOException {
-        if (userDAO.userExist_username(username)) {
-            if (userDAO.checkUserPassword(username, password)) {
-                userDAO.updateEmail(username, newEmail);
+    public void updateEmail(String email, String password, String newEmail) throws UserDAOException {
+        if (userDAO.userExist(email)) {
+            if (userDAO.checkUserPassword(email, password)) {
+                userDAO.updateEmail(email, newEmail);
             } else {
                 throw new UserDAOException("Password is incorrect");
             }
@@ -69,29 +68,29 @@ public class UserController {
             throw new UserDAOException("User does not exist");
         }
     }
-    public String getUserCreationDate(String username) throws UserDAOException {
-        return gson.toJson(userDAO.getUserCreationDate(username));
+    public String getUserCreationDate(String email) throws UserDAOException {
+        return gson.toJson(userDAO.getUserCreationDate(email));
     }
-    public void followUser(String username, String userToFollow) throws UserDAOException {
-            userDAO.followUser(username, userToFollow);
+    public void followUser(String email, String userToFollow) throws UserDAOException {
+            userDAO.followUser(email, userToFollow);
     }
-    public void unfollowUser(String username, String userToUnfollow) throws UserDAOException {
-        userDAO.unfollowUser(username, userToUnfollow);
+    public void unfollowUser(String email, String userToUnfollow) throws UserDAOException {
+        userDAO.unfollowUser(email, userToUnfollow);
     }
-    public String getFollowers(String username) throws UserDAOException {
-        return gson.toJson(userDAO.getFollowers(username));
+    public String getFollowers(String email) throws UserDAOException {
+        return gson.toJson(userDAO.getFollowers(email));
     }
-    public String getFollowings(String username) throws UserDAOException {
-        return gson.toJson(userDAO.getFollowings(username));
+    public String getFollowings(String email) throws UserDAOException {
+        return gson.toJson(userDAO.getFollowings(email));
     }
-    public String getConnections(String username) throws UserDAOException {
-        return gson.toJson(userDAO.getConnections(username));
+    public String getConnections(String email) throws UserDAOException {
+        return gson.toJson(userDAO.getConnections(email));
     }
-    public void addConnection(String username, String connection) throws UserDAOException {
-        userDAO.createUserConnection(username, connection);
+    public void addConnection(String email, String connectedUserEmail) throws UserDAOException {
+        userDAO.createUserConnection(email, connectedUserEmail);
     }
-    public void removeConnection(String username, String connection) throws UserDAOException {
-        userDAO.deleteUserConnection(username, connection);
+    public void removeConnection(String email, String connectedUserEmail) throws UserDAOException {
+        userDAO.deleteUserConnection(email, connectedUserEmail);
     }
 
 }

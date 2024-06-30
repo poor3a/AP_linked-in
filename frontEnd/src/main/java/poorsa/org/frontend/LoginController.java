@@ -4,11 +4,18 @@ import javafx.animation.KeyFrame;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 import javafx.util.Duration;
+import poorsa.org.frontend.models.*;
+
+import java.io.IOException;
 
 public class LoginController {
 
@@ -47,10 +54,10 @@ public class LoginController {
             emailpic.setImage(new Image(getClass().getResource("/icons8-email-64.png").toString()));
         });
         username.setOnMouseClicked(event -> {
-            getHeartbeat(username).play();
+            Animations.getHeartbeat(username).play();
         });
         password.setOnMouseClicked(event -> {
-            getHeartbeat(password).play();
+            Animations.getHeartbeat(password).play();
         });
 
         Timeline timeline = new Timeline(
@@ -90,17 +97,8 @@ public class LoginController {
         password.setFocusTraversable(false);
     }
 
-    private static ScaleTransition getHeartbeat(Node node) {
-        ScaleTransition heartbeat = new ScaleTransition(Duration.millis(75), node);
-        heartbeat.setByX(0.15);
-        heartbeat.setByY(0.15);
-        heartbeat.setAutoReverse(true);
-        heartbeat.setCycleCount(2);
-        return heartbeat;
-    }
-
     public void loginButtonOnAction() {
-        buttonAnimation(loginButton);
+        Animations.buttonAnimation(loginButton);
         createAccountButton.setDisable(true);
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.millis(0), event -> {
@@ -119,49 +117,38 @@ public class LoginController {
                     loginButton.setText("Logging in...");
                 })
         );
-        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.setCycleCount(1);
         timeline.play();
-        //#
-        //now check login conditions.
+        timeline.setOnFinished(event -> {
+             //#
+            //now check login conditions.
+        });
+
 
     }
-    public void createAccountButtonOnAction() {
-        buttonAnimation(createAccountButton);
+    public void createAccountButtonOnAction() throws IOException {
+        Animations.buttonAnimation(createAccountButton);
         loginButton.setDisable(true);
-        Timeline timeline = new Timeline(
-                new KeyFrame(Duration.millis(0), event -> {
-                    createAccountButton.setText("Creating Account");
-                }),
-                new KeyFrame(Duration.millis(333), event -> {
-                    createAccountButton.setText("Creating Account.");
-                }),
-                new KeyFrame(Duration.millis(666), event -> {
-                    createAccountButton.setText("Creating Account..");
-                }),
-                new KeyFrame(Duration.millis(1000), event -> {
-                    createAccountButton.setText("Creating Account...");
-                }),
-                new KeyFrame(Duration.millis(1500), event -> {
-                    createAccountButton.setText("Creating Account...");
-                })
-        );
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
         //#
         //check if username and password are not already exist, go to create account page.
+        Parent root = FXMLLoader.load(getClass().getResource("createAccount.fxml"));
+        Scene scene = new Scene(root, 800, 500);
+        scene.getStylesheets().add(getClass().getResource("createAccount.css").toExternalForm());
+        Stage stage = (Stage) createAccountButton.getScene().getWindow();
+        stage.setResizable(false);
+        stage.setScene(scene);
+        stage.show();
+
     }
-    public void forgotPasswordOnAction() {
+    public void forgotPasswordOnAction() throws IOException {
         //#
-        //go to forgot password page.
+//        Parent root = FXMLLoader.load(getClass().getResource("forgotPassword.fxml"));
+//        Scene scene = new Scene(root, 800, 500);
+//        Stage stage = (Stage) forgotPassword.getScene().getWindow();
+//        stage.setScene(scene);
+//        stage.show();
+        //i will make this later
     }
 
-    public void buttonAnimation(Button createAccountButton) {
-        createAccountButton.setDisable(true);
-        ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(300), createAccountButton);
-        scaleTransition.setByX(0.1);
-        scaleTransition.setByY(0.1);
-        scaleTransition.setCycleCount(2);
-        scaleTransition.setAutoReverse(true);
-        scaleTransition.play();
-    }
+
 }

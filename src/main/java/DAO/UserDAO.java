@@ -18,35 +18,20 @@ public class UserDAO {
             this.statement = connection.createStatement();//this is a method that is used to create a statement object that will be used to execute sql queries.
     }
 
-    public void createUser(String username, String password, String email) throws UserDAOException {
+    public void createUser(String email, String password) throws UserDAOException {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "INSERT INTO users(username ,password ,email) values (?,?,?)"
+                    "INSERT INTO users(password ,email) values (?,?)"
             );
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
-            preparedStatement.setString(3, email);
+            preparedStatement.setString(1, password);
+            preparedStatement.setString(2, email);
             preparedStatement.execute();
         } catch (SQLException e) {
             throw new UserDAOException("Error creating user");
         }
     }
 
-    public boolean userExist_username(String username) throws UserDAOException {
-        //this method is used to check if a user exists in the database by username.
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT * FROM users WHERE username = ?"
-            );
-            preparedStatement.setString(1, username);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            return resultSet.next();
-        } catch (SQLException e) {
-            throw new UserDAOException("Error checking if user exists by username");
-        }
-    }
-
-    public boolean userExist_email(String email) throws UserDAOException {
+    public boolean userExist(String email) throws UserDAOException {
         //this method is like the previous one ,but it checks if the user exists by email.
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -60,15 +45,13 @@ public class UserDAO {
         }
     }
 
-    public boolean checkUserPassword(String username, String password) throws UserDAOException {
-        if (!userExist_username(username)) {
-            throw new UserDAOException("User does not exist");//if the user does not exist, we throw an exception.
-        }
+    public boolean checkUserPassword(String email, String password) throws UserDAOException {
+        //this method is like the previous one ,but it checks if the password is correct.
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT * FROM users WHERE username = ? AND password = ?"
+                    "SELECT * FROM users WHERE email = ? AND password = ?"
             );
-            preparedStatement.setString(1, username);
+            preparedStatement.setString(1, email);
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
             return resultSet.next();
@@ -77,110 +60,95 @@ public class UserDAO {
         }
     }
 
-    public int getUserId(String username) throws UserDAOException {
-        if (!userExist_username(username)) {
+    public int getUserId(String email) throws UserDAOException {
+        if (!userExist(email)) {
             throw new UserDAOException("User does not exist");
         }
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT id FROM users WHERE username = ?"
+                    "SELECT id FROM users WHERE email = ?"
             );
-            preparedStatement.setString(1, username);
+            preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             return resultSet.getInt("id");
         } catch (SQLException e) {
-            throw new UserDAOException("Error getting user id by username");
+            throw new UserDAOException("Error getting user id by email");
         }
     }
-    public String getUserPassword(String username) throws UserDAOException {
-        if (!userExist_username(username)) {
+    public String getUserPassword(String email) throws UserDAOException {
+        if (!userExist(email)) {
             throw new UserDAOException("User does not exist");
         }
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT password FROM users WHERE username = ?"
+                    "SELECT password FROM users WHERE email = ?"
             );
-            preparedStatement.setString(1, username);
+            preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             return resultSet.getString("password");
         } catch (SQLException e) {
-            throw new UserDAOException("Error getting user password by username");
+            throw new UserDAOException("Error getting user password by email");
         }
     }
 
-    public String getUserEmail(String username) throws UserDAOException {
-        if (!userExist_username(username)) {
+
+    public String getUserCreationDate(String email) throws UserDAOException {
+        if (!userExist(email)) {
             throw new UserDAOException("User does not exist");
         }
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT email FROM users WHERE username = ?"
+                    "SELECT creation_date FROM users WHERE email = ?"
             );
-            preparedStatement.setString(1, username);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            return resultSet.getString("email");
-        } catch (SQLException e) {
-            throw new UserDAOException("Error getting user email by username");
-        }
-    }
-    public String getUserCreationDate(String username) throws UserDAOException {
-        if (!userExist_username(username)) {
-            throw new UserDAOException("User does not exist");
-        }
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT creation_date FROM users WHERE username = ?"
-            );
-            preparedStatement.setString(1, username);
+            preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             return resultSet.getString("createing_date");
         } catch (SQLException e) {
-            throw new UserDAOException("Error getting user creation date by username");
+            throw new UserDAOException("Error getting user creation date by email");
         }
     }
     //for simplify the code ,previous methods didn't need password to check the user.
     //but for deleting and updating the user we need the password.
     //and checking that may throw an exception that we need to handle in server or client side.
-    public void deleteUser(String username , String password) throws UserDAOException {
+    public void deleteUser(String email , String password) throws UserDAOException {
         try {
-            if (!checkUserPassword(username, password)) {
+            if (!checkUserPassword(email, password)) {
                 throw new UserDAOException("Access denied");
-            }else if (!userExist_username(username)){
+            }else if (!userExist(email)){
                 throw new UserDAOException("User does not exist");
             }
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "DELETE FROM users WHERE username = ? AND password = ?"
+                    "DELETE FROM users WHERE email = ? AND password = ?"
             );
-            preparedStatement.setString(1, username);
+            preparedStatement.setString(1, email);
             preparedStatement.setString(2, password);
             preparedStatement.execute();
         } catch (SQLException e) {
             throw new UserDAOException("Error deleting user");
         }
     }
-    public void updatePassword(String username , String newPassword) throws UserDAOException {
+    public void updatePassword(String email , String newPassword) throws UserDAOException {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "UPDATE users SET password = ? WHERE username = ?"
+                    "UPDATE users SET password = ? WHERE email = ?"
             );
             preparedStatement.setString(1, newPassword);
-            preparedStatement.setString(2, username);
+            preparedStatement.setString(2, email);
             preparedStatement.execute();
         } catch (SQLException e) {
             throw new UserDAOException("Error updating user password");
         }
     }
-    public void updateEmail(String username , String newEmail) throws UserDAOException {
+    public void updateEmail(String email , String newEmail) throws UserDAOException {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "UPDATE users SET email = ? WHERE username = ?"
+                    "UPDATE users SET email = ? WHERE email = ?"
             );
             preparedStatement.setString(1, newEmail);
-            preparedStatement.setString(2, username);
+            preparedStatement.setString(2, email);
             preparedStatement.execute();
         } catch (SQLException e) {
             throw new UserDAOException("Error updating user email");
@@ -199,53 +167,53 @@ public class UserDAO {
             throw new UserDAOException("Error checking if following_sys contains follower and followed");
         }
     }
-    public void followUser(String username , String followedUsername) throws UserDAOException {
+    public void followUser(String email , String followedEmail) throws UserDAOException {
         try {
-            if (!userExist_username(username)) {
+            if (!userExist(email)) {
                 throw new UserDAOException("User does not exist");
-            }else if (!userExist_username(followedUsername)){
+            }else if (!userExist(followedEmail)){
                 throw new UserDAOException("Followed user does not exist");
-            } else if (following_sysContains(username , followedUsername)) {
+            } else if (following_sysContains(email , followedEmail)) {
                 throw new UserDAOException("Already following user");
             }
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "INSERT INTO following_sys(follower ,followed) values (?,?)"
             );
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, followedUsername);
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, followedEmail);
             preparedStatement.execute();
         } catch (SQLException e) {
             throw new UserDAOException("Error following user");
         }
     }
-    public void unfollowUser(String username , String followedUsername) throws UserDAOException {
+    public void unfollowUser(String email , String followedEmail) throws UserDAOException {
         try {
-            if (!userExist_username(username)) {
+            if (!userExist(email)) {
                 throw new UserDAOException("User does not exist");
-            }else if (!userExist_username(followedUsername)){
+            }else if (!userExist(followedEmail)){
                 throw new UserDAOException("Followed user does not exist");
-            } else if (!following_sysContains(username , followedUsername)) {
+            } else if (!following_sysContains(email , followedEmail)) {
                 throw new UserDAOException("Not following user");
             }
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "DELETE FROM following_sys WHERE follower = ? AND followed = ?"
             );
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, followedUsername);
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, followedEmail);
             preparedStatement.execute();
         } catch (SQLException e) {
             throw new UserDAOException("Error unfollowing user");
         }
     }
-    public User[] getFollowers(String username) throws UserDAOException {
+    public User[] getFollowers(String email) throws UserDAOException {
         try {
-            if (!userExist_username(username)) {
+            if (!userExist(email)) {
                 throw new UserDAOException("User does not exist");
             }
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "SELECT follower FROM following_sys WHERE followed = ?"
             );
-            preparedStatement.setString(1, username);
+            preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.last();
             int size = resultSet.getRow();
@@ -253,7 +221,7 @@ public class UserDAO {
             User[] followers = new User[size];
             int i = 0;
             while (resultSet.next()) {
-                followers[i] = new User(resultSet.getInt("id"), resultSet.getString("username"), resultSet.getString("password"), resultSet.getString("email"));
+                followers[i] = new User(resultSet.getInt("id"), resultSet.getString("password"), resultSet.getString("email"));
                 i++;
             }
             return followers;
@@ -261,15 +229,15 @@ public class UserDAO {
             throw new UserDAOException("Error getting followers");
         }
     }
-    public User[] getFollowings(String username) throws UserDAOException {
+    public User[] getFollowings(String email) throws UserDAOException {
         try {
-            if (!userExist_username(username)) {
+            if (!userExist(email)) {
                 throw new UserDAOException("User does not exist");
             }
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "SELECT followed FROM following_sys WHERE follower = ?"
             );
-            preparedStatement.setString(1, username);
+            preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.last();
             int size = resultSet.getRow();
@@ -277,7 +245,7 @@ public class UserDAO {
             User[] following = new User[size];
             int i = 0;
             while (resultSet.next()) {
-                following[i] = new User(resultSet.getInt("id"), resultSet.getString("username"), resultSet.getString("password"), resultSet.getString("email"));
+                following[i] = new User(resultSet.getInt("id"), resultSet.getString("password"), resultSet.getString("email"));
                 i++;
             }
             return following;
@@ -287,9 +255,9 @@ public class UserDAO {
     }
     public void createUserConnection(String user1 ,String user2) throws UserDAOException {
         try {
-            if (!userExist_username(user1)) {
+            if (!userExist(user1)) {
                 throw new UserDAOException("User1 does not exist");
-            }else if (!userExist_username(user2)){
+            }else if (!userExist(user2)){
                 throw new UserDAOException("User2 does not exist");
             } else if (user1.equals(user2)) {
                 throw new UserDAOException("Users are the same");
@@ -345,15 +313,15 @@ public class UserDAO {
             }
         }
     }
-    public User[] getConnections(String username) throws UserDAOException {
+    public User[] getConnections(String email) throws UserDAOException {
         try {
-            if (!userExist_username(username)) {
+            if (!userExist(email)) {
                 throw new UserDAOException("User does not exist");
             }
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "SELECT user2 FROM user_connections WHERE user1 = ?"
             );
-            preparedStatement.setString(1, username);
+            preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.last();
             int size = resultSet.getRow();
@@ -361,7 +329,7 @@ public class UserDAO {
             User[] connections = new User[size];
             int i = 0;
             while (resultSet.next()) {
-                connections[i] = new User(resultSet.getInt("id"), resultSet.getString("username"), resultSet.getString("password"), resultSet.getString("email"));
+                connections[i] = new User(resultSet.getInt("id"), resultSet.getString("password"), resultSet.getString("email"));
                 i++;
             }
             return connections;
@@ -369,39 +337,39 @@ public class UserDAO {
             throw new UserDAOException("Error getting connections");
         }
     }
-    public void deleteAllConnections(String username) throws UserDAOException {
+    public void deleteAllConnections(String email) throws UserDAOException {
         try {
-            if (!userExist_username(username)) {
+            if (!userExist(email)) {
                 throw new UserDAOException("User does not exist");
             }
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "DELETE FROM user_connections WHERE user1 = ?"
             );
-            preparedStatement.setString(1, username);
+            preparedStatement.setString(1, email);
             preparedStatement.execute();
             preparedStatement = connection.prepareStatement(
                     "DELETE FROM user_connections WHERE user2 = ?"
             );
-            preparedStatement.setString(1, username);
+            preparedStatement.setString(1, email);
             preparedStatement.execute();
         } catch (SQLException e) {
             throw new UserDAOException("Error deleting all connections");
         }
     }
-    public void deleteAllFollowersAndFollowings(String username) throws UserDAOException {
+    public void deleteAllFollowersAndFollowings(String email) throws UserDAOException {
         try {
-            if (!userExist_username(username)) {
+            if (!userExist(email)) {
                 throw new UserDAOException("User does not exist");
             }
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "DELETE FROM following_sys WHERE follower = ?"
             );
-            preparedStatement.setString(1, username);
+            preparedStatement.setString(1, email);
             preparedStatement.execute();
             preparedStatement = connection.prepareStatement(
                     "DELETE FROM following_sys WHERE followed = ?"
             );
-            preparedStatement.setString(1, username);
+            preparedStatement.setString(1, email);
             preparedStatement.execute();
         } catch (SQLException e) {
             throw new UserDAOException("Error deleting all followers and followings");
