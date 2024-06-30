@@ -19,214 +19,214 @@ public class ProfileController
         this.gson = new Gson();
     }
 
-    public void createprofile(String username, String firstname, String lastName , String additionalName, String birthDate, String profilePicture, String bg_picture, String title, String place, String career, String jobAiming) throws ProfileDAOException, UserDAOException {
+    public void createprofile(String email, String firstname, String lastName , String additionalName, String birthDate, String profilePicture, String bg_picture, String title, String place, String career, String jobAiming) throws ProfileDAOException, UserDAOException {
 
-            if (!userDAO.userExist_username(username)) {
+            if (!userDAO.userExist(email)) {
                 throw new ProfileDAOException("User does not exist");
-            } else if (profileDAO.profileExist(userDAO.getUserId(username))) {
+            } else if (profileDAO.profileExist(userDAO.getUserId(email))) {
                 throw new ProfileDAOException("Profile already exists");
             } else {
-                profileDAO.createProfile(userDAO.getUserId(username), firstname, lastName, additionalName, birthDate, profilePicture, bg_picture, title, place, career, jobAiming);
+                profileDAO.createProfile(userDAO.getUserId(email), firstname, lastName, additionalName, birthDate, profilePicture, bg_picture, title, place, career, jobAiming);
             }
     }
-    public void deleteProfile(String username) throws UserDAOException, ProfileDAOException {
-        if (!userDAO.userExist_username(username)) {
+    public void deleteProfile(String email) throws UserDAOException, ProfileDAOException {
+        if (!userDAO.userExist(email)) {
             throw new ProfileDAOException("User does not exist");
-        } else if (!profileDAO.profileExist(userDAO.getUserId(username))) {
+        } else if (!profileDAO.profileExist(userDAO.getUserId(email))) {
             throw new ProfileDAOException("Profile does not exist");
         } else {
-            profileDAO.deleteProfile(userDAO.getUserId(username));
+            profileDAO.deleteProfile(userDAO.getUserId(email));
         }
     }
-    public void updateProfile(String username, String firstname, String lastName , String additionalName, String birthDate, String profilePicture, String bg_picture, String title, String place, String career, String jobAiming) throws ProfileDAOException, UserDAOException {
-        if (!userDAO.userExist_username(username)) {
+    public void updateProfile(String email, String firstname, String lastName , String additionalName, String birthDate, String profilePicture, String bg_picture, String title, String place, String career, String jobAiming) throws ProfileDAOException, UserDAOException {
+        if (!userDAO.userExist(email)) {
             throw new ProfileDAOException("User does not exist");
-        } else if (!profileDAO.profileExist(userDAO.getUserId(username))) {
+        } else if (!profileDAO.profileExist(userDAO.getUserId(email))) {
             throw new ProfileDAOException("Profile does not exist");
         } else {
-            profileDAO.updateProfile(userDAO.getUserId(username), firstname, lastName, additionalName, birthDate, profilePicture, bg_picture, title, place, career, jobAiming);
+            profileDAO.updateProfile(userDAO.getUserId(email), firstname, lastName, additionalName, birthDate, profilePicture, bg_picture, title, place, career, jobAiming);
         }
     }
-    public void createSchooling(String username, String schoolName ,String fieldOfStudy ,String degree ,String start ,String end ,double grade ,String description ,String activities) throws ProfileDAOException, UserDAOException {
-        if (!userDAO.userExist_username(username)) {
+    public void createSchooling(String email, String schoolName ,String fieldOfStudy ,String degree ,String start ,String end ,double grade ,String description ,String activities) throws ProfileDAOException, UserDAOException {
+        if (!userDAO.userExist(email)) {
             throw new ProfileDAOException("User does not exist");
         } else {
-            profileDAO.createSchooling(userDAO.getUserId(username), schoolName, fieldOfStudy, degree, start, end, grade, description, activities);
+            profileDAO.createSchooling(userDAO.getUserId(email), schoolName, fieldOfStudy, degree, start, end, grade, description, activities);
         }
     }
-    public void addLastSchooling(String schoolName ,String username) throws UserDAOException, ProfileDAOException {
+    public void addLastSchooling(String schoolName ,String email) throws UserDAOException, ProfileDAOException {
         int sc_id = profileDAO.getSchoolingId(schoolName);
-        if (!userDAO.userExist_username(username))
+        if (!userDAO.userExist(email))
         {
             throw new ProfileDAOException("User does not exist");
         }else if (profileDAO.schoolingExistInProfile(sc_id)) {
             throw new ProfileDAOException("Schooling already exists in profile");
         }
         else {
-            profileDAO.addSchoolingToProfile( userDAO.getUserId(username) ,sc_id);
+            profileDAO.addSchoolingToProfile( userDAO.getUserId(email) ,sc_id);
         }
     }
-    public void changeLastSchooling(String schoolName,String username) throws UserDAOException, ProfileDAOException {
+    public void changeLastSchooling(String schoolName,String email) throws UserDAOException, ProfileDAOException {
         int sc_id  = profileDAO.getSchoolingId(schoolName);
-        if (!userDAO.userExist_username(username))
+        if (!userDAO.userExist(email))
         {
             throw new ProfileDAOException("User does not exist");
         }else if (!profileDAO.schoolingExistInProfile(sc_id)) {
             throw new ProfileDAOException("Schooling does not exist in profile");
         }
         else {
-            profileDAO.removeSchoolingFromProfile( userDAO.getUserId(username));
-            profileDAO.addSchoolingToProfile( userDAO.getUserId(username) ,sc_id);
+            profileDAO.removeSchoolingFromProfile( userDAO.getUserId(email));
+            profileDAO.addSchoolingToProfile( userDAO.getUserId(email) ,sc_id);
         }
     }
-    public void deleteSchooling(String schoolName,String username) throws UserDAOException, ProfileDAOException {
-        if (!userDAO.userExist_username(username))
+    public void deleteSchooling(String schoolName,String email) throws UserDAOException, ProfileDAOException {
+        if (!userDAO.userExist(email))
         {
             throw new ProfileDAOException("User does not exist");
-        }else if (!profileDAO.schoolingExistInProfile(userDAO.getUserId(username))) {
+        }else if (!profileDAO.schoolingExistInProfile(userDAO.getUserId(email))) {
             throw new ProfileDAOException("Schooling does not exist in profile");
         }
         else {
-            profileDAO.removeSchoolingFromProfile( userDAO.getUserId(username));
+            profileDAO.removeSchoolingFromProfile( userDAO.getUserId(email));
             profileDAO.deleteSchooling(profileDAO.getSchoolingId(schoolName));
         }
     }
-    public void updateSchooling(String username ,String schoolName ,String fieldOfStudy ,String degree ,String start ,String end ,double grade ,String description ,String activities) throws UserDAOException, ProfileDAOException {
-        int sc_id = profileDAO.getSchoolingId(username);
-        if (!userDAO.userExist_username(username))
+    public void updateSchooling(String email ,String schoolName ,String fieldOfStudy ,String degree ,String start ,String end ,double grade ,String description ,String activities) throws UserDAOException, ProfileDAOException {
+        int sc_id = profileDAO.getSchoolingId(email);
+        if (!userDAO.userExist(email))
         {
             throw new ProfileDAOException("User does not exist");
         }else if (!profileDAO.schoolingExistInProfile(sc_id)) {
             throw new ProfileDAOException("Schooling does not exist in profile");
         }
         else {
-            profileDAO.updateSchooling(userDAO.getUserId(username),schoolName, fieldOfStudy, degree, start, end, grade, description, activities);
+            profileDAO.updateSchooling(userDAO.getUserId(email),schoolName, fieldOfStudy, degree, start, end, grade, description, activities);
         }
     }
-    public void createJob_Statement(String username ,String title ,String workingState ,String companyName ,String companyAddress ,String workingType ,byte isWorking ,String start ,String end ,String description) throws ProfileDAOException, UserDAOException {
-        if (!userDAO.userExist_username(username)) {
+    public void createJob_Statement(String email ,String title ,String workingState ,String companyName ,String companyAddress ,String workingType ,byte isWorking ,String start ,String end ,String description) throws ProfileDAOException, UserDAOException {
+        if (!userDAO.userExist(email)) {
             throw new ProfileDAOException("User does not exist");
         } else {
-            profileDAO.createJobStatement(userDAO.getUserId(username), title, workingState, companyName, companyAddress, workingType, isWorking, start, end, description);
+            profileDAO.createJobStatement(userDAO.getUserId(email), title, workingState, companyName, companyAddress, workingType, isWorking, start, end, description);
         }
     }
-    public void addCurrent_job(String title,String username) throws UserDAOException, ProfileDAOException {
+    public void addCurrent_job(String title,String email) throws UserDAOException, ProfileDAOException {
         int js_id = profileDAO.getJobStatementId(title);
-        if (!userDAO.userExist_username(username))
+        if (!userDAO.userExist(email))
         {
             throw new ProfileDAOException("User does not exist");
         }else if (profileDAO.jobStatementExistInProfile(js_id)) {
             throw new ProfileDAOException("Job Statement already exists in profile");
         }
         else {
-            profileDAO.addJobStatementToProfile( userDAO.getUserId(username) ,js_id);
+            profileDAO.addJobStatementToProfile( userDAO.getUserId(email) ,js_id);
         }
     }
-    public void changeCurrent_job(String title,String username) throws UserDAOException, ProfileDAOException {
+    public void changeCurrent_job(String title,String email) throws UserDAOException, ProfileDAOException {
         int js_id  = profileDAO.getJobStatementId(title);
-        if (!userDAO.userExist_username(username))
+        if (!userDAO.userExist(email))
         {
             throw new ProfileDAOException("User does not exist");
         }else if (!profileDAO.jobStatementExistInProfile(js_id)) {
             throw new ProfileDAOException("Job Statement does not exist in profile");
         }
         else {
-            profileDAO.removeJobStatementFromProfile( userDAO.getUserId(username));
-            profileDAO.addJobStatementToProfile( userDAO.getUserId(username) ,js_id);
+            profileDAO.removeJobStatementFromProfile( userDAO.getUserId(email));
+            profileDAO.addJobStatementToProfile( userDAO.getUserId(email) ,js_id);
         }
     }
-    public void deleteJob_Statement(String title,String username) throws UserDAOException, ProfileDAOException {
-        if (!userDAO.userExist_username(username))
+    public void deleteJob_Statement(String title,String email) throws UserDAOException, ProfileDAOException {
+        if (!userDAO.userExist(email))
         {
             throw new ProfileDAOException("User does not exist");
-        }else if (!profileDAO.jobStatementExistInProfile(userDAO.getUserId(username))) {
+        }else if (!profileDAO.jobStatementExistInProfile(userDAO.getUserId(email))) {
             throw new ProfileDAOException("Job Statement does not exist in profile");
         }
         else {
-            profileDAO.removeJobStatementFromProfile( userDAO.getUserId(username));
+            profileDAO.removeJobStatementFromProfile( userDAO.getUserId(email));
             profileDAO.deleteJobStatement(profileDAO.getJobStatementId(title));
         }
     }
-    public void updateJob_Statement(String username ,String title ,String workingState ,String companyName ,String companyAddress ,String workingType ,byte isWorking ,String start ,String end ,String description) throws UserDAOException, ProfileDAOException {
-        int js_id = profileDAO.getJobStatementId(username);
-        if (!userDAO.userExist_username(username))
+    public void updateJob_Statement(String email ,String title ,String workingState ,String companyName ,String companyAddress ,String workingType ,byte isWorking ,String start ,String end ,String description) throws UserDAOException, ProfileDAOException {
+        int js_id = profileDAO.getJobStatementId(email);
+        if (!userDAO.userExist(email))
         {
             throw new ProfileDAOException("User does not exist");
         }else if (!profileDAO.jobStatementExistInProfile(js_id)) {
             throw new ProfileDAOException("Job Statement does not exist in profile");
         }
         else {
-            profileDAO.updateJobStatement(userDAO.getUserId(username),title, workingState, companyName, companyAddress, workingType, isWorking, start, end, description);
+            profileDAO.updateJobStatement(userDAO.getUserId(email),title, workingState, companyName, companyAddress, workingType, isWorking, start, end, description);
         }
     }
-    public void addContact_info(String username ,String address ,String email ,String phoneNumber_home ,String phoneNumber_work ,String phoneNumber_personal ,String socialMedia1 ,String socialMedia2 ,String socialMedia3 ,String website) throws ProfileDAOException, UserDAOException {
-        if (!userDAO.userExist_username(username)) {
+    public void addContact_info(String email ,String address,String phoneNumber_home ,String phoneNumber_work ,String phoneNumber_personal ,String socialMedia1 ,String socialMedia2 ,String socialMedia3 ,String website) throws ProfileDAOException, UserDAOException {
+        if (!userDAO.userExist(email)) {
             throw new ProfileDAOException("User does not exist");
         } else {
-            profileDAO.createContactInfo(userDAO.getUserId(username), address, email, phoneNumber_home, phoneNumber_work, phoneNumber_personal, socialMedia1, socialMedia2, socialMedia3, website);
-            profileDAO.addContactInfoToProfile(userDAO.getUserId(username), profileDAO.getContactInfoId(address));
+            profileDAO.createContactInfo(userDAO.getUserId(email), address, email, phoneNumber_home, phoneNumber_work, phoneNumber_personal, socialMedia1, socialMedia2, socialMedia3, website);
+            profileDAO.addContactInfoToProfile(userDAO.getUserId(email), profileDAO.getContactInfoId(address));
         }
     }
 
-    public void updateContact_info(String username ,String address ,String email ,String phoneNumber_home ,String phoneNumber_work ,String phoneNumber_personal ,String socialMedia1 ,String socialMedia2 ,String socialMedia3 ,String website) throws UserDAOException, ProfileDAOException {
-        int co_id = profileDAO.getContactInfoId(username);
-        if (!userDAO.userExist_username(username))
+    public void updateContact_info(String email ,String address ,String phoneNumber_home ,String phoneNumber_work ,String phoneNumber_personal ,String socialMedia1 ,String socialMedia2 ,String socialMedia3 ,String website) throws UserDAOException, ProfileDAOException {
+        int co_id = profileDAO.getContactInfoId(email);
+        if (!userDAO.userExist(email))
         {
             throw new ProfileDAOException("User does not exist");
         }else if (!profileDAO.contactInfoExistInProfile(co_id)) {
             throw new ProfileDAOException("Contact Info does not exist in profile");
         }
         else {
-            profileDAO.updateContactInfo(userDAO.getUserId(username),address, email, phoneNumber_home, phoneNumber_work, phoneNumber_personal, socialMedia1, socialMedia2, socialMedia3, website);
+            profileDAO.updateContactInfo(userDAO.getUserId(email),address, email, phoneNumber_home, phoneNumber_work, phoneNumber_personal, socialMedia1, socialMedia2, socialMedia3, website);
         }
     }
-    public void deleteContact_info(String username) throws UserDAOException, ProfileDAOException {
-        if (!userDAO.userExist_username(username))
+    public void deleteContact_info(String email) throws UserDAOException, ProfileDAOException {
+        if (!userDAO.userExist(email))
         {
             throw new ProfileDAOException("User does not exist");
-        }else if (!profileDAO.contactInfoExistInProfile(userDAO.getUserId(username))) {
+        }else if (!profileDAO.contactInfoExistInProfile(userDAO.getUserId(email))) {
             throw new ProfileDAOException("Contact Info does not exist in profile");
         }
         else {
-            profileDAO.removeContactInfoFromProfile( userDAO.getUserId(username));
+            profileDAO.removeContactInfoFromProfile( userDAO.getUserId(email));
         }
     }
 
 
-    public String getprofile(String username) throws UserDAOException, ProfileDAOException {
-        if (!userDAO.userExist_username(username)) {
+    public String getprofile(String email) throws UserDAOException, ProfileDAOException {
+        if (!userDAO.userExist(email)) {
             throw new ProfileDAOException("User does not exist");
-        } else if (!profileDAO.profileExist(userDAO.getUserId(username))) {
+        } else if (!profileDAO.profileExist(userDAO.getUserId(email))) {
             throw new ProfileDAOException("Profile does not exist");
         } else {
-            return gson.toJson(profileDAO.getProfile(userDAO.getUserId(username)));
+            return gson.toJson(profileDAO.getProfile(userDAO.getUserId(email)));
         }
     }
-    public String getSchooling(String username) throws UserDAOException, ProfileDAOException {
-        if (!userDAO.userExist_username(username)) {
+    public String getSchooling(String email) throws UserDAOException, ProfileDAOException {
+        if (!userDAO.userExist(email)) {
             throw new ProfileDAOException("User does not exist");
-        } else if (!profileDAO.profileExist(userDAO.getUserId(username))) {
+        } else if (!profileDAO.profileExist(userDAO.getUserId(email))) {
             throw new ProfileDAOException("Profile does not exist");
         } else {
-            return gson.toJson(profileDAO.getSchooling(userDAO.getUserId(username)));
+            return gson.toJson(profileDAO.getSchooling(userDAO.getUserId(email)));
         }
     }
-    public String getJob_Statement(String username) throws UserDAOException, ProfileDAOException {
-        if (!userDAO.userExist_username(username)) {
+    public String getJob_Statement(String email) throws UserDAOException, ProfileDAOException {
+        if (!userDAO.userExist(email)) {
             throw new ProfileDAOException("User does not exist");
-        } else if (!profileDAO.profileExist(userDAO.getUserId(username))) {
+        } else if (!profileDAO.profileExist(userDAO.getUserId(email))) {
             throw new ProfileDAOException("Profile does not exist");
         } else {
-            return gson.toJson(profileDAO.getJobStatement(userDAO.getUserId(username)));
+            return gson.toJson(profileDAO.getJobStatement(userDAO.getUserId(email)));
         }
     }
-    public String getContact_info(String username) throws UserDAOException, ProfileDAOException {
-        if (!userDAO.userExist_username(username)) {
+    public String getContact_info(String email) throws UserDAOException, ProfileDAOException {
+        if (!userDAO.userExist(email)) {
             throw new ProfileDAOException("User does not exist");
-        } else if (!profileDAO.profileExist(userDAO.getUserId(username))) {
+        } else if (!profileDAO.profileExist(userDAO.getUserId(email))) {
             throw new ProfileDAOException("Profile does not exist");
         } else {
-            return gson.toJson(profileDAO.getContactInfo(userDAO.getUserId(username)));
+            return gson.toJson(profileDAO.getContactInfo(userDAO.getUserId(email)));
         }
     }
 
