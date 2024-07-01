@@ -31,4 +31,10 @@ public class Methods {
 				   jsonObject.has("bg_picture") && jsonObject.has("title") && jsonObject.has("place") &&
 				   jsonObject.has("career") && jsonObject.has("jobAiming");  
 	   }
+	   
+	   public static boolean isValidSchoolingJson(JSONObject jsonObject) {
+		   return jsonObject.has("id") && jsonObject.has("schoolName") && jsonObject.has("degree") && 
+				   jsonObject.has("fieldOfStudy") && jsonObject.has("start") && jsonObject.has("end") &&
+				   jsonObject.has("grade") && jsonObject.has("description") && jsonObject.has("activities");
+	   }
 }

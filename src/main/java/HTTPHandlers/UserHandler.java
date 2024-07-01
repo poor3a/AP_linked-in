@@ -5,6 +5,8 @@ import com.sun.net.httpserver.HttpHandler;
 import controllers.UserController;
 import exceptions.ProfileDAOException;
 import exceptions.UserDAOException;
+import utils.JWTController;
+
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -37,6 +39,9 @@ public class UserHandler implements HttpHandler {
                 case "DELETE":
                     response = handleDeleteRequest(pathElements);
                     break;
+                case "PUT":
+                	response = handlePutRequest(pathElements, exchange);
+                	break;
                 default:
                     response = "This method is not supported";
                     exchange.sendResponseHeaders(405, response.length());
@@ -84,5 +89,35 @@ public class UserHandler implements HttpHandler {
         } else {
             throw new IOException("Path is not valid");
         }
+    }
+    
+    private String handlePutRequest(String[] pathElements, HttpExchange exchange) throws IOException, UserDAOException{
+    	if (pathElements.length == 3) {
+    		JSONObject jsonObject = Methods.getJSON(exchange);
+    		if (pathElements[2] == "password") {
+    			if (jsonObject.has("password") && jsonObject.has("newPassword")) {
+    				userController.updatePassword(JWTController.verifyToken(exchange), jsonObject.getString("password"), jsonObject.getString("newPassword"));
+    				return "Password updated";
+    			}
+    			else {
+    				throw new IOException("Request isn't in the right format");
+    			}
+    		}
+    		else if (pathElements[2] == "email") {
+    			if (jsonObject.has("password") && jsonObject.has("newEmail")) {
+    				userController.updateEmail(JWTController.verifyToken(exchange), jsonObject.getString("password"), jsonObject.getString("newEmail"));
+    				return "Email updated";
+    			}
+    			else {
+    				throw new IOException("Request isn't in the right format");
+    			}
+    		}
+    		else {
+        		throw new IOException("Path is not valid");
+        	}
+    	}
+    	else {
+    		throw new IOException("Path is not valid");
+    	}
     }
 }
