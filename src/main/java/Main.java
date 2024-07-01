@@ -20,8 +20,8 @@ public class Main
             server.createContext("/profile", new ProfileHandler());
 			
 			
-			
-		} catch (IOException e) {
+			server.start();	
+			} catch (IOException e) {
 			e.printStackTrace();
 		}
 
