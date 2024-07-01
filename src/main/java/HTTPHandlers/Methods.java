@@ -3,6 +3,8 @@ package HTTPHandlers;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import com.google.gson.JsonObject;
 import com.sun.net.httpserver.HttpExchange;
 import org.json.JSONObject;
 
@@ -23,4 +25,10 @@ public class Methods {
 	                jsonObject.has("country") && jsonObject.has("city") &&
 	                jsonObject.has("additionalname");
 	    }
+	   public static boolean isValidProfileJson(JSONObject jsonObject) {
+		   return jsonObject.has("id") && jsonObject.has("firstName") && jsonObject.has("lastName") && 
+				   jsonObject.has("additionalName") && jsonObject.has("birthDate") && jsonObject.has("profilePicture") &&
+				   jsonObject.has("bg_picture") && jsonObject.has("title") && jsonObject.has("place") &&
+				   jsonObject.has("career") && jsonObject.has("jobAiming");  
+	   }
 }

@@ -14,7 +14,7 @@ import java.sql.SQLException;
 public class UserHandler implements HttpHandler {
     private UserController userController;
 
-    public UserHandler() throws SQLException, SQLException {
+    public UserHandler() throws SQLException {
         this.userController = new UserController();
     }
 
@@ -66,7 +66,6 @@ public class UserHandler implements HttpHandler {
             JSONObject jsonObject = Methods.getJSON(exchange);
             if (Methods.isValidUserJson(jsonObject)) {
                 userController.createUser(
-                        jsonObject.getString("username"),
                         jsonObject.getString("password"),
                         jsonObject.getString("email"));
                 return "User added successfully";
