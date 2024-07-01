@@ -19,9 +19,9 @@ public class Main
 
             server.createContext("/profile", new ProfileHandler());
 			
-			server.start();
 			
-		} catch (IOException e) {
+			server.start();	
+			} catch (IOException e) {
 			e.printStackTrace();
 		}
 
