@@ -41,12 +41,13 @@ public class ContactInfoController
         sm2.setOnMouseClicked(event -> Animations.getHeartbeat(sm2).play());
         sm3.setOnMouseClicked(event -> Animations.getHeartbeat(sm3).play());
         website.setOnMouseClicked(event -> Animations.getHeartbeat(website).play());
-        email.setText();
+//        email.setText();
 
     }
     public void confirmOnAction()
     {
         Animations.buttonAnimation(confirm);
+
     }
     public void backOnAction()
     {
