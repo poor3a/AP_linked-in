@@ -9,7 +9,7 @@ import java.util.Date;
 
 
 public class JWTController {
-    private static final Key key = Keys.hmacShaKeyFor("ParsaExir@13842005-Am13841384-LINKED-IN".getBytes(StandardCharsets.UTF_8));
+    private static final Key key = Keys.hmacShaKeyFor("ParsaASA-PooriaSAD-LINKED-IN".getBytes(StandardCharsets.UTF_8));
     private static final long EXPIRATION_TIME = 1_000 * 60 * 60  * 3; // 3 hour
     private static final SignatureAlgorithm algorithm = SignatureAlgorithm.HS256;
 
