@@ -20,21 +20,26 @@ public class Methods {
 		}
 	}
 	   public static boolean isValidUserJson(JSONObject jsonObject) {
-	        return jsonObject.has("firstname") && jsonObject.has("lastname") &&
-	                jsonObject.has("email") && jsonObject.has("password") &&
-	                jsonObject.has("country") && jsonObject.has("city") &&
-	                jsonObject.has("additionalname");
+	        return jsonObject.has("email") && jsonObject.has("password");
 	    }
 	   public static boolean isValidProfileJson(JSONObject jsonObject) {
-		   return jsonObject.has("id") && jsonObject.has("firstName") && jsonObject.has("lastName") && 
+		   return jsonObject.has("firstName") && jsonObject.has("lastName") && 
 				   jsonObject.has("additionalName") && jsonObject.has("birthDate") && jsonObject.has("profilePicture") &&
 				   jsonObject.has("bg_picture") && jsonObject.has("title") && jsonObject.has("place") &&
 				   jsonObject.has("career") && jsonObject.has("jobAiming");  
 	   }
 	   
 	   public static boolean isValidSchoolingJson(JSONObject jsonObject) {
-		   return jsonObject.has("id") && jsonObject.has("schoolName") && jsonObject.has("degree") && 
+		   return jsonObject.has("schoolName") && jsonObject.has("degree") && 
 				   jsonObject.has("fieldOfStudy") && jsonObject.has("start") && jsonObject.has("end") &&
 				   jsonObject.has("grade") && jsonObject.has("description") && jsonObject.has("activities");
+	   }
+	   
+	   public static boolean isValidContactInfoJson(JSONObject jsonObject) {
+		   
+		   return jsonObject.has("address") && jsonObject.has("email") &&
+				   jsonObject.has("phoneNumber_home") && jsonObject.has("phoneNumber_work") && jsonObject.has("phoneNumber_personal") &&
+				   jsonObject.has("socialMedia1") && jsonObject.has("socialMedia2") && jsonObject.has("socialMedia3") &&
+				   jsonObject.has("website");
 	   }
 }
