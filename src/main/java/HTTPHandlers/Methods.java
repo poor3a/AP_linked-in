@@ -20,10 +20,7 @@ public class Methods {
 		}
 	}
 	   public static boolean isValidUserJson(JSONObject jsonObject) {
-	        return jsonObject.has("firstname") && jsonObject.has("lastname") &&
-	                jsonObject.has("email") && jsonObject.has("password") &&
-	                jsonObject.has("country") && jsonObject.has("city") &&
-	                jsonObject.has("additionalname");
+	        return jsonObject.has("email") && jsonObject.has("password");
 	    }
 	   public static boolean isValidProfileJson(JSONObject jsonObject) {
 		   return jsonObject.has("id") && jsonObject.has("firstName") && jsonObject.has("lastName") && 

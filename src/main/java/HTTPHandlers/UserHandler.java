@@ -48,10 +48,14 @@ public class UserHandler implements HttpHandler {
                     break;
             }
         } catch (Exception e) {
-            response = "Something went wrong with the server";
-            exchange.sendResponseHeaders(500, response.length());
+            if (e.getMessage().contains("Error"))
+                response = "Something went wrong with the server";
+            else
+                response = e.getMessage();
         }
 
+        System.out.println(response);
+        exchange.sendResponseHeaders(200, response.length());
         OutputStream os = exchange.getResponseBody();
         os.write(response.getBytes());
         os.close();
@@ -71,8 +75,9 @@ public class UserHandler implements HttpHandler {
             JSONObject jsonObject = Methods.getJSON(exchange);
             if (Methods.isValidUserJson(jsonObject)) {
                 userController.createUser(
-                        jsonObject.getString("password"),
-                        jsonObject.getString("email"));
+                        jsonObject.getString("email"),
+                        jsonObject.getString("password"));
+
                 return "User added successfully";
             } else {
                 throw new IOException("Request isn't in the right format");
