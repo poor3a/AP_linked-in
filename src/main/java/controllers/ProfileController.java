@@ -175,19 +175,19 @@ public class ProfileController {
 		}
 	}
 
-	public void addContact_info(String email, String address, String phoneNumber_home, String phoneNumber_work,
-			String phoneNumber_personal, String socialMedia1, String socialMedia2, String socialMedia3, String website)
-			throws ProfileDAOException, UserDAOException {
+	public void addContact_info(String email, String address, String email2, String phoneNumber_home,
+			String phoneNumber_work, String phoneNumber_personal, String socialMedia1, String socialMedia2,
+			String socialMedia3, String website) throws ProfileDAOException, UserDAOException {
 		if (!userDAO.userExist(email)) {
 			throw new ProfileDAOException("User does not exist");
 		} else {
-			profileDAO.createContactInfo(userDAO.getUserId(email), address, email, phoneNumber_home, phoneNumber_work,
+			profileDAO.createContactInfo(userDAO.getUserId(email), address, email2, phoneNumber_home, phoneNumber_work,
 					phoneNumber_personal, socialMedia1, socialMedia2, socialMedia3, website);
 			profileDAO.addContactInfoToProfile(userDAO.getUserId(email), profileDAO.getContactInfoId(address));
 		}
 	}
 
-	public void updateContact_info(String email, String address, String phoneNumber_home, String phoneNumber_work,
+	public void updateContact_info(String email, String address, String email2, String phoneNumber_home, String phoneNumber_work,
 			String phoneNumber_personal, String socialMedia1, String socialMedia2, String socialMedia3, String website)
 			throws UserDAOException, ProfileDAOException {
 		int co_id = profileDAO.getContactInfoId(email);
@@ -196,7 +196,7 @@ public class ProfileController {
 		} else if (!profileDAO.contactInfoExistInProfile(co_id)) {
 			throw new ProfileDAOException("Contact Info does not exist in profile");
 		} else {
-			profileDAO.updateContactInfo(userDAO.getUserId(email), address, email, phoneNumber_home, phoneNumber_work,
+			profileDAO.updateContactInfo(userDAO.getUserId(email), address, email2, phoneNumber_home, phoneNumber_work,
 					phoneNumber_personal, socialMedia1, socialMedia2, socialMedia3, website);
 		}
 	}
