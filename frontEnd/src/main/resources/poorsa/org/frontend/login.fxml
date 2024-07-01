@@ -117,7 +117,7 @@
                         </ImageView>
                      </children>
                   </HBox>
-                  <Hyperlink fx:id="forgotPassword" onAction="#forgotPasswordOnAction" text="forgot password?">
+                  <Hyperlink text="forgot password?">
                      <VBox.margin>
                         <Insets left="-300.0" top="5.0" />
                      </VBox.margin>

@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="poorsa.org.frontend.CreateProfileController">
+   <children>
+      <VBox>
+         <children>
+            <HBox>
+               <children>
+                  <Label id="title" fx:id="welcome" alignment="CENTER" text="welcome to l">
+                     <font>
+                        <Font name="Comic Sans MS" size="30.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="50.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="in1" text="in" textFill="#2c66d7">
+                     <font>
+                        <Font name="Comic Sans MS" size="30.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="ked" text="ked">
+                     <font>
+                        <Font name="Comic Sans MS" size="30.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="in2" layoutX="335.0" layoutY="10.0" text="in" textFill="#2c66d7">
+                     <font>
+                        <Font name="Comic Sans MS" size="30.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="sign" text="!">
+                     <font>
+                        <Font name="Comic Sans MS" size="30.0" />
+                     </font>
+                  </Label>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER">
+               <children>
+                  <VBox alignment="TOP_CENTER" minWidth="400.0" prefHeight="350.0" prefWidth="400.0">
+                     <children>
+                        <Label prefWidth="400.0" text="complete your informations:">
+                           <VBox.margin>
+                              <Insets bottom="50.0" top="30.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="Comic Sans MS" size="20.0" />
+                           </font>
+                           <padding>
+                              <Insets left="40.0" />
+                           </padding>
+                        </Label>
+                        <HBox alignment="CENTER_LEFT" maxWidth="300.0" prefHeight="50.0" prefWidth="300.0">
+                           <children>
+                              <Label text="*" textFill="RED">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <TextField id="username" fx:id="firstname" maxHeight="45.0" maxWidth="400.0" prefHeight="45.0" prefWidth="300.0" promptText="firstname">
+                                 <padding>
+                                    <Insets left="15.0" />
+                                 </padding>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </TextField>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" maxWidth="300.0" prefHeight="50.0" prefWidth="300.0">
+                           <children>
+                              <Label text="*" textFill="RED">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <TextField id="email" fx:id="lastname" maxHeight="45.0" maxWidth="400.0" prefHeight="45.0" prefWidth="300.0" promptText="lastname">
+                                 <padding>
+                                    <Insets left="15.0" />
+                                 </padding>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </TextField>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" maxWidth="300.0" prefHeight="50.0" prefWidth="300.0">
+                           <children>
+                              <Label text="*" textFill="#ff000000">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <TextField id="email" fx:id="additionalName" maxHeight="45.0" maxWidth="400.0" prefHeight="45.0" prefWidth="300.0" promptText="additional name">
+                                 <padding>
+                                    <Insets left="15.0" />
+                                 </padding>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </TextField>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" maxWidth="300.0" prefHeight="50.0" prefWidth="300.0">
+                           <children>
+                              <Label text="*" textFill="#ff000000">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <TextField id="email" fx:id="place" maxHeight="45.0" maxWidth="400.0" prefHeight="45.0" prefWidth="300.0" promptText="place">
+                                 <padding>
+                                    <Insets left="15.0" />
+                                 </padding>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </TextField>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" maxWidth="300.0" prefHeight="50.0" prefWidth="300.0">
+                           <children>
+                              <Label text="*" textFill="RED">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label text="birth day :">
+                                 <HBox.margin>
+                                    <Insets right="15.0" />
+                                 </HBox.margin>
+                                 <padding>
+                                    <Insets left="15.0" />
+                                 </padding>
+                              </Label>
+                              <DatePicker fx:id="birthDate" prefHeight="45.0" prefWidth="208.0" />
+                           </children>
+                        </HBox>
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" maxWidth="400.0" minWidth="400.0" prefWidth="400.0">
+                     <children>
+                        <StackPane alignment="TOP_CENTER" prefHeight="150.0" prefWidth="200.0">
+                           <children>
+                              <Button id="bgImageButton" fx:id="bg_image" mnemonicParsing="false" prefHeight="150.0" prefWidth="380.0" text="background image">
+                                 <padding>
+                                    <Insets bottom="70.0" />
+                                 </padding>
+                                 <StackPane.margin>
+                                    <Insets top="-10.0" />
+                                 </StackPane.margin>
+                              </Button>
+                              <Button id="profileImageButton" fx:id="profile_image" mnemonicParsing="false" prefHeight="120.0" prefWidth="120.0" style="-fx-background-radius: 100%;" text="profile image" translateY="10.0">
+                                 <StackPane.margin>
+                                    <Insets top="40.0" />
+                                 </StackPane.margin>
+                              </Button>
+                           </children>
+                        </StackPane>
+                        <HBox alignment="TOP_CENTER">
+                           <children>
+                              <Label prefWidth="7.0" text="*" textFill="RED">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <TextArea fx:id="title" prefHeight="100.0" prefWidth="293.0" promptText="title" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" maxWidth="300.0" prefHeight="50.0" prefWidth="300.0">
+                           <children>
+                              <Label text="*" textFill="#ff000000">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <TextField id="email" fx:id="career" maxHeight="45.0" maxWidth="400.0" prefHeight="45.0" prefWidth="300.0" promptText="career">
+                                 <padding>
+                                    <Insets left="15.0" />
+                                 </padding>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </TextField>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="127.0" maxWidth="300.0" prefHeight="50.0" prefWidth="300.0">
+                           <children>
+                              <Label text="*" textFill="RED">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <TextField id="email" fx:id="jobAiming" maxHeight="45.0" maxWidth="400.0" prefHeight="45.0" prefWidth="300.0" promptText="job_aiming">
+                                 <padding>
+                                    <Insets left="15.0" />
+                                 </padding>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </TextField>
+                           </children>
+                        </HBox>
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </VBox>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="50.0" prefWidth="500.0">
+               <children>
+                  <Button id="createB" fx:id="confirm" mnemonicParsing="false" onAction="#confirmOnAction" prefHeight="45.0" prefWidth="185.0" text="confirm" textFill="WHITE">
+                     <HBox.margin>
+                        <Insets top="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="Comic Sans MS" size="15.0" />
+                     </font>
+                  </Button>
+                  <Button id="backB" fx:id="back" mnemonicParsing="false" onAction="#backOnAction" prefHeight="45.0" prefWidth="185.0" text="back" textFill="WHITE">
+                     <HBox.margin>
+                        <Insets left="30.0" top="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="Comic Sans MS" size="15.0" />
+                     </font>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+         <StackPane.margin>
+            <Insets />
+         </StackPane.margin>
+      </VBox>
+   </children>
+</StackPane>

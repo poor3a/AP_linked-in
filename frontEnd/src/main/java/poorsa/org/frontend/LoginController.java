@@ -131,13 +131,12 @@ public class LoginController {
         loginButton.setDisable(true);
         //#
         //check if username and password are not already exist, go to create account page.
-        Parent root = FXMLLoader.load(getClass().getResource("createAccount.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("createProfile.fxml"));
         Scene scene = new Scene(root, 800, 500);
-        scene.getStylesheets().add(getClass().getResource("createAccount.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("createProfile.css").toExternalForm());
         Stage stage = (Stage) createAccountButton.getScene().getWindow();
         stage.setResizable(false);
-        stage.setScene(scene);
-        stage.show();
+        Animations.fadeScene(stage ,scene);
 
     }
     public void forgotPasswordOnAction() throws IOException {

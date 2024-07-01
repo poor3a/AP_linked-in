@@ -29,3 +29,12 @@
     -fx-scale-y: 1.1;
     -fx-cursor: hand;
 }
+
+
+.text-area{
+    -fx-prompt-text-fill: black;
+    -fx-stroke-width: 0;
+    -fx-border-color: #2C66D7FF;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}

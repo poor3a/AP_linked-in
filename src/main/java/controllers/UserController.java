@@ -38,6 +38,16 @@ public class UserController {
         User user = new User(userDAO.getUserId(email), email, userDAO.getUserPassword(email));
         return gson.toJson(user);
     }
+    public boolean checkLogin(String email, String password) throws UserDAOException {
+        //this method is used to check if the user exists in the database and if the password is correct.
+        //if the user does not exist or the password is incorrect, we return false.
+        //if the user exists and the password is correct, we return true.
+        if (userDAO.userExist(email)) {
+            return userDAO.checkUserPassword(email, password);
+        } else {
+            return false;
+        }
+    }
 
     public void deleteUser(String email, String password) throws UserDAOException {
         userDAO.deleteUser(email, password);
