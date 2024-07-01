@@ -27,6 +27,9 @@ public class UserDAO {
             preparedStatement.setString(2, email);
             preparedStatement.execute();
         } catch (SQLException e) {
+            e.printStackTrace();
+            if (e.getMessage().contains("pass"))
+                throw new UserDAOException("change password");
             throw new UserDAOException("Error creating user");
         }
     }
