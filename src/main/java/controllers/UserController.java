@@ -32,7 +32,7 @@ public class UserController {
 			userDAO.createUser(email, password);
 		}
 	}
-	
+
     public String getUser(String email) throws UserDAOException {
         //this method is used to get the user from the database and return it as a json object.
         //if somewhere in the process an exception is thrown, we catch it and return the message of the exception.

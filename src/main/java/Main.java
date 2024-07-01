@@ -13,13 +13,13 @@ public class Main
     public static void main(String[] args) throws SQLException, UserDAOException
     {
     	try {
-			HttpServer server = HttpServer.create(new InetSocketAddress(3306),0);
+			HttpServer server = HttpServer.create(new InetSocketAddress(8080),0);
 
             server.createContext("/user", new UserHandler());
 
             server.createContext("/profile", new ProfileHandler());
 			
-			
+			server.start();
 			
 		} catch (IOException e) {
 			e.printStackTrace();
