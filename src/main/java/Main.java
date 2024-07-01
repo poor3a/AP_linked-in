@@ -16,7 +16,9 @@ public class Main
 			HttpServer server = HttpServer.create(new InetSocketAddress(8080),0);
 
             server.createContext("/user", new UserHandler());
-
+            server.createContext("/schooling", new SchoolingHandler());
+            server.createContext("/contact", new ContactHandler());
+            server.createContext("/job", new JobStatementHandler());
             server.createContext("/profile", new ProfileHandler());
 			
 			

@@ -40,7 +40,7 @@ public class SchoolingHandler implements HttpHandler {
 				response = handleDeleteRequest(pathElements, exchange);
 				break;
 			case "PUT":
-				response = handlePostRequest(pathElements, exchange);
+				response = handlePutRequest(pathElements, exchange);
 				break;
 			default:
 				response = "This method is not supported";
