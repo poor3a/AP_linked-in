@@ -117,7 +117,7 @@ public class ProfileController {
 	}
 
 	public void createJob_Statement(String email, String title, String workingState, String companyName,
-			String companyAddress, String workingType, byte isWorking, String start, String end, String description)
+			String companyAddress, String workingType, boolean isWorking, String start, String end, String description)
 			throws ProfileDAOException, UserDAOException {
 		if (!userDAO.userExist(email)) {
 			throw new ProfileDAOException("User does not exist");
@@ -162,7 +162,7 @@ public class ProfileController {
 	}
 
 	public void updateJob_Statement(String email, String title, String workingState, String companyName,
-			String companyAddress, String workingType, byte isWorking, String start, String end, String description)
+			String companyAddress, String workingType, boolean isWorking, String start, String end, String description)
 			throws UserDAOException, ProfileDAOException {
 		int js_id = profileDAO.getJobStatementId(email);
 		if (!userDAO.userExist(email)) {

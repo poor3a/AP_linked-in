@@ -90,7 +90,7 @@ public class ProfileDAO {
             throw new ProfileDAOException("Error getting schooling id");
         }
     }
-    public void createJobStatement(int id, String title,String workingState, String companyName, String companyAddress, String workingType, byte isWorking, String start, String end, String description) throws ProfileDAOException {
+    public void createJobStatement(int id, String title,String workingState, String companyName, String companyAddress, String workingType, boolean isWorking, String start, String end, String description) throws ProfileDAOException {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "INSERT INTO jobstatement(userId, title ,workingState , companyName, companyAddress, workingType, isWorking, start, end, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)"
@@ -101,7 +101,7 @@ public class ProfileDAO {
             preparedStatement.setString(4, companyName);
             preparedStatement.setString(5, companyAddress);
             preparedStatement.setString(6, workingType);
-            preparedStatement.setByte(7, isWorking);
+            preparedStatement.setBoolean(7, isWorking);
             preparedStatement.setString(8, start);
             preparedStatement.setString(9, end);
             preparedStatement.setString(10, description);
@@ -109,7 +109,7 @@ public class ProfileDAO {
             throw new ProfileDAOException("Error creating job statement");
         }
     }
-    public void updateJobStatement(int id, String title,String workingState, String companyName, String companyAddress, String workingType, byte isWorking, String start, String end, String description) throws ProfileDAOException {
+    public void updateJobStatement(int id, String title,String workingState, String companyName, String companyAddress, String workingType, boolean isWorking, String start, String end, String description) throws ProfileDAOException {
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -120,7 +120,7 @@ public class ProfileDAO {
             preparedStatement.setString(3, companyName);
             preparedStatement.setString(4, companyAddress);
             preparedStatement.setString(5, workingType);
-            preparedStatement.setByte(6, isWorking);
+            preparedStatement.setBoolean(6, isWorking);
             preparedStatement.setString(7, start);
             preparedStatement.setString(8, end);
             preparedStatement.setString(9, description);
@@ -459,7 +459,11 @@ public class ProfileDAO {
                         resultSet.getString("companyAddress"),
                         resultSet.getString("workingType"),
                         resultSet.getString("workingState"),
+<<<<<<< HEAD
                         isWorking,
+=======
+                        resultSet.getBoolean("isWorking"),
+>>>>>>> b73e2e3ad7bcc0d9b0aa548f83e11b7fa0c052f3
                         resultSet.getString("start"),
                         resultSet.getString("end"),
                         resultSet.getString("description")
