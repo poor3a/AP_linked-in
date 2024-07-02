@@ -459,11 +459,7 @@ public class ProfileDAO {
                         resultSet.getString("companyAddress"),
                         resultSet.getString("workingType"),
                         resultSet.getString("workingState"),
-<<<<<<< HEAD
                         isWorking,
-=======
-                        resultSet.getBoolean("isWorking"),
->>>>>>> b73e2e3ad7bcc0d9b0aa548f83e11b7fa0c052f3
                         resultSet.getString("start"),
                         resultSet.getString("end"),
                         resultSet.getString("description")
