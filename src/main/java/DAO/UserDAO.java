@@ -378,4 +378,17 @@ public class UserDAO {
             throw new UserDAOException("Error deleting all followers and followings");
         }
     }
+    public String getEmail(int id) throws UserDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT email FROM users WHERE id = ?"
+            );
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getString("email");
+        } catch (SQLException e) {
+            throw new UserDAOException("Error getting email by id");
+        }
+    }
 }
