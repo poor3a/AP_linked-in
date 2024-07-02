@@ -9,7 +9,7 @@ import java.util.Date;
 
 
 public class JWTController {
-    private static final Key key = Keys.hmacShaKeyFor("ParsaASA-PooriaSAD-LINKED-IN".getBytes(StandardCharsets.UTF_8));
+    private static final Key key = Keys.hmacShaKeyFor("ParsaASA@123-PooriaSAD-LINKED-IN".getBytes(StandardCharsets.UTF_8));
     private static final long EXPIRATION_TIME = 1_000 * 60 * 60  * 3; // 3 hour
     private static final SignatureAlgorithm algorithm = SignatureAlgorithm.HS256;
 
@@ -21,10 +21,9 @@ public class JWTController {
                 .compact();
         return token;
     }
-
     public static String verifyToken(HttpExchange exchange) {
         try {
-            String token = exchange.getRequestHeaders().get("JWT").get(0);
+            String token = exchange.getRequestHeaders().get("Authorization").get(0);
             return Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
