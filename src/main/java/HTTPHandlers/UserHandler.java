@@ -6,7 +6,7 @@ import controllers.UserController;
 import exceptions.ProfileDAOException;
 import exceptions.UserDAOException;
 import utils.JWTController;
-
+import utils.JWTController;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -67,6 +67,7 @@ public class UserHandler implements HttpHandler {
             String token = JWTController.createToken(pathElements[2]);
             exchange.getRequestHeaders().set("Authorization", token);
             System.out.println(token);
+
             return userController.getUser(pathElements[2]);
         } else {
             throw new IOException("Path is not valid");
