@@ -7,10 +7,12 @@ import javafx.scene.Scene;
 import javafx.scene.effect.Shadow;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import poorsa.org.frontend.models.User;
 
 import java.io.IOException;
 
 public class HelloApplication extends Application {
+    public static User user = new User();
     @Override
     public void start(Stage stage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));

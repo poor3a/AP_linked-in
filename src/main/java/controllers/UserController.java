@@ -52,8 +52,6 @@ public class UserController {
     }
 	public void deleteUser(String email, String password) throws UserDAOException {
 		userDAO.deleteUser(email, password);
-		userDAO.deleteAllFollowersAndFollowings(email);
-		userDAO.deleteAllConnections(email);
 	}
 
 	public void updatePassword(String email, String password, String newPassword) throws UserDAOException {

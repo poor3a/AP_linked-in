@@ -31,7 +31,7 @@ public class UserHandler implements HttpHandler {
             switch (requestMethod)
             {
                 case "GET":
-                    response = handleGetRequest(pathElements);
+                    response = handleGetRequest(pathElements ,exchange);
                     break;
                 case "POST":
                     response = handlePostRequest(pathElements, exchange);
@@ -62,8 +62,11 @@ public class UserHandler implements HttpHandler {
         exchange.close();
     }
 
-    private String handleGetRequest(String[] pathElements) throws IOException, UserDAOException {
+    private String handleGetRequest(String[] pathElements, HttpExchange exchange) throws IOException, UserDAOException {
         if (pathElements.length == 3) {
+            String token = JWTController.createToken(pathElements[2]);
+            exchange.getRequestHeaders().set("Authorization", token);
+            System.out.println(token);
             return userController.getUser(pathElements[2]);
         } else {
             throw new IOException("Path is not valid");
@@ -95,7 +98,7 @@ public class UserHandler implements HttpHandler {
             throw new IOException("Path is not valid");
         }
     }
-    
+
     private String handlePutRequest(String[] pathElements, HttpExchange exchange) throws IOException, UserDAOException{
     	if (pathElements.length == 3) {
     		JSONObject jsonObject = Methods.getJSON(exchange);
