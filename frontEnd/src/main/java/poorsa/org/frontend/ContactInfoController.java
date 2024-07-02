@@ -1,9 +1,15 @@
 package poorsa.org.frontend;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class ContactInfoController
 {
@@ -41,17 +47,24 @@ public class ContactInfoController
         sm2.setOnMouseClicked(event -> Animations.getHeartbeat(sm2).play());
         sm3.setOnMouseClicked(event -> Animations.getHeartbeat(sm3).play());
         website.setOnMouseClicked(event -> Animations.getHeartbeat(website).play());
-//        email.setText();
 
     }
-    public void confirmOnAction()
-    {
+    public void confirmOnAction() throws IOException {
         Animations.buttonAnimation(confirm);
+        Parent root = FXMLLoader.load(getClass().getResource("CreateSchooling.fxml"));
+        Scene scene = new Scene(root , 800 ,500);
+        Stage stage = (Stage) confirm.getScene().getWindow();
+        scene.getStylesheets().add(getClass().getResource("createProfile.css").toExternalForm());
+        Animations.fadeScene(stage, scene);
 
     }
-    public void backOnAction()
-    {
+    public void backOnAction() throws IOException {
         Animations.buttonAnimation(back);
+        Parent root = FXMLLoader.load(getClass().getResource("createProfile.fxml"));
+        Scene scene = new Scene(root, 800, 500);
+        Stage stage = (Stage) confirm.getScene().getWindow();
+        scene.getStylesheets().add(getClass().getResource("createProfile.css").toExternalForm());
+        Animations.fadeScene(stage, scene);
     }
 
 }

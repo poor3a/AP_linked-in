@@ -161,7 +161,7 @@
                   </VBox>
                   <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" maxWidth="400.0" minWidth="400.0" prefWidth="400.0">
                      <children>
-                        <StackPane alignment="TOP_CENTER" prefHeight="150.0" prefWidth="200.0">
+                        <StackPane fx:id="pane" alignment="TOP_CENTER" prefHeight="150.0" prefWidth="200.0">
                            <children>
                               <Button id="bgImageButton" fx:id="bg_image" mnemonicParsing="false" prefHeight="150.0" prefWidth="380.0" text="background image">
                                  <padding>

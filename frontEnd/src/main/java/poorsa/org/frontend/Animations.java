@@ -11,9 +11,8 @@ import javafx.util.Duration;
 public class Animations
 {
 
-    public static void buttonAnimation(Button createAccountButton) {
-        createAccountButton.setDisable(true);
-        ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(300), createAccountButton);
+    public static void buttonAnimation(Button button) {
+        ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(300), button);
         scaleTransition.setByX(0.1);
         scaleTransition.setByY(0.1);
         scaleTransition.setCycleCount(2);

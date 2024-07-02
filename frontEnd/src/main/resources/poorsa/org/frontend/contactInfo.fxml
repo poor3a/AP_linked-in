@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<VBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="poorsa.org.frontend.ContactInfoController">
    <children>
       <Label text="enter your contact info:">
          <font>
@@ -57,6 +57,9 @@
                      </VBox.margin>
                   </TextField>
                </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
             </VBox>
             <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="400.0">
                <children>
@@ -92,7 +95,7 @@
                         <Insets top="5.0" />
                      </VBox.margin>
                   </TextField>
-                  <TextField id="username" fx:id="wbsite" layoutX="60.0" layoutY="165.0" maxHeight="45.0" maxWidth="300.0" prefHeight="45.0" prefWidth="300.0" promptText="website">
+                  <TextField id="username" fx:id="website" layoutX="60.0" layoutY="165.0" maxHeight="45.0" maxWidth="300.0" prefHeight="45.0" prefWidth="300.0" promptText="website">
                      <padding>
                         <Insets left="15.0" />
                      </padding>
@@ -104,7 +107,7 @@
             </VBox>
          </children>
          <VBox.margin>
-            <Insets top="20.0" />
+            <Insets top="30.0" />
          </VBox.margin>
       </HBox>
       <HBox alignment="CENTER" prefHeight="50.0" prefWidth="500.0">

@@ -5,12 +5,17 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -18,6 +23,8 @@ import poorsa.org.frontend.models.Profile;
 
 import java.io.File;
 import java.io.IOException;
+
+
 
 public class CreateProfileController
 {
@@ -51,6 +58,8 @@ public class CreateProfileController
     Button bg_image;
     @FXML
     Button profile_image;
+    @FXML
+    StackPane pane;
 
 
 
@@ -91,8 +100,13 @@ public class CreateProfileController
         timeline.setAutoReverse(true);
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
-        bg_image.getStyleClass().clear();
         profile_image.getStyleClass().clear();
+        profile_image.setTextFill(Paint.valueOf("white"));
+        profile_image.setFont(javafx.scene.text.Font.font("Comic Sans MS", 14));
+        profile_image.setBorder(new Border(new BorderStroke(Paint.valueOf("white"), BorderStrokeStyle.SOLID, new CornerRadii(50), new BorderWidths(2))));
+        profile_image.setTextAlignment(TextAlignment.CENTER);
+        profile_image.setPadding(new Insets(0,0,0,15));
+        profile_image.setShape(new Circle(50));
 
 
         bg_image.setOnAction(event -> {
@@ -101,21 +115,26 @@ public class CreateProfileController
             if (file != null) {
                 Image image = new Image(file.toURI().toString());
                 BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+                bg_image.getStyleClass().clear();
+                bg_image.setText("");
                 bg_image.setBackground(new Background(backgroundImage));
             }
         });
 
-        profile_image.setOnAction(event -> {
+       profile_image.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
             File file = fileChooser.showOpenDialog(null);
             if (file != null) {
                 Image image = new Image(file.toURI().toString());
                 BackgroundImage profileImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+
                 profile_image.setBackground(new Background(profileImage));
-            }
-        });
+                profile_image.setText("");
+                profile_image.requestLayout();
+                // Center the button in the StackPane
 
-
+    }
+});
     }
 
     public void confirmOnAction() throws IOException {
