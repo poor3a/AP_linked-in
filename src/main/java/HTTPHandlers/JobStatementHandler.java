@@ -61,71 +61,87 @@ public class JobStatementHandler implements HttpHandler {
 
 	public String handlePostRequest(String[] pathElements, HttpExchange exchange)
 			throws IOException, ProfileDAOException, UserDAOException {
-		if (pathElements.length == 2) {
-			JSONObject jsonObject = Methods.getJSON(exchange);
-			if (Methods.isValidJobStatementJson(jsonObject)) {
-				profileController.createJob_Statement(JWTController.verifyToken(exchange),
-						jsonObject.getString("title"), jsonObject.getString("workingState"),
-						jsonObject.getString("companyName"), jsonObject.getString("companyAddress"),
-						jsonObject.getString("workingType"), jsonObject.getBoolean("isWorking"),
-						jsonObject.getString("start"), jsonObject.getString("end"),
-						jsonObject.getString("description"));
-				return "Job Statement added successfully";
-			} else {
-				throw new IOException("Request isn't in the right format");
-			}
-		} else {
-			throw new IOException("Path is not valid");
-		}
-	}
-
-	private String handlePutRequest(String pathElements[], HttpExchange exchange)
-			throws IOException, ProfileDAOException, UserDAOException {
-		JSONObject jsonObject = Methods.getJSON(exchange);
-		if (pathElements.length == 2) {
-			if (Methods.isValidJobStatementJson(jsonObject)) {
-				profileController.updateJob_Statement(JWTController.verifyToken(exchange),
-						jsonObject.getString("title"), jsonObject.getString("workingState"),
-						jsonObject.getString("companyName"), jsonObject.getString("companyAddress"),
-						jsonObject.getString("workingType"), jsonObject.getBoolean("isWorking"),
-						jsonObject.getString("start"), jsonObject.getString("end"),
-						jsonObject.getString("description"));
-				return "Job statement updated successfully";
-			} else {
-				throw new IOException("Request isn't in the right format");
-			}
-		} else if (pathElements.length == 3) {
-			if (pathElements[2] == "change") {
-				if (jsonObject.has("title")) {
-					profileController.changeCurrent_job(jsonObject.getString("title"),
-							JWTController.verifyToken(exchange));
-					return "Current job changed successfully";
+		try {
+			if (pathElements.length == 2) {
+				JSONObject jsonObject = Methods.getJSON(exchange);
+				if (Methods.isValidJobStatementJson(jsonObject)) {
+					profileController.createJob_Statement(JWTController.verifyToken(exchange),
+							jsonObject.getString("title"), jsonObject.getString("workingState"),
+							jsonObject.getString("companyName"), jsonObject.getString("companyAddress"),
+							jsonObject.getString("workingType"), jsonObject.getBoolean("isWorking"),
+							jsonObject.getString("start"), jsonObject.getString("end"),
+							jsonObject.getString("description"));
+					return "Job Statement added successfully";
 				} else {
 					throw new IOException("Request isn't in the right format");
 				}
 			} else {
 				throw new IOException("Path is not valid");
 			}
-		} else {
-			throw new IOException("Path is not valid");
+		} catch (Exception e) {
+			return e.getMessage();
+		}
+	}
+
+	private String handlePutRequest(String pathElements[], HttpExchange exchange)
+			throws IOException, ProfileDAOException, UserDAOException {
+		try {
+			JSONObject jsonObject = Methods.getJSON(exchange);
+			if (pathElements.length == 2) {
+				if (Methods.isValidJobStatementJson(jsonObject)) {
+					profileController.updateJob_Statement(JWTController.verifyToken(exchange),
+							jsonObject.getString("title"), jsonObject.getString("workingState"),
+							jsonObject.getString("companyName"), jsonObject.getString("companyAddress"),
+							jsonObject.getString("workingType"), jsonObject.getBoolean("isWorking"),
+							jsonObject.getString("start"), jsonObject.getString("end"),
+							jsonObject.getString("description"));
+					return "Job statement updated successfully";
+				} else {
+					throw new IOException("Request isn't in the right format");
+				}
+			} else if (pathElements.length == 3) {
+				if (pathElements[2] == "change") {
+					if (jsonObject.has("title")) {
+						profileController.changeCurrent_job(jsonObject.getString("title"),
+								JWTController.verifyToken(exchange));
+						return "Current job changed successfully";
+					} else {
+						throw new IOException("Request isn't in the right format");
+					}
+				} else {
+					throw new IOException("Path is not valid");
+				}
+			} else {
+				throw new IOException("Path is not valid");
+			}
+		} catch (Exception e) {
+			return e.getMessage();
 		}
 	}
 
 	private String handleGetRequest(String[] pathElements) throws IOException, ProfileDAOException, UserDAOException {
-		if (pathElements.length == 3) {
-			return profileController.getJob_Statement(pathElements[2]);
-		} else {
-			throw new IOException("Path is not valid");
+		try {
+			if (pathElements.length == 3) {
+				return profileController.getJob_Statement(pathElements[2]);
+			} else {
+				throw new IOException("Path is not valid");
+			}
+		} catch (Exception e) {
+			return e.getMessage();
 		}
 	}
 
 	private String handleDeleteRequest(String[] pathElements, HttpExchange exchange)
 			throws IOException, ProfileDAOException, UserDAOException {
-		if (pathElements.length == 3) {
-			profileController.deleteJob_Statement(pathElements[2], JWTController.verifyToken(exchange));
-			return "Job statement deleted successfully";
-		} else {
-			throw new IOException("Path is not valid");
+		try {
+			if (pathElements.length == 3) {
+				profileController.deleteJob_Statement(pathElements[2], JWTController.verifyToken(exchange));
+				return "Job statement deleted successfully";
+			} else {
+				throw new IOException("Path is not valid");
+			}
+		} catch (Exception e) {
+			return e.getMessage();
 		}
 	}
 }

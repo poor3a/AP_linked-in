@@ -50,4 +50,8 @@ public class Methods {
 				&& jsonObject.has("companyAddress") && jsonObject.has("workingType") && jsonObject.has("isWorking")
 				&& jsonObject.has("start") && jsonObject.has("end") && jsonObject.has("description");
 	}
+	
+	public static boolean isValidPostJson (JSONObject jsonObject) {
+		return jsonObject.has("text") && jsonObject.has("image_path");
+	}
 }

@@ -53,41 +53,51 @@ public class ProfileHandler implements HttpHandler {
 		exchange.close();
 	}
 
-	private String handlePostRequest(String[] pathElements, HttpExchange exchange)
-			throws IOException, ProfileDAOException, UserDAOException {
-		if (pathElements.length == 2) {
-			JSONObject jsonObject = Methods.getJSON(exchange);
-			if (Methods.isValidProfileJson(jsonObject)) {
-				profileController.createprofile(JWTController.verifyToken(exchange), jsonObject.getString("firstName"),
-						jsonObject.getString("lastName"), jsonObject.getString("additionalName"),
-						jsonObject.getString("birthDate"), jsonObject.getString("profilePicture"),
-						jsonObject.getString("bg_picture"), jsonObject.getString("title"),
-						jsonObject.getString("place"), jsonObject.getString("career"),
-						jsonObject.getString("jobAiming"));
-				return "Profile added successfully";
+	private String handlePostRequest(String[] pathElements, HttpExchange exchange) {
+		try {
+			if (pathElements.length == 2) {
+				JSONObject jsonObject = Methods.getJSON(exchange);
+				if (Methods.isValidProfileJson(jsonObject)) {
+					profileController.createprofile(JWTController.verifyToken(exchange),
+							jsonObject.getString("firstName"), jsonObject.getString("lastName"),
+							jsonObject.getString("additionalName"), jsonObject.getString("birthDate"),
+							jsonObject.getString("profilePicture"), jsonObject.getString("bg_picture"),
+							jsonObject.getString("title"), jsonObject.getString("place"),
+							jsonObject.getString("career"), jsonObject.getString("jobAiming"));
+					return "Profile added successfully";
+				} else {
+					throw new IOException("Request isn't in the right format");
+				}
 			} else {
-				throw new IOException("Request isn't in the right format");
+				throw new IOException("Path is not valid");
 			}
-		} else {
-			throw new IOException("Path is not valid");
+		} catch (Exception e) {
+			return e.getMessage();
 		}
 	}
 
-	private String handleGetRequest(String[] pathElements) throws IOException, ProfileDAOException, UserDAOException {
-		if (pathElements.length == 3) {
-			return profileController.getprofile(pathElements[2]);
-		} else {
-			throw new IOException("Path is not valid");
+	private String handleGetRequest(String[] pathElements) {
+		try {
+			if (pathElements.length == 3) {
+				return profileController.getprofile(pathElements[2]);
+			} else {
+				throw new IOException("Path is not valid");
+			}
+		} catch (Exception e) {
+			return e.getMessage();
 		}
 	}
 
-	private String handleDeleteRequest(String[] pathElements, HttpExchange exchange)
-			throws IOException, ProfileDAOException, UserDAOException {
-		if (pathElements.length == 2) {
-			profileController.deleteProfile(JWTController.verifyToken(exchange));
-			return "Profile deleted successfully";
-		} else {
-			throw new IOException("Path is not valid");
+	private String handleDeleteRequest(String[] pathElements, HttpExchange exchange) {
+		try {
+			if (pathElements.length == 2) {
+				profileController.deleteProfile(JWTController.verifyToken(exchange));
+				return "Profile deleted successfully";
+			} else {
+				throw new IOException("Path is not valid");
+			}
+		} catch (Exception e) {
+			return e.getMessage();
 		}
 	}
 }

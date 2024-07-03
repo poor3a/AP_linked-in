@@ -56,50 +56,61 @@ public class ContactHandler implements HttpHandler {
 		exchange.close();
 	}
 
-	public String handlePostRequest(String[] pathElements, HttpExchange exchange)
-			throws IOException, ProfileDAOException, UserDAOException {
-		if (pathElements.length == 2) {
-			JSONObject jsonObject = Methods.getJSON(exchange);
-			if (Methods.isValidContactInfoJson(jsonObject)) {
-				profileController.addContact_info(JWTController.verifyToken(exchange), jsonObject.getString("address"),
-						jsonObject.getString("email"), jsonObject.getString("phoneNumber_home"),
-						jsonObject.getString("phoneNumber_work"), jsonObject.getString("phoneNumber_personal"),
-						jsonObject.getString("socialMedia1"), jsonObject.getString("socialMedia2"),
-						jsonObject.getString("socialMedia3"), jsonObject.getString("website"));
-				return "Contact info added successfully";
+	public String handlePostRequest(String[] pathElements, HttpExchange exchange) {
+		try {
+			if (pathElements.length == 2) {
+				JSONObject jsonObject = Methods.getJSON(exchange);
+				if (Methods.isValidContactInfoJson(jsonObject)) {
+					profileController.addContact_info(JWTController.verifyToken(exchange),
+							jsonObject.getString("address"), jsonObject.getString("email"),
+							jsonObject.getString("phoneNumber_home"), jsonObject.getString("phoneNumber_work"),
+							jsonObject.getString("phoneNumber_personal"), jsonObject.getString("socialMedia1"),
+							jsonObject.getString("socialMedia2"), jsonObject.getString("socialMedia3"),
+							jsonObject.getString("website"));
+					return "Contact info added successfully";
+				} else {
+					throw new IOException("Request isn't in the right format");
+				}
 			} else {
-				throw new IOException("Request isn't in the right format");
+				throw new IOException("Path is not valid");
 			}
-		} else {
-			throw new IOException("Path is not valid");
+		} catch (Exception e) {
+			return e.getMessage();
 		}
 	}
 
-	public String handlePutRequest(String[] pathElements, HttpExchange exchange)
-			throws IOException, ProfileDAOException, UserDAOException {
-		if (pathElements.length == 2) {
-			JSONObject jsonObject = Methods.getJSON(exchange);
-			if (Methods.isValidContactInfoJson(jsonObject)) {
-				profileController.updateContact_info(JWTController.verifyToken(exchange),
-						jsonObject.getString("address"), jsonObject.getString("email"),
-						jsonObject.getString("phoneNumber_home"), jsonObject.getString("phoneNumber_work"),
-						jsonObject.getString("phoneNumber_personal"), jsonObject.getString("socialMedia1"),
-						jsonObject.getString("socialMedia2"), jsonObject.getString("socialMedia3"),
-						jsonObject.getString("website"));
-				return "Contact info updated successfully";
+	public String handlePutRequest(String[] pathElements, HttpExchange exchange) {
+		try {
+			if (pathElements.length == 2) {
+				JSONObject jsonObject = Methods.getJSON(exchange);
+				if (Methods.isValidContactInfoJson(jsonObject)) {
+					profileController.updateContact_info(JWTController.verifyToken(exchange),
+							jsonObject.getString("address"), jsonObject.getString("email"),
+							jsonObject.getString("phoneNumber_home"), jsonObject.getString("phoneNumber_work"),
+							jsonObject.getString("phoneNumber_personal"), jsonObject.getString("socialMedia1"),
+							jsonObject.getString("socialMedia2"), jsonObject.getString("socialMedia3"),
+							jsonObject.getString("website"));
+					return "Contact info updated successfully";
+				} else {
+					throw new IOException("Request isn't in the right format");
+				}
 			} else {
-				throw new IOException("Request isn't in the right format");
+				throw new IOException("Path is not valid");
 			}
-		} else {
-			throw new IOException("Path is not valid");
+		} catch (Exception e) {
+			return e.getMessage();
 		}
 	}
 
-	public String handleGetRequest(String[] pathElements) throws IOException, ProfileDAOException, UserDAOException {
-        if (pathElements.length == 3) {
-            return profileController.getContact_info(pathElements[2]);
-        } else {
-            throw new IOException("Path is not valid");
-        }
+	public String handleGetRequest(String[] pathElements) {
+		try {
+			if (pathElements.length == 3) {
+				return profileController.getContact_info(pathElements[2]);
+			} else {
+				throw new IOException("Path is not valid");
+			}
+		} catch (Exception e) {
+			return e.getMessage();
+		}
 	}
 }
