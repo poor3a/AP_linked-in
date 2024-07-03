@@ -1,16 +1,14 @@
 package poorsa.org.frontend;
 
-import org.example.model.User;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import poorsa.org.frontend.models.User;
+
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.util.regex.Pattern;
 
 public class frontMethods {
-	public String URLFirstPart = "http://localhost:8000/";
+	public static String URLFirstPart = "http://localhost:8000/";
 
 	public static boolean patternMatches(String emailAddress) {
 		String regexPattern = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";

@@ -379,7 +379,7 @@ public class ProfileDAO {
             throw new ProfileDAOException("Error removing contact info from profile");
         }
     }
-    public boolean contactInfoExistInProfile(int id) throws ProfileDAOException {
+    public boolean contactInfoExistInProfile(int id) throws ProfileDAOException  {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "SELECT * FROM profile WHERE contact_info = ?"

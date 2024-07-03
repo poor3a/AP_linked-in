@@ -16,6 +16,8 @@ import javafx.util.Duration;
 import poorsa.org.frontend.models.*;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class LoginController {
 
@@ -108,7 +110,8 @@ public class LoginController {
 			// now check login conditions.
 			String email = username.getText();
 			String pass = password.getText();
-			if (!Functions.patternMatches(email)) {
+			String resultLabel;
+			if (!frontMethods.patternMatches(email)) {
 				resultLabel.setText("Invalid email");
 			} else if (pass.length() < 8) {
 				resultLabel.setText("Password is too short");
@@ -116,13 +119,13 @@ public class LoginController {
 				URL url = new URL(frontMethods.URLFirstPart + "user/" + email + "/" + pass);
 				HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 				connection.setRequestMethod("GET");
-				String response = Functions.getResponse(connection);
-				if (response.conntains("incorrect")) {
+				String response = frontMethods.getResponse(connection);
+				if (response.contains("incorrect")) {
 					//email or password is not correct
 				}
 				else {
 					String token = connection.getHeaderField("Authorization");
-					frontMethods.saveUser(email,password,token);
+					frontMethods.saveUser(email,pass,token);
 					frontMethods.saveToken(token);
 				}
 			}
@@ -138,7 +141,7 @@ public class LoginController {
 		// page.
 		String email = username.getText();
 		String pass = password.getText();
-		if (!Functions.patternMatches(email)) {
+		if (!frontMethods.patternMatches(email)) {
 			resultLabel.setText("Invalid email");
 		} else if (pass.length() < 8) {
 			resultLabel.setText("Password is too short");
@@ -151,7 +154,7 @@ public class LoginController {
             json.put("email",email);
             json.put("password",pass);
             frontMethods.sendResponse(connection, json.toString());
-            String response = Functions.getResponse(connection);
+            String response = frontMethods.getResponse(connection);
             if (response.contains("exists")) {
             	//user already exists
             }

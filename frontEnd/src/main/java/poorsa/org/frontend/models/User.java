@@ -5,7 +5,7 @@ public class User {
     private String email;
     private String token;
 
-    public User(String username, String password, String email, Stirng token) {
+    public User( String password, String email, String token) {
         this.password = password;
         this.email = email;
         this.token = token;
@@ -14,7 +14,7 @@ public class User {
     public User() {
     	
     }
-    
+
     public void setPassword(String password) {
         this.password = password;
     }

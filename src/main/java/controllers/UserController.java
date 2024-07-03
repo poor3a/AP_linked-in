@@ -24,14 +24,13 @@ public class UserController {
 
 	}
 
-	public boolean createUser(String email, String password) throws UserDAOException {
+	public void createUser(String email, String password) throws UserDAOException {
 
 		if (userDAO.userExist(email)) {// if the email already exists in the database, we throw an exception.
 			//throw new UserDAOException("Email already exists");
-			return false;
+			throw new UserDAOException("Email already exists");
 		} else {
 			userDAO.createUser(email, password);
-			return true;
 		}
 	}
 
@@ -42,15 +41,15 @@ public class UserController {
         User user = new User(userDAO.getUserId(email), email, userDAO.getUserPassword(email));
         return gson.toJson(user);
     }
-    public boolean checkLogin(String email, String password) throws UserDAOException {
+    public void checkLogin(String email, String password) throws UserDAOException {
         //this method is used to check if the user exists in the database and if the password is correct.
         //if the user does not exist or the password is incorrect, we return false.
         //if the user exists and the password is correct, we return true.
-        if (userDAO.userExist(email)) {
-            return userDAO.checkUserPassword(email, password);
-        } else {
-            return false;
-        }
+		if (!userDAO.userExist(email)) {
+			throw new UserDAOException("User does not exist");
+		} else if (!userDAO.checkUserPassword(email, password)) {
+			throw new UserDAOException("Password is incorrect");
+		}
     }
 	public void deleteUser(String email, String password) throws UserDAOException {
 		userDAO.deleteUser(email, password);
