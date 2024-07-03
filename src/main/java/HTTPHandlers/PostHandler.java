@@ -13,14 +13,14 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.SQLException;
 
-public class PostHandler implements HttpHandler{
-	
+public class PostHandler implements HttpHandler {
+
 	private PostController postController;
-	
-	public PostHandler() throws SQLException{
+
+	public PostHandler() throws SQLException {
 		this.postController = new PostController();
 	}
-	
+
 	public void handle(HttpExchange exchange) throws IOException {
 
 		String requestMethod = exchange.getRequestMethod();
@@ -31,13 +31,13 @@ public class PostHandler implements HttpHandler{
 		try {
 			switch (requestMethod) {
 			case "GET":
-				response = handleGetRequest(pathElements, exchange);
+				response = handleGetRequest(pathElements);
 				break;
 			case "POST":
 				response = handlePostRequest(pathElements, exchange);
 				break;
 			case "DELETE":
-				response = handleDeleteRequest(pathElements);
+				response = handleDeleteRequest(pathElements, exchange);
 				break;
 			case "PUT":
 				response = handlePutRequest(pathElements, exchange);
@@ -62,13 +62,14 @@ public class PostHandler implements HttpHandler{
 		exchange.close();
 
 	}
-	
+
 	public String handlePostRequest(String[] pathElements, HttpExchange exchange) {
 		try {
 			if (pathElements.length == 2) {
 				JSONObject jsonObject = Methods.getJSON(exchange);
 				if (Methods.isValidPostJson(jsonObject)) {
-					postController.createPost(JWTController.verifyToken(exchange), jsonObject.getString("text"), jsonObject.getString("image_path"));
+					postController.createPost(JWTController.verifyToken(exchange), jsonObject.getString("text"),
+							jsonObject.getString("image_path"));
 					return "Post added successfully";
 				} else {
 					throw new IOException("Request isn't in the right format");
@@ -80,13 +81,45 @@ public class PostHandler implements HttpHandler{
 			return e.getMessage();
 		}
 	}
-	
+
 	public String handleGetRequest(String[] pathElements) {
 		try {
 			if (pathElements.length == 3) {
 				return postController.getPost(Integer.parseInt(pathElements[2]));
+			} else {
+				throw new IOException("Path is not valid");
+			}
+		} catch (Exception e) {
+			return e.getMessage();
+		}
+	}
+
+	public String handleDeleteRequest(String[] pathElements, HttpExchange exchange) {
+		try {
+			if(pathElements.length == 3) {
+				postController.deletePost(Integer.parseInt(pathElements[2]), JWTController.verifyToken(exchange));
+				return "Post deleted";
 			}
 			else {
+				throw new IOException("Path is not valid");
+			}
+		} catch (Exception e) {
+			return e.getMessage();
+		}
+	}
+	
+	public String handlePutRequest(String[] pathElements, HttpExchange exchange) {
+		try {
+			if (pathElements.length == 2) {
+				JSONObject jsonObject = Methods.getJSON(exchange);
+				if (Methods.isValidPostJson(jsonObject)) {
+					postController.editPost(JWTController.verifyToken(exchange), jsonObject.getString("text"),
+							jsonObject.getString("image_path"));
+					return "Post edited successfully";
+				} else {
+					throw new IOException("Request isn't in the right format");
+				}
+			} else {
 				throw new IOException("Path is not valid");
 			}
 		}catch (Exception e) {
