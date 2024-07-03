@@ -8,7 +8,7 @@ import java.net.HttpURLConnection;
 import java.util.regex.Pattern;
 
 public class frontMethods {
-	public static String URLFirstPart = "http://localhost:8000/";
+	public static String URLFirstPart = "http://localhost:8080/";
 
 	public static boolean patternMatches(String emailAddress) {
 		String regexPattern = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
@@ -29,7 +29,6 @@ public class frontMethods {
 
 	public static void sendResponse(HttpURLConnection connection, String response) throws IOException {
 		connection.getOutputStream().write(response.getBytes());
-		connection.getOutputStream().close();
 	}
 
 	public static void saveUser(String email, String password, String token) {
