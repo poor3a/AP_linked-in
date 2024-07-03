@@ -24,12 +24,14 @@ public class UserController {
 
 	}
 
-	public void createUser(String email, String password) throws UserDAOException {
+	public boolean createUser(String email, String password) throws UserDAOException {
 
 		if (userDAO.userExist(email)) {// if the email already exists in the database, we throw an exception.
-			throw new UserDAOException("Email already exists");
+			//throw new UserDAOException("Email already exists");
+			return false;
 		} else {
 			userDAO.createUser(email, password);
+			return true;
 		}
 	}
 
