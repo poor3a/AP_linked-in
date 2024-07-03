@@ -17,16 +17,25 @@ public class UserHandler implements HttpHandler {
 	private UserController userController;
 
 	public UserHandler() throws SQLException {
+		System.out.println("kir");
 		this.userController = new UserController();
 	}
 
 	@Override
 	public void handle(HttpExchange exchange) throws IOException {
+<<<<<<< HEAD
 
 		String requestMethod = exchange.getRequestMethod();
 		String path = exchange.getRequestURI().getPath();
 		String[] pathElements = path.split("/");
 		String response;
+=======
+		System.out.println("mooooo");
+			String requestMethod = exchange.getRequestMethod();
+			String path = exchange.getRequestURI().getPath();
+			String[] pathElements = path.split("/");
+			String response;
+>>>>>>> 468d7529401b3f467c745cd73dcc40dae9a2771f
 
 		try {
 			switch (requestMethod) {
@@ -77,8 +86,13 @@ public class UserHandler implements HttpHandler {
 			} else {
 				throw new IOException("Path is not valid");
 			}
+<<<<<<< HEAD
 		} catch (Exception e) {
 			return e.getMessage();
+=======
+		}catch (Exception e){
+			return e.getMessage() + "Error";
+>>>>>>> 468d7529401b3f467c745cd73dcc40dae9a2771f
 		}
 	}
 
@@ -113,6 +127,7 @@ public class UserHandler implements HttpHandler {
 		}
 	}
 
+<<<<<<< HEAD
 	private String handlePutRequest(String[] pathElements, HttpExchange exchange)  {
 		try {
 			if (pathElements.length == 3) {
@@ -135,11 +150,32 @@ public class UserHandler implements HttpHandler {
 					}
 				} else {
 					throw new IOException("Path is not valid");
+=======
+	private String handlePutRequest(String[] pathElements, HttpExchange exchange) {
+		try {
+			if (pathElements.length == 3) {
+				JSONObject jsonObject = Methods.getJSON(exchange);
+				if (pathElements[2].equals("password") & jsonObject.has("password") & jsonObject.has("newPassword")) {
+					userController.updatePassword(JWTController.verifyToken(exchange), jsonObject.getString("password"), jsonObject.getString("newPassword"));
+					return "Password updated";
+
+				} else if (pathElements[2].equals("email") && jsonObject.has("password") && jsonObject.has("newEmail")) {
+					userController.updateEmail(JWTController.verifyToken(exchange), jsonObject.getString("password"), jsonObject.getString("newEmail"));
+					return "Email updated";
+
+				} else {
+					throw new IOException("Path is not valid or request isn't in the right format");
+>>>>>>> 468d7529401b3f467c745cd73dcc40dae9a2771f
 				}
 			} else {
 				throw new IOException("Path is not valid");
 			}
+<<<<<<< HEAD
 		} catch (Exception e) {
+=======
+		}catch (Exception e)
+		{
+>>>>>>> 468d7529401b3f467c745cd73dcc40dae9a2771f
 			return e.getMessage();
 		}
 	}

@@ -89,7 +89,10 @@ public class UserDAO {
             );
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
+            if (!(resultSet.next()))
+            {
+                throw new UserDAOException("incorrect password");
+            }
             return resultSet.getString("password");
         } catch (SQLException e) {
             throw new UserDAOException("Error getting user password by email");

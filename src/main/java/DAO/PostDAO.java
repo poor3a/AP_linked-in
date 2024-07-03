@@ -45,14 +45,15 @@ public class PostDAO
             throw new SQLException("Error editing post");
         }
     }
-    public void deletePost(int postId) throws SQLException, UserDAOException {
+    public void deletePost(int postId ,String userEmail) throws SQLException, UserDAOException {
         try
         {
             if (!(postExist(postId))) {
                 throw new UserDAOException("Post does not exist");
             }
-            PreparedStatement ps = connection.prepareStatement("DELETE FROM posts WHERE post_id = ?");
+            PreparedStatement ps = connection.prepareStatement("DELETE FROM posts WHERE post_id = ? and user_id = ?");
             ps.setInt(1, postId);
+            ps.setInt(2,userDAO.getUserId(userEmail));
             ps.execute();
         }catch (SQLException e){
             throw new SQLException("Error deleting post");
@@ -120,13 +121,14 @@ public class PostDAO
             throw new SQLException("Error checking if comment exists");
         }
     }
-public void deleteComment(int commentId) throws SQLException, UserDAOException {
+public void deleteComment(int commentId ,String userEmail) throws SQLException, UserDAOException {
         try {
             if (!(commentExist(userDAO.getEmail(commentId), commentId))) {
                 throw new UserDAOException("Comment does not exist");
             }
-            PreparedStatement ps = connection.prepareStatement("DELETE FROM comments WHERE comment_id = ?");
+            PreparedStatement ps = connection.prepareStatement("DELETE FROM comments WHERE comment_id = ? and user_id = ?");
             ps.setInt(1, commentId);
+            ps.setInt(2,userDAO.getUserId(userEmail));
             ps.execute();
         }catch (SQLException e){
             throw new SQLException("Error deleting comment");

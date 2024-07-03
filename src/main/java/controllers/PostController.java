@@ -27,9 +27,9 @@ public class PostController
     {
         postDAO.editPost(email, text, image_path);
     }
-    public void deletePost(int postId) throws SQLException, UserDAOException
+    public void deletePost(int postId ,String userEmail) throws SQLException, UserDAOException
     {
-        postDAO.deletePost(postId);
+        postDAO.deletePost(postId ,userEmail);
     }
     public String getPost(int postId) throws SQLException, UserDAOException
     {
@@ -51,9 +51,9 @@ public class PostController
     {
         postDAO.addComment(email, postId, text);
     }
-    public void deleteComment(int commentId) throws SQLException, UserDAOException
+    public void deleteComment(int commentId ,String userEmail) throws SQLException, UserDAOException
     {
-        postDAO.deleteComment(commentId);
+        postDAO.deleteComment(commentId ,userEmail);
     }
     public String getComment(int commentId) throws SQLException, UserDAOException
     {
