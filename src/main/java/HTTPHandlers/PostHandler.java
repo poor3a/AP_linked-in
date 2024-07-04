@@ -86,6 +86,12 @@ public class PostHandler implements HttpHandler {
 		try {
 			if (pathElements.length == 3) {
 				return postController.getPost(Integer.parseInt(pathElements[2]));
+			} else if (pathElements.length == 4) {
+				if (pathElements[2] == "all") {
+					return postController.getUserPosts(pathElements[3]);
+				} else {
+					throw new IOException("Path is not valid");
+				}
 			} else {
 				throw new IOException("Path is not valid");
 			}
@@ -96,18 +102,17 @@ public class PostHandler implements HttpHandler {
 
 	public String handleDeleteRequest(String[] pathElements, HttpExchange exchange) {
 		try {
-			if(pathElements.length == 3) {
+			if (pathElements.length == 3) {
 				postController.deletePost(Integer.parseInt(pathElements[2]), JWTController.verifyToken(exchange));
 				return "Post deleted";
-			}
-			else {
+			} else {
 				throw new IOException("Path is not valid");
 			}
 		} catch (Exception e) {
 			return e.getMessage();
 		}
 	}
-	
+
 	public String handlePutRequest(String[] pathElements, HttpExchange exchange) {
 		try {
 			if (pathElements.length == 2) {
@@ -122,7 +127,7 @@ public class PostHandler implements HttpHandler {
 			} else {
 				throw new IOException("Path is not valid");
 			}
-		}catch (Exception e) {
+		} catch (Exception e) {
 			return e.getMessage();
 		}
 	}
