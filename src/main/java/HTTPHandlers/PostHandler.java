@@ -31,7 +31,7 @@ public class PostHandler implements HttpHandler {
 		try {
 			switch (requestMethod) {
 			case "GET":
-				response = handleGetRequest(pathElements);
+				response = handleGetRequest(pathElements, exchange);
 				break;
 			case "POST":
 				response = handlePostRequest(pathElements, exchange);
@@ -82,9 +82,12 @@ public class PostHandler implements HttpHandler {
 		}
 	}
 
-	public String handleGetRequest(String[] pathElements) {
+	public String handleGetRequest(String[] pathElements, HttpExchange exchange) {
 		try {
 			if (pathElements.length == 3) {
+				if (pathElements[2] == "feed") {
+					return postController.getFeedPosts(JWTController.verifyToken(exchange));
+				}
 				return postController.getPost(Integer.parseInt(pathElements[2]));
 			} else if (pathElements.length == 4) {
 				if (pathElements[2] == "all") {

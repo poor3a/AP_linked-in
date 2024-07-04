@@ -29,7 +29,7 @@ public class ProfileHandler implements HttpHandler {
 		try {
 			switch (requestMethod) {
 			case "GET":
-				response = handleGetRequest(pathElements);
+				response = handleGetRequest(pathElements, exchange);
 				break;
 			case "POST":
 				response = handlePostRequest(pathElements, exchange);
@@ -70,16 +70,17 @@ public class ProfileHandler implements HttpHandler {
 			} else {
 				throw new IOException("Path is not valid");
 			}
-		}catch (Exception e)
-		{
+		} catch (Exception e) {
 			return e.getMessage();
 		}
 
 	}
 
-	private String handleGetRequest(String[] pathElements) {
+	private String handleGetRequest(String[] pathElements, HttpExchange exchange) {
 		try {
-			if (pathElements.length == 3) {
+			if (pathElements.length == 2) {
+				return profileController.getAllUserData(JWTController.verifyToken(exchange));
+			} else if (pathElements.length == 3) {
 				return profileController.getprofile(pathElements[2]);
 			} else {
 				throw new IOException("Path is not valid");
