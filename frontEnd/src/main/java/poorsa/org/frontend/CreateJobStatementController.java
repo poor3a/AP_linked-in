@@ -47,6 +47,8 @@ public class CreateJobStatementController {
         description.setOnMouseClicked(event -> Animations.getHeartbeat(description).play());
     }
     public void confirmOnAction() throws IOException {
+        //#write here(post request for job statement)
+
         Animations.buttonAnimation(confirm);
         Parent root = FXMLLoader.load(getClass().getResource("homePage.fxml"));
         Scene scene = new Scene(root , 800 ,500);

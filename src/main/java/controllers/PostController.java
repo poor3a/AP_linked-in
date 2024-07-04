@@ -74,7 +74,7 @@ public class PostController
 	public void editComment(String email, int postId, String text) throws SQLException, UserDAOException {
 		postDAO.editComment(email, postId, text);
 	}
-    
+
     public String getFeedPosts(String email) throws SQLException, UserDAOException {
         User[] connections = userDAO.getConnections(email);
         ArrayList<Post> posts = new ArrayList<>();
