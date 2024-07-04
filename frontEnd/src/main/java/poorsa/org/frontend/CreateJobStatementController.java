@@ -8,7 +8,14 @@ import javafx.scene.Scene;
 
 import javafx.stage.Stage;
 
+import java.awt.Checkbox;
+import java.awt.TextArea;
+import java.awt.TextField;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import org.json.JSONObject;
 
 
 public class CreateJobStatementController {
@@ -22,7 +29,7 @@ public class CreateJobStatementController {
     @FXML
     TextField companyAddress;
     @FXML
-    CheckBox isWorking;
+    Checkbox isWorking;
     @FXML
     DatePicker start;
     @FXML
@@ -48,7 +55,42 @@ public class CreateJobStatementController {
     }
     public void confirmOnAction() throws IOException {
         //#write here(post request for job statement)
-
+    	String ti = title.getText();
+    	String WS = workingState.getText();
+    	String CN = companyName.getText();
+    	String CA = companyAddress.getText();
+    	boolean IW = isWorking.getState();
+    	String S = start.getText();
+    	String E = end.getText();
+    	String WT = wt.getText();
+    	String DE = description.getText();
+    	try {
+			URL url = new URL(frontMethods.URLFirstPart + "jobStatement");
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			connection.setDoOutput(true);
+			connection.setRequestMethod("POST");
+			JSONObject json = new JSONObject();
+			json.put("title", ti);
+			json.put("workingState", WS);
+			json.put("companyName", CN);
+			json.put("companyAddress", CA);
+			json.put("workingType", WT);
+			json.put("isWorking", IW);
+			json.put("start", S);
+			json.put("end", E);
+			json.put("description", DE);
+			String token = frontMethods.getToken();
+			connection.setRequestProperty("Authorization", token);
+			frontMethods.sendRequest(connection, json.toString());
+			String response = frontMethods.getResponse(connection);
+			if (response.contains("Error")) {
+				resultLabel.setText(response.toString());
+			} else {
+				// continue
+			}
+		} catch (Exception e) {
+			resultLabel.setText("Something went wrong with the server");
+		}
         Animations.buttonAnimation(confirm);
         Parent root = FXMLLoader.load(getClass().getResource("homePage.fxml"));
         Scene scene = new Scene(root , 800 ,500);

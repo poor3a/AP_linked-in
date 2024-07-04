@@ -11,22 +11,26 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import org.json.JSONObject;
 
 public class CreateSchoolingController {
     @FXML
-    TextField schoolName;
+    java.awt.TextField schoolName;
     @FXML
-    TextField fieldOfStudy;
+    java.awt.TextField fieldOfStudy;
     @FXML
-    TextField grade;
+    java.awt.TextField grade;
     @FXML
-    TextField degree;
+    java.awt.TextField degree;
     @FXML
     DatePicker start;
     @FXML
     DatePicker end;
     @FXML
-    TextArea activities;
+    java.awt.TextArea activities;
     @FXML
     TextArea description;
     @FXML
@@ -48,6 +52,41 @@ public class CreateSchoolingController {
     }
     public void confirmOnAction() throws IOException {
         //#write here(post request for schooling)
+    	String SN = schoolName.getText();
+    	String FOS = fieldOfStudy.getText();
+    	String GR = grade.getText();
+    	String DE = degree.getText();
+    	String S = start.getText();
+    	String E = end.getText();
+    	String AC = activities.getText();
+    	String DES = description.getText();
+    	
+    	try {
+			URL url = new URL(frontMethods.URLFirstPart + "schooling");
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			connection.setDoOutput(true);
+			connection.setRequestMethod("POST");
+			JSONObject json = new JSONObject();
+			json.put("schoolName", SN);
+			json.put("fieldOfStudy", FOS);
+			json.put("grade", GR);
+			json.put("degree", DE);
+			json.put("start", S);
+			json.put("end", E);
+			json.put("activities", AC);
+			json.put("description", DES);
+			String token = frontMethods.getToken();
+			connection.setRequestProperty("Authorization", token);
+			frontMethods.sendRequest(connection, json.toString());
+			String response = frontMethods.getResponse(connection);
+			if (response.contains("Error")) {
+				resultLabel.setText(response.toString());
+			} else {
+				// continue
+			}
+		} catch (Exception e) {
+			resultLabel.setText("Something went wrong with the server");
+		}
         Animations.buttonAnimation(confirm);
         Parent root = FXMLLoader.load(getClass().getResource("CreateJobStatement.fxml"));
         Scene scene = new Scene(root , 800 ,500);
