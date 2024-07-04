@@ -134,7 +134,7 @@ public class UserHandler implements HttpHandler {
 			}
 		}catch (Exception e)
 		{
-			return e.getMessage();
+			return e.getMessage() + "Error";
 		}
 	}
 }

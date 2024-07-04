@@ -54,35 +54,42 @@ public class PostController
     {
         postDAO.addComment(email, postId, text);
     }
+
     public void deleteComment(int commentId ,String userEmail) throws SQLException, UserDAOException
     {
         postDAO.deleteComment(commentId ,userEmail);
     }
-    public String getComment(int commentId) throws SQLException, UserDAOException
-    {
+    public String getComment(int commentId) throws SQLException, UserDAOException {
         return gson.toJson(postDAO.getComment(commentId));
     }
-    public String getFeedPosts(String email) throws SQLException, UserDAOException
-    {
+	public boolean likeExists(String email, int postId) throws SQLException, UserDAOException {
+
+		if (postDAO.likeExist(email, postId)) {
+			return true;
+		}
+		return false;
+	}
+
+
+	public void editComment(String email, int postId, String text) throws SQLException, UserDAOException {
+		postDAO.editComment(email, postId, text);
+	}
+    
+    public String getFeedPosts(String email) throws SQLException, UserDAOException {
         User[] connections = userDAO.getConnections(email);
         ArrayList<Post> posts = new ArrayList<>();
-        for (User user : connections)
-        {
-            for (Post post : postDAO.getUserPosts(user.getEmail()))
-            {
+        for (User user : connections) {
+            for (Post post : postDAO.getUserPosts(user.getEmail())) {
                 posts.add(post);
             }
         }
         User[] following = userDAO.getFollowings(email);
-        for (User user : following)
-        {
-            for (Post post : postDAO.getUserPosts(user.getEmail()))
-            {
+        for (User user : following) {
+            for (Post post : postDAO.getUserPosts(user.getEmail())) {
                 posts.add(post);
             }
         }
         return gson.toJson(posts);
     }
-
-
 }
+

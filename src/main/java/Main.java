@@ -18,9 +18,14 @@ public class Main {
 			server.createContext("/user", new UserHandler());
 			server.createContext("/schooling", new SchoolingHandler());
 			server.createContext("/contact", new ContactHandler());
-			server.createContext("/job", new JobStatementHandler());
+			server.createContext("/comment", new CommentHandler());
+			server.createContext("/like", new LikeHandler());
+			server.createContext("/connection", new ConnectionHandler());
+			server.createContext("/follow", new FollowHandler());
+			server.createContext("/post", new PostHandler());
+			server.createContext("/jobStatement", new JobStatementHandler());
 			server.createContext("/profile", new ProfileHandler());
-
+			
 			server.start();
 		} catch (IOException e) {
 			e.printStackTrace();
