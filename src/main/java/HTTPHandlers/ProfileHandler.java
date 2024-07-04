@@ -39,12 +39,10 @@ public class ProfileHandler implements HttpHandler {
 				break;
 			default:
 				response = "This method is not supported";
-				exchange.sendResponseHeaders(405, response.length());
 				break;
 			}
 		} catch (Exception e) {
-			response = "Something went wrong with the server";
-			exchange.sendResponseHeaders(500, response.length());
+			response = e.getMessage();
 		}
 
 		OutputStream os = exchange.getResponseBody();
@@ -53,24 +51,29 @@ public class ProfileHandler implements HttpHandler {
 		exchange.close();
 	}
 
-	private String handlePostRequest(String[] pathElements, HttpExchange exchange)
-			throws IOException, ProfileDAOException, UserDAOException {
-		if (pathElements.length == 2) {
-			JSONObject jsonObject = Methods.getJSON(exchange);
-			if (Methods.isValidProfileJson(jsonObject)) {
-				profileController.createprofile(JWTController.verifyToken(exchange), jsonObject.getString("firstName"),
-						jsonObject.getString("lastName"), jsonObject.getString("additionalName"),
-						jsonObject.getString("birthDate"), jsonObject.getString("profilePicture"),
-						jsonObject.getString("bg_picture"), jsonObject.getString("title"),
-						jsonObject.getString("place"), jsonObject.getString("career"),
-						jsonObject.getString("jobAiming"));
-				return "Profile added successfully";
+	private String handlePostRequest(String[] pathElements, HttpExchange exchange) {
+		try {
+			if (pathElements.length == 2) {
+				JSONObject jsonObject = Methods.getJSON(exchange);
+				if (Methods.isValidProfileJson(jsonObject)) {
+					profileController.createprofile(JWTController.verifyToken(exchange), jsonObject.getString("firstName"),
+							jsonObject.getString("lastName"), jsonObject.getString("additionalName"),
+							jsonObject.getString("birthDate"), jsonObject.getString("profilePicture"),
+							jsonObject.getString("bg_picture"), jsonObject.getString("title"),
+							jsonObject.getString("place"), jsonObject.getString("career"),
+							jsonObject.getString("jobAiming"));
+					return "Profile added successfully";
+				} else {
+					throw new IOException("Request isn't in the right format");
+				}
 			} else {
-				throw new IOException("Request isn't in the right format");
+				throw new IOException("Path is not valid");
 			}
-		} else {
-			throw new IOException("Path is not valid");
+		}catch (Exception e)
+		{
+			return e.getMessage();
 		}
+
 	}
 
 	private String handleGetRequest(String[] pathElements) throws IOException, ProfileDAOException, UserDAOException {

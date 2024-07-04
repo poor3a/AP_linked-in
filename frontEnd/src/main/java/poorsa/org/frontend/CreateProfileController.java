@@ -1,17 +1,14 @@
 package poorsa.org.frontend;
 
-import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
@@ -19,11 +16,13 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.json.JSONObject;
 import poorsa.org.frontend.models.Profile;
 
 import java.io.File;
 import java.io.IOException;
-
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 
 public class CreateProfileController
@@ -60,6 +59,8 @@ public class CreateProfileController
     Button profile_image;
     @FXML
     StackPane pane;
+    @FXML
+    Label resultLabel;
 
 
 
@@ -139,6 +140,55 @@ public class CreateProfileController
 
     public void confirmOnAction() throws IOException {
         Animations.buttonAnimation(confirm);
+
+
+        String firstnameText = firstname.getText();
+        String lastnameText = lastname.getText();
+        String additionalNameText = additionalName.getText();
+        String birthDateText = birthDate.getValue().toString().replaceAll("/" ,"-");
+        String titleText = title.getText();
+        String placeText = place.getText();
+        String careerText = career.getText();
+        String jobAimingText = jobAiming.getText();
+        String bg_imageText = bg_image.getText();
+        String profile_imageText = profile_image.getText();
+        try{
+            URL url = new URL(frontMethods.URLFirstPart + "profile");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoOutput(true);
+            connection.setRequestMethod("POST");
+            JSONObject json = new JSONObject();
+            json.put("firstName" ,firstnameText);
+            json.put("lastName" ,lastnameText);
+            json.put("additionalName" ,additionalNameText);
+            json.put("birthDate" ,birthDateText);
+            json.put("profilePicture" ,profile_imageText);
+            json.put("bg_picture" ,bg_imageText);
+            json.put("title" ,titleText);
+            json.put("place" ,placeText);
+            json.put("career" ,careerText);
+            json.put("jobAiming" ,jobAimingText);
+            connection.setRequestProperty("Authorization" , frontMethods.getToken());
+            frontMethods.sendRequest(connection ,json.toString());
+            String response = frontMethods.getResponse(connection);
+            System.out.println(connection.getResponseMessage());
+            if(response.contains("Error")){
+                System.out.println(response.toString());
+                resultLabel.setText(response.toString());
+            }
+            else{
+                System.out.println("Profile created successfully");
+                resultLabel.setText("Profile created successfully");
+            }
+        }catch (Exception e){
+            System.out.println("Something went wrong with the server");
+            resultLabel.setText("Something went wrong with the server");
+        }
+
+
+
+
+
         Profile newProfile = new Profile(firstname.getText(), lastname.getText(), additionalName.getText(), birthDate.getValue().toString(), "", "", title.getText(), place.getText(), career.getText(), jobAiming.getText());
         Parent root = FXMLLoader.load(getClass().getResource("contactInfo.fxml"));
         Stage stage = (Stage) confirm.getScene().getWindow();

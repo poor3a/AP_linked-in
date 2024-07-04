@@ -1,11 +1,9 @@
 package poorsa.org.frontend;
 
 import javafx.animation.KeyFrame;
-import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -13,7 +11,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import poorsa.org.frontend.models.*;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -90,6 +87,7 @@ public class LoginController {
         timeline.play();
         username.setFocusTraversable(false);
         password.setFocusTraversable(false);
+        resultLabel.setText("");
     }
 
     public void loginButtonOnAction() {
@@ -151,7 +149,7 @@ public class LoginController {
             resultLabel.setText("Invalid email");
         } else if (pass.length() < 8) {
             resultLabel.setText("Password is too short");
-        } else {
+        } else
             try {
                 URL url = new URL(frontMethods.URLFirstPart + "user");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -160,35 +158,26 @@ public class LoginController {
                 JSONObject json = new JSONObject();
                 json.put("email", email);
                 json.put("password", pass);
-                frontMethods.sendResponse(connection, json.toString());
+                frontMethods.sendRequest(connection, json.toString());
                 String response = frontMethods.getResponse(connection);
                 System.out.println(connection.getResponseMessage());
                 if (response.contains("Error")) {
                     resultLabel.setText(response.toString());
-                }
-                Parent root = FXMLLoader.load(getClass().getResource("createProfile.fxml"));
-                Scene scene = new Scene(root, 800, 500);
-                scene.getStylesheets().add(getClass().getResource("createProfile.css").toExternalForm());
-                Stage stage = (Stage) createAccountButton.getScene().getWindow();
-                stage.setResizable(false);
-                Animations.fadeScene(stage, scene);
+                }else{
+                    Parent root = FXMLLoader.load(getClass().getResource("createProfile.fxml"));
+                    Scene scene = new Scene(root, 800, 500);
+                    scene.getStylesheets().add(getClass().getResource("createProfile.css").toExternalForm());
+                    Stage stage = (Stage) createAccountButton.getScene().getWindow();
+                    stage.setResizable(false);
+                    Animations.fadeScene(stage, scene);}
                 //user added
             } catch (Exception e) {
                 resultLabel.setText("Something went wrong with the server");
                 e.printStackTrace();
             }
-        }
-
-    }
-
-    public void forgotPasswordOnAction() throws IOException {
-        // #
-//        Parent root = FXMLLoader.load(getClass().getResource("forgotPassword.fxml"));
-//        Scene scene = new Scene(root, 800, 500);
-//        Stage stage = (Stage) forgotPassword.getScene().getWindow();
-//        stage.setScene(scene);
-//        stage.show();
-        // i will make this later
     }
 
 }
+
+
+

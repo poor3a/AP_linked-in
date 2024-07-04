@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.google.gson.Gson;
 import exceptions.UserDAOException;
 import models.*;
 import exceptions.ProfileDAOException;
@@ -17,11 +18,13 @@ public class ProfileDAO {
     Connection connection;
     Statement statement;
     UserDAO userDAO;
+    Gson gson;
 
     public ProfileDAO() throws SQLException {
         this.connection = SQL.getConnection();//this is a method that is used to get the connection to the database.
         this.statement = connection.createStatement();//this is a method that is used to create a statement object that will be used to execute sql queries.
         this.userDAO = new UserDAO();
+        this.gson = new Gson();
     }
 
     public void createSchooling(int id, String schoolName, String degree, String fieldOfStudy, String start, String end, double grade, String description, String activities) throws ProfileDAOException {
@@ -523,5 +526,12 @@ public class ProfileDAO {
         } catch (SQLException e) {
             throw new ProfileDAOException("Error getting schooling");
         }
+    }
+    public String getAllUserData(int id) throws ProfileDAOException {
+            Profile profile = getProfile(id);
+            JobStatement jobStatement = getJobStatement(id);
+            ContactInfo contactInfo = getContactInfo(id);
+            Schooling schooling = getSchooling(id);
+            return gson.toJson(new UserData(profile, jobStatement, contactInfo, schooling));
     }
 }

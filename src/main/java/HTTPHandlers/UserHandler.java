@@ -17,13 +17,11 @@ public class UserHandler implements HttpHandler {
 	private UserController userController;
 
 	public UserHandler() throws SQLException {
-		System.out.println("kir");
 		this.userController = new UserController();
 	}
 
 	@Override
 	public void handle(HttpExchange exchange) throws IOException {
-		System.out.println("mooooo");
 			String requestMethod = exchange.getRequestMethod();
 			String path = exchange.getRequestURI().getPath();
 			String[] pathElements = path.split("/");
@@ -98,7 +96,7 @@ public class UserHandler implements HttpHandler {
 		}
 		}catch (Exception e)
 		{
-			return e.getMessage();
+			return e.getMessage() + "Error";
 		}
 	}
 

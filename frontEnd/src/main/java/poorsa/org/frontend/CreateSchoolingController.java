@@ -46,9 +46,13 @@ public class CreateSchoolingController {
         activities.setOnMouseClicked(event -> Animations.getHeartbeat(activities).play());
         description.setOnMouseClicked(event -> Animations.getHeartbeat(description).play());
     }
-    public void confirmOnAction()
-    {
+    public void confirmOnAction() throws IOException {
         Animations.buttonAnimation(confirm);
+        Parent root = FXMLLoader.load(getClass().getResource("CreateJobStatement.fxml"));
+        Scene scene = new Scene(root , 800 ,500);
+        Stage stage = (Stage) confirm.getScene().getWindow();
+        scene.getStylesheets().add(getClass().getResource("createProfile.css").toExternalForm());
+        Animations.fadeScene(stage, scene);
     }
     public void backOnAction() throws IOException {
         Animations.buttonAnimation(back);

@@ -250,5 +250,13 @@ public class ProfileController {
 			return gson.toJson(profileDAO.getContactInfo(userDAO.getUserId(email)));
 		}
 	}
-
+	public String getAllUserData(String email) throws UserDAOException, ProfileDAOException {
+		if (!userDAO.userExist(email)) {
+			throw new ProfileDAOException("User does not exist");
+		} else if (!profileDAO.profileExist(userDAO.getUserId(email))) {
+			throw new ProfileDAOException("Profile does not exist");
+		} else {
+			return gson.toJson(profileDAO.getAllUserData(userDAO.getUserId(email)));
+		}
+	}
 }

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="poorsa.org.frontend.CreateSchoolingController">
+   <children>
+      <Label text="enter your job info:">
+         <font>
+            <Font size="24.0" />
+         </font>
+         <VBox.margin>
+            <Insets left="-460.0" top="20.0" />
+         </VBox.margin>
+      </Label>
+      <HBox alignment="CENTER" maxHeight="200.0" prefHeight="200.0">
+         <children>
+            <VBox alignment="TOP_CENTER" minWidth="400.0" prefHeight="280.0" prefWidth="400.0">
+               <children>
+                  <TextField id="username" fx:id="title" maxHeight="45.0" maxWidth="300.0" prefHeight="50.0" prefWidth="300.0" promptText="title">
+                     <padding>
+                        <Insets left="15.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <TextField id="username" fx:id="workingState" maxHeight="45.0" maxWidth="300.0" prefHeight="50.0" prefWidth="300.0" promptText="working state">
+                     <padding>
+                        <Insets left="15.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <TextField id="username" fx:id="companyName" maxHeight="45.0" maxWidth="300.0" prefHeight="50.0" prefWidth="300.0" promptText="company name">
+                     <padding>
+                        <Insets left="15.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <TextField id="username" fx:id="companyAddress" maxHeight="45.0" maxWidth="300.0" prefHeight="50.0" prefWidth="300.0" promptText="company address">
+                     <padding>
+                        <Insets left="15.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <HBox>
+                     <children>
+                        <Label prefHeight="50.0" text="still working?">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="50.0" top="10.0" />
+                           </HBox.margin>
+                        </Label>
+                        <CheckBox fx:id="isWorking" mnemonicParsing="false">
+                           <HBox.margin>
+                              <Insets left="15.0" top="28.0" />
+                           </HBox.margin>
+                        </CheckBox>
+                     </children>
+                  </HBox>
+               </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </VBox>
+            <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="400.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" maxWidth="300.0" minWidth="350.0" prefHeight="50.0" prefWidth="350.0">
+                     <children>
+                        <Label text="start date :">
+                           <HBox.margin>
+                              <Insets right="15.0" />
+                           </HBox.margin>
+                           <padding>
+                              <Insets left="15.0" />
+                           </padding>
+                        </Label>
+                        <DatePicker fx:id="start" prefHeight="45.0" prefWidth="250.0">
+                           <HBox.margin>
+                              <Insets top="5.0" />
+                           </HBox.margin>
+                        </DatePicker>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" maxWidth="300.0" minWidth="350.0" prefHeight="50.0" prefWidth="350.0">
+                     <children>
+                        <Label text="end date :">
+                           <HBox.margin>
+                              <Insets right="15.0" />
+                           </HBox.margin>
+                           <padding>
+                              <Insets left="15.0" />
+                           </padding>
+                        </Label>
+                        <DatePicker fx:id="end" prefHeight="45.0" prefWidth="250.0">
+                           <HBox.margin>
+                              <Insets left="5.0" top="5.0" />
+                           </HBox.margin>
+                        </DatePicker>
+                     </children>
+                  </HBox>
+                  <Label text="working type">
+                     <VBox.margin>
+                        <Insets left="-220.0" top="10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER" prefHeight="50.0">
+                     <children>
+                        <RadioButton mnemonicParsing="false" selected="true" text="at place">
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <toggleGroup>
+                              <ToggleGroup fx:id="wt" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton mnemonicParsing="false" text="at home" toggleGroup="$wt">
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </RadioButton>
+                        <RadioButton graphicTextGap="10.0" mnemonicParsing="false" text="hybrid" toggleGroup="$wt">
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </RadioButton>
+                     </children>
+                  </HBox>
+                  <TextArea fx:id="description" maxWidth="300.0" prefHeight="120.0" prefWidth="300.0" promptText="description">
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding>
+                  </TextArea>
+               </children>
+            </VBox>
+         </children>
+         <VBox.margin>
+            <Insets top="30.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="50.0" prefWidth="500.0">
+         <children>
+            <Button id="createB" fx:id="confirm" mnemonicParsing="false" onAction="#confirmOnAction" prefHeight="45.0" prefWidth="185.0" text="confirm" textFill="WHITE">
+               <HBox.margin>
+                  <Insets top="10.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Comic Sans MS" size="15.0" />
+               </font>
+            </Button>
+            <Button id="backB" fx:id="back" mnemonicParsing="false" onAction="#backOnAction" prefHeight="45.0" prefWidth="185.0" text="back" textFill="WHITE">
+               <HBox.margin>
+                  <Insets left="30.0" top="10.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Comic Sans MS" size="15.0" />
+               </font>
+            </Button>
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </HBox>
+   </children>
+</VBox>

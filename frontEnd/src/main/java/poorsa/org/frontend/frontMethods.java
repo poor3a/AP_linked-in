@@ -27,7 +27,7 @@ public class frontMethods {
 		return response.toString();
 	}
 
-	public static void sendResponse(HttpURLConnection connection, String response) throws IOException {
+	public static void sendRequest(HttpURLConnection connection, String response) throws IOException {
 		connection.getOutputStream().write(response.getBytes());
 	}
 
@@ -37,7 +37,7 @@ public class frontMethods {
 
 	public static void saveToken(String token) {
 		try {
-            File file = new File("user.txt");
+            File file = new File("src/main/java/poorsa/org/frontend/user.txt");
             FileWriter fileWriter = new FileWriter(file);
             fileWriter.write(token);
             fileWriter.close();
@@ -45,5 +45,19 @@ public class frontMethods {
             System.out.println("An error occured while saving the token");
             e.printStackTrace();
         }
+	}
+	public static String getToken()  {
+		try{
+			File file = new File("src/main/java/poorsa/org/frontend/user.txt");
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			String token = br.readLine();
+			br.close();
+			return token;
+		}
+		catch (IOException e) {
+			System.out.println("An error occured while getting the token");
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

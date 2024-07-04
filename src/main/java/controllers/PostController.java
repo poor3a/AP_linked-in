@@ -3,10 +3,13 @@ package controllers;
 import DAO.PostDAO;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import DAO.UserDAO;
 import com.google.gson.Gson;
 import exceptions.UserDAOException;
+import models.Post;
+import models.User;
 
 public class PostController
 {
@@ -58,6 +61,27 @@ public class PostController
     public String getComment(int commentId) throws SQLException, UserDAOException
     {
         return gson.toJson(postDAO.getComment(commentId));
+    }
+    public String getFeedPosts(String email) throws SQLException, UserDAOException
+    {
+        User[] connections = userDAO.getConnections(email);
+        ArrayList<Post> posts = new ArrayList<>();
+        for (User user : connections)
+        {
+            for (Post post : postDAO.getUserPosts(user.getEmail()))
+            {
+                posts.add(post);
+            }
+        }
+        User[] following = userDAO.getFollowings(email);
+        for (User user : following)
+        {
+            for (Post post : postDAO.getUserPosts(user.getEmail()))
+            {
+                posts.add(post);
+            }
+        }
+        return gson.toJson(posts);
     }
 
 
