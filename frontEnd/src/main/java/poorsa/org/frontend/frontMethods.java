@@ -1,6 +1,9 @@
 package poorsa.org.frontend;
 
 
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import poorsa.org.frontend.models.User;
 
 import java.io.*;
@@ -59,5 +62,26 @@ public class frontMethods {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	public static String getTextField(TextField textField)
+	{
+		if(textField.getText().isEmpty())
+			return "null";
+		else
+			return textField.getText();
+	}
+	public static String getDate(DatePicker datePicker)
+	{
+		if (datePicker.getValue() == null)
+			return "null";
+		else
+			return datePicker.getValue().toString().replaceAll("/" ,"-");
+	}
+	public static String getTextArea(TextArea textArea)
+	{
+		if(textArea.getText().isEmpty())
+			return "null";
+		else
+			return textArea.getText();
 	}
 }

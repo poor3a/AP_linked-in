@@ -142,21 +142,21 @@ public class CreateProfileController
         Animations.buttonAnimation(confirm);
 
 
-        String firstnameText = firstname.getText();
-        String lastnameText = lastname.getText();
-        String additionalNameText = additionalName.getText();
-        String birthDateText = birthDate.getValue().toString().replaceAll("/" ,"-");
-        String titleText = title.getText();
-        String placeText = place.getText();
-        String careerText = career.getText();
-        String jobAimingText = jobAiming.getText();
-        String bg_imageText = bg_image.getText();
-        String profile_imageText = profile_image.getText();
+        String firstnameText = frontMethods.getTextField(firstname);
+        String lastnameText = frontMethods.getTextField(lastname);
+        String additionalNameText = frontMethods.getTextField(additionalName);
+        String birthDateText = frontMethods.getDate(birthDate);
+        String titleText = frontMethods.getTextArea(title);
+        String placeText = frontMethods.getTextField(place);
+        String careerText = frontMethods.getTextField(career);
+        String jobAimingText = frontMethods.getTextField(jobAiming);
+        String bg_imageText = "null";
+        String profile_imageText = "null";
         try{
             URL url = new URL(frontMethods.URLFirstPart + "profile");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoOutput(true);
             connection.setRequestMethod("POST");
+            connection.setDoOutput(true);
             JSONObject json = new JSONObject();
             json.put("firstName" ,firstnameText);
             json.put("lastName" ,lastnameText);
@@ -181,7 +181,7 @@ public class CreateProfileController
                 resultLabel.setText("Profile created successfully");
             }
         }catch (Exception e){
-            System.out.println("Something went wrong with the server");
+            e.printStackTrace();
             resultLabel.setText("Something went wrong with the server");
         }
 

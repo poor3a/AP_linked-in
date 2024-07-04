@@ -161,8 +161,15 @@ public class LoginController {
                 frontMethods.sendRequest(connection, json.toString());
                 String response = frontMethods.getResponse(connection);
                 System.out.println(connection.getResponseMessage());
-                if (response.contains("Error")) {
-                    resultLabel.setText(response.toString());
+                URL url2 = new URL(frontMethods.URLFirstPart + "user/" + email + "/" + pass);
+                HttpURLConnection connection2 = (HttpURLConnection) url2.openConnection();
+                connection2.setRequestMethod("GET");
+                String response2 = frontMethods.getResponse(connection2);
+                String token = connection2.getHeaderField("Authorization");
+                frontMethods.saveUser(email, pass, token);
+                frontMethods.saveToken(token);
+                if (response2.contains("Error")) {
+                    resultLabel.setText(response2.toString());
                 }else{
                     Parent root = FXMLLoader.load(getClass().getResource("createProfile.fxml"));
                     Scene scene = new Scene(root, 800, 500);

@@ -235,7 +235,7 @@ public class ProfileDAO {
     public void createProfile(int id, String firstName, String lastName, String additionalName, String birthDate, String profilePicture, String bg_picture, String title, String place, String career, String jobAiming) throws ProfileDAOException {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "INSERT INTO profile(profileId, name, lastname, additionalName, birthDate, profile-picture, bg_picture, title, place, career, job_aiming) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )"
+                    "INSERT INTO profile(profileId, name, lastname, additionalName, birthDate, profile_picture, bg_picture, title, place, career, job_aiming) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )"
             );
             preparedStatement.setInt(1, id);
             preparedStatement.setString(2, firstName);

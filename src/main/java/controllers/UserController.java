@@ -38,7 +38,7 @@ public class UserController {
         //this method is used to get the user from the database and return it as a json object.
         //if somewhere in the process an exception is thrown, we catch it and return the message of the exception.
         //the exception will be caught in the server class and the message will be sent to the client.
-        User user = new User(userDAO.getUserId(email), email, userDAO.getUserPassword(email));
+        User user = new User(userDAO.getUserId(email), userDAO.getUserPassword(email) ,email);
         return gson.toJson(user);
     }
     public void checkLogin(String email, String password) throws UserDAOException {
