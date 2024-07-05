@@ -15,7 +15,7 @@ import com.sun.net.httpserver.HttpExchange;
 public class SearchHandler implements HttpHandler {
 	private SearchController searchController;
 
-	public SchoolingHandler() throws SQLException {
+	public SearchHandler() throws SQLException {
 		this.searchController = new SearchController();
 	}
 
@@ -30,9 +30,6 @@ public class SearchHandler implements HttpHandler {
 			switch (requestMethod) {
 			case "GET":
 				response = handleGetRequest(pathElements);
-				break;
-			case "POST":
-				response = handlePostRequest(pathElements, exchange);
 				break;
 			default:
 				response = "This method is not supported";
@@ -67,21 +64,6 @@ public class SearchHandler implements HttpHandler {
 				throw new IOException("Error: path is not valid");
 			}
 		}catch (Exception e) {
-			return e.getMessage();
-		}
-	}
-	
-	public String handlePostRequest(String[] pathElements, HttpExchange exchange) {
-		try {
-			if (pathElements.length == 4) {
-				searchController.addHashtag(pathElements[2], Integer.parseInt(pathElements[3]));
-				return "Hashtag added successfully";
-			}
-			else {
-				throw new IOException("Error: path is not valid");
-			}
-		}
-		catch (Exception e) {
 			return e.getMessage();
 		}
 	}
