@@ -45,7 +45,6 @@ public class JobStatementHandler implements HttpHandler {
 				response = handleDeleteRequest(pathElements, exchange);
 			default:
 				response = "This method is not supported";
-				exchange.sendResponseHeaders(405, response.length());
 				break;
 			}
 		} catch (Exception e) {

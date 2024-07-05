@@ -44,7 +44,6 @@ public class SchoolingHandler implements HttpHandler {
 				break;
 			default:
 				response = "This method is not supported";
-				exchange.sendResponseHeaders(405, response.length());
 				break;
 			}
 		} catch (Exception e) {
