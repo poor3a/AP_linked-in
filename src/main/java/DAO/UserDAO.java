@@ -394,4 +394,33 @@ public class UserDAO {
             throw new UserDAOException("Error getting email by id");
         }
     }
+   public User getUser(String email) throws UserDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM users WHERE email = ?"
+            );
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return new User(resultSet.getInt("id"), resultSet.getString("password"), resultSet.getString("email"));
+        } catch (SQLException e) {
+            throw new UserDAOException("Error getting user by email");
+        }
+    }
+    public User getUser(int id) throws UserDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM users WHERE id = ?"
+            );
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return new User(resultSet.getInt("id"), resultSet.getString("password"), resultSet.getString("email"));
+        } catch (SQLException e) {
+            throw new UserDAOException("Error getting user by id");
+        }
+    }
+    public void close() throws SQLException {
+        connection.close();
+    }
 }

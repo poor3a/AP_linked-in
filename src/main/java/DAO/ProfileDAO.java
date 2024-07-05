@@ -5,6 +5,7 @@ import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.google.gson.Gson;
 import exceptions.UserDAOException;
@@ -533,5 +534,23 @@ public class ProfileDAO {
             ContactInfo contactInfo = getContactInfo(id);
             Schooling schooling = getSchooling(id);
             return gson.toJson(new UserData(profile, jobStatement, contactInfo, schooling));
+    }
+    public ArrayList<User> searchUsers(String search) throws ProfileDAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM profile WHERE name LIKE ? or lastname LIKE ? or additionalName LIKE ?"
+            );
+            preparedStatement.setString(1, "%" + search + "%");
+            preparedStatement.setString(2, "%" + search + "%");
+            preparedStatement.setString(3, "%" + search + "%");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            ArrayList<User> users = new ArrayList<>();
+            while (resultSet.next()) {
+                users.add(userDAO.getUser(resultSet.getInt("profileId")));
+            }
+            return users;
+        } catch (Exception e) {
+            throw new ProfileDAOException("Error searching users");
+        }
     }
 }
