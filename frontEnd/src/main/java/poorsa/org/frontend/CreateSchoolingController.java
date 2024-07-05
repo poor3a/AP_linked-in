@@ -4,10 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -18,21 +15,23 @@ import org.json.JSONObject;
 
 public class CreateSchoolingController {
     @FXML
-    java.awt.TextField schoolName;
+    TextField schoolName;
     @FXML
-    java.awt.TextField fieldOfStudy;
+    TextField fieldOfStudy;
     @FXML
-    java.awt.TextField grade;
+    TextField grade;
     @FXML
-    java.awt.TextField degree;
+    TextField degree;
     @FXML
     DatePicker start;
     @FXML
     DatePicker end;
     @FXML
-    java.awt.TextArea activities;
+    TextArea activities;
     @FXML
     TextArea description;
+    @FXML
+    Label resultLabel;
     @FXML
     Button confirm;
     @FXML
@@ -52,14 +51,14 @@ public class CreateSchoolingController {
     }
     public void confirmOnAction() throws IOException {
         //#write here(post request for schooling)
-    	String SN = schoolName.getText();
-    	String FOS = fieldOfStudy.getText();
-    	String GR = grade.getText();
-    	String DE = degree.getText();
-    	String S = start.getText();
-    	String E = end.getText();
-    	String AC = activities.getText();
-    	String DES = description.getText();
+    	String SN = frontMethods.getTextField(schoolName);
+    	String FOS = frontMethods.getTextField(fieldOfStudy);
+    	String GR =frontMethods.getTextField( grade);
+    	String DE =frontMethods.getTextField( degree);
+    	String S = frontMethods.getDate(start);
+    	String E = frontMethods.getDate(end);
+    	String AC = frontMethods.getTextArea(activities);
+    	String DES = frontMethods.getTextArea(description);
     	
     	try {
 			URL url = new URL(frontMethods.URLFirstPart + "schooling");
@@ -82,17 +81,17 @@ public class CreateSchoolingController {
 			if (response.contains("Error")) {
 				resultLabel.setText(response.toString());
 			} else {
-				// continue
+                Animations.buttonAnimation(confirm);
+                Parent root = FXMLLoader.load(getClass().getResource("CreateJobStatement.fxml"));
+                Scene scene = new Scene(root , 800 ,500);
+                Stage stage = (Stage) confirm.getScene().getWindow();
+                scene.getStylesheets().add(getClass().getResource("createProfile.css").toExternalForm());
+                Animations.fadeScene(stage, scene);
 			}
 		} catch (Exception e) {
 			resultLabel.setText("Something went wrong with the server");
 		}
-        Animations.buttonAnimation(confirm);
-        Parent root = FXMLLoader.load(getClass().getResource("CreateJobStatement.fxml"));
-        Scene scene = new Scene(root , 800 ,500);
-        Stage stage = (Stage) confirm.getScene().getWindow();
-        scene.getStylesheets().add(getClass().getResource("createProfile.css").toExternalForm());
-        Animations.fadeScene(stage, scene);
+
     }
     public void backOnAction() throws IOException {
         Animations.buttonAnimation(back);

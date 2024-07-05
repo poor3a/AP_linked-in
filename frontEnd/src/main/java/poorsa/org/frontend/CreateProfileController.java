@@ -170,8 +170,9 @@ public class CreateProfileController
             json.put("jobAiming" ,jobAimingText);
             connection.setRequestProperty("Authorization" , frontMethods.getToken());
             frontMethods.sendRequest(connection ,json.toString());
+            int responseCode = connection.getResponseCode();
+            if (responseCode == 200) {
             String response = frontMethods.getResponse(connection);
-            System.out.println(connection.getResponseMessage());
             if(response.contains("Error")){
                 System.out.println(response.toString());
                 resultLabel.setText(response.toString());
@@ -179,6 +180,7 @@ public class CreateProfileController
             else{
                 System.out.println("Profile created successfully");
                 resultLabel.setText("Profile created successfully");
+            }
             }
         }catch (Exception e){
             e.printStackTrace();

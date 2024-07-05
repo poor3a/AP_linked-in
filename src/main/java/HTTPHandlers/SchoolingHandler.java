@@ -76,7 +76,7 @@ public class SchoolingHandler implements HttpHandler {
 				throw new IOException("Path is not valid");
 			}
 		} catch (Exception e) {
-			return e.getMessage();
+			return e.getMessage() + "Error";
 		}
 	}
 

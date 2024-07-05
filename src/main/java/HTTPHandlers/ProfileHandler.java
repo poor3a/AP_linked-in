@@ -45,6 +45,7 @@ public class ProfileHandler implements HttpHandler {
 			response = e.getMessage();
 		}
 
+		exchange.sendResponseHeaders(200, response.length());
 		OutputStream os = exchange.getResponseBody();
 		os.write(response.getBytes());
 		os.close();
@@ -71,7 +72,7 @@ public class ProfileHandler implements HttpHandler {
 				throw new IOException("Path is not valid");
 			}
 		} catch (Exception e) {
-			return e.getMessage();
+			return e.getMessage() + "Error";
 		}
 
 	}

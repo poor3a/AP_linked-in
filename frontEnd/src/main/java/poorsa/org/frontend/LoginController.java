@@ -165,18 +165,21 @@ public class LoginController {
                 HttpURLConnection connection2 = (HttpURLConnection) url2.openConnection();
                 connection2.setRequestMethod("GET");
                 String response2 = frontMethods.getResponse(connection2);
-                String token = connection2.getHeaderField("Authorization");
-                frontMethods.saveUser(email, pass, token);
-                frontMethods.saveToken(token);
                 if (response2.contains("Error")) {
                     resultLabel.setText(response2.toString());
-                }else{
-                    Parent root = FXMLLoader.load(getClass().getResource("createProfile.fxml"));
-                    Scene scene = new Scene(root, 800, 500);
-                    scene.getStylesheets().add(getClass().getResource("createProfile.css").toExternalForm());
-                    Stage stage = (Stage) createAccountButton.getScene().getWindow();
-                    stage.setResizable(false);
-                    Animations.fadeScene(stage, scene);}
+                } else {
+                    String token = connection2.getHeaderField("Authorization");
+                    frontMethods.saveUser(email, pass, token);
+                    frontMethods.saveToken(token);
+                }
+                Parent root = FXMLLoader.load(getClass().getResource("createProfile.fxml"));
+                Scene scene = new Scene(root, 800, 500);
+                scene.getStylesheets().add(getClass().getResource("createProfile.css").toExternalForm());
+                Stage stage = (Stage) createAccountButton.getScene().getWindow();
+                stage.setResizable(false);
+                Animations.fadeScene(stage, scene);
+
+                System.out.println(connection.getResponseMessage());
                 //user added
             } catch (Exception e) {
                 resultLabel.setText("Something went wrong with the server");

@@ -187,7 +187,7 @@ public class ProfileDAO {
     public void updateContactInfo(int id ,String address, String email, String phoneNumber_home, String phoneNumber_work, String phoneNumber_personal, String socialMedia1, String socialMedia2, String socialMedia3, String website) throws ProfileDAOException {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "UPDATE contactinfo SET address = ?, email = ?, phoneNumber(home) = ?, phoneNumber(work) = ?, phoneNumber(personal) = ?, socialMedia1 = ?, socialMedia2 = ?, socialMedia3 = ?, website = ? WHERE ci_id = ?"
+                    "UPDATE contactinfo SET address = ?, email = ?, phoneNumber_home = ?, phoneNumber_work = ?, phoneNumber_personal = ?, socialMedia1 = ?, socialMedia2 = ?, socialMedia3 = ?, website = ? WHERE ci_id = ?"
             );
             preparedStatement.setString(1, address);
             preparedStatement.setString(2, email);

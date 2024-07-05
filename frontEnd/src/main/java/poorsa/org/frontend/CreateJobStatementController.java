@@ -8,9 +8,6 @@ import javafx.scene.Scene;
 
 import javafx.stage.Stage;
 
-import java.awt.Checkbox;
-import java.awt.TextArea;
-import java.awt.TextField;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -29,7 +26,7 @@ public class CreateJobStatementController {
     @FXML
     TextField companyAddress;
     @FXML
-    Checkbox isWorking;
+    CheckBox isWorking;
     @FXML
     DatePicker start;
     @FXML
@@ -38,6 +35,8 @@ public class CreateJobStatementController {
     ToggleGroup wt;
     @FXML
     TextArea description;
+    @FXML
+    Label resultLabel;
     @FXML
     Button confirm;
     @FXML
@@ -55,15 +54,15 @@ public class CreateJobStatementController {
     }
     public void confirmOnAction() throws IOException {
         //#write here(post request for job statement)
-    	String ti = title.getText();
-    	String WS = workingState.getText();
-    	String CN = companyName.getText();
-    	String CA = companyAddress.getText();
-    	boolean IW = isWorking.getState();
-    	String S = start.getText();
-    	String E = end.getText();
-    	String WT = wt.getText();
-    	String DE = description.getText();
+    	String ti =  frontMethods.getTextField(title);
+    	String WS =  frontMethods.getTextField(workingState);
+    	String CN =  frontMethods.getTextField(companyName);
+    	String CA =  frontMethods.getTextField(companyAddress);
+    	boolean IW =  isWorking.isSelected();
+    	String S =  frontMethods.getDate(start);
+    	String E =  frontMethods.getDate(end);
+    	String WT =  wt.getSelectedToggle().getUserData().toString();
+    	String DE =  frontMethods.getTextArea(description);
     	try {
 			URL url = new URL(frontMethods.URLFirstPart + "jobStatement");
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();

@@ -37,6 +37,10 @@ public class frontMethods {
 	public static void saveUser(String email, String password, String token) {
 		HelloApplication.user = new User(email, password, token);
 	}
+	public static String getUserEmail()
+	{
+		return HelloApplication.user.getEmail();
+	}
 
 	public static void saveToken(String token) {
 		try {

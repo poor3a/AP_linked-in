@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -17,23 +18,25 @@ import org.json.JSONObject;
 
 public class ContactInfoController {
 	@FXML
-	java.awt.TextArea address;
+	TextArea address;
 	@FXML
-	java.awt.TextField email;
+	TextField email;
 	@FXML
-	java.awt.TextField pnh;
+	TextField pnh;
 	@FXML
-	java.awt.TextField pnw;
+	TextField pnw;
 	@FXML
-	java.awt.TextField pnp;
+	TextField pnp;
 	@FXML
-	java.awt.TextField sm1;
+	TextField sm1;
 	@FXML
-	java.awt.TextField sm2;
+	TextField sm2;
 	@FXML
-	java.awt.TextField sm3;
+	TextField sm3;
 	@FXML
-	java.awt.TextField website;
+	TextField website;
+	@FXML
+	Label resultLabel;
 	@FXML
 	Button confirm;
 	@FXML
