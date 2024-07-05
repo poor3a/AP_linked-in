@@ -3,6 +3,10 @@ package HTTPHandlers;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.google.gson.JsonObject;
 import com.sun.net.httpserver.HttpExchange;
@@ -53,5 +57,15 @@ public class Methods {
 	
 	public static boolean isValidPostJson (JSONObject jsonObject) {
 		return jsonObject.has("text") && jsonObject.has("image_path");
+	}
+	
+	public static ArrayList<String> extractHashtags(String text){
+		ArrayList<String> hashtags = new ArrayList<>();
+		Pattern pattern = Pattern.compile("#(\\w+)");
+		Matcher matcher = pattern.matcher(text);
+		while (matcher.find()) {
+			hashtags.add(matcher.group(1));
+		}
+		return hashtags;
 	}
 }

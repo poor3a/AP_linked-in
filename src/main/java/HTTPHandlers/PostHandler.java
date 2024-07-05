@@ -4,6 +4,7 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import controllers.UserController;
+import controllers.SearchController;
 import exceptions.ProfileDAOException;
 import exceptions.UserDAOException;
 import utils.JWTController;
@@ -12,13 +13,18 @@ import controllers.PostController;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
+import controllers.SearchController;
 
 public class PostHandler implements HttpHandler {
 
 	private PostController postController;
+	private SearchController searchController;
 
 	public PostHandler() throws SQLException {
 		this.postController = new PostController();
+		this.searchController = new SearchController();
 	}
 
 	public void handle(HttpExchange exchange) throws IOException {
@@ -70,6 +76,10 @@ public class PostHandler implements HttpHandler {
 				if (Methods.isValidPostJson(jsonObject)) {
 					postController.createPost(JWTController.verifyToken(exchange), jsonObject.getString("text"),
 							jsonObject.getString("image_path"));
+					ArrayList<String> hashtags = Methods.extractHashtags(jsonObject.getString("text"));
+					for (String i : hashtags) {
+						searchController.addHashtag(i, 0); //this need id to put insteadof 0
+					}
 					return "Post added successfully";
 				} else {
 					throw new IOException("Request isn't in the right format");
