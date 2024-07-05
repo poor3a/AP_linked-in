@@ -25,6 +25,7 @@ public class Main {
 			server.createContext("/post", new PostHandler());
 			server.createContext("/jobStatement", new JobStatementHandler());
 			server.createContext("/profile", new ProfileHandler());
+			server.createContext("/search", new SearchHandler());
 			
 			server.start();
 		} catch (IOException e) {
