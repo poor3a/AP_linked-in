@@ -57,15 +57,15 @@ public class ContactInfoController {
 	}
 
 	public void confirmOnAction() throws IOException {
-		String ad = address.getText();
-		String em = email.getText();
-		String phoneNH = pnh.getText();
-		String phoneNW = pnw.getText();
-		String phoneNP = pnp.getText();
-		String SM1 = sm1.getText();
-		String SM2 = sm2.getText();
-		String SM3 = sm3.getText();
-		String web = website.getText();
+		String ad = frontMethods.getTextArea(address);
+		String em = frontMethods.getTextField(email);
+		String phoneNH = frontMethods.getTextField(pnh);
+		String phoneNW = frontMethods.getTextField(pnw);
+		String phoneNP = frontMethods.getTextField(pnp);
+		String SM1 = frontMethods.getTextField(sm1);
+		String SM2 = frontMethods.getTextField(sm2);
+		String SM3 = frontMethods.getTextField(sm3);
+		String web = frontMethods.getTextField(website);
 		// #write here(post request for contact info)
 		try {
 			URL url = new URL(frontMethods.URLFirstPart + "contact");
@@ -87,12 +87,13 @@ public class ContactInfoController {
 			frontMethods.sendRequest(connection, json.toString());
 			String response = frontMethods.getResponse(connection);
 			if (response.contains("Error")) {
-				resultLabel.setText(response.toString());
+				resultLabel.setText(response.toString().replaceAll("Error" ,""));
 			} else {
-				// continue
+				resultLabel.setText("successful");
 			}
 		} catch (Exception e) {
 			resultLabel.setText("Something went wrong with the server");
+			e.printStackTrace();
 		}
 		Animations.buttonAnimation(confirm);
 		Parent root = FXMLLoader.load(getClass().getResource("CreateSchooling.fxml"));

@@ -84,18 +84,18 @@ public class CreateJobStatementController {
 			String response = frontMethods.getResponse(connection);
 			if (response.contains("Error")) {
 				resultLabel.setText(response.toString());
+                Animations.buttonAnimation(confirm);
+                Parent root = FXMLLoader.load(getClass().getResource("homePage.fxml"));
+                Scene scene = new Scene(root , 800 ,500);
+                Stage stage = (Stage) confirm.getScene().getWindow();
+                scene.getStylesheets().add(getClass().getResource("createProfile.css").toExternalForm());
+                Animations.fadeScene(stage, scene);
 			} else {
-				// continue
+				resultLabel.setText("Job statement created successfully");
 			}
 		} catch (Exception e) {
 			resultLabel.setText("Something went wrong with the server");
 		}
-        Animations.buttonAnimation(confirm);
-        Parent root = FXMLLoader.load(getClass().getResource("homePage.fxml"));
-        Scene scene = new Scene(root , 800 ,500);
-        Stage stage = (Stage) confirm.getScene().getWindow();
-        scene.getStylesheets().add(getClass().getResource("createProfile.css").toExternalForm());
-        Animations.fadeScene(stage, scene);
 
     }
     public void backOnAction() {

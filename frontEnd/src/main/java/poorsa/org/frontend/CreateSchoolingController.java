@@ -80,6 +80,7 @@ public class CreateSchoolingController {
 			String response = frontMethods.getResponse(connection);
 			if (response.contains("Error")) {
 				resultLabel.setText(response.toString());
+                System.out.println(response.toString());
 			} else {
                 Animations.buttonAnimation(confirm);
                 Parent root = FXMLLoader.load(getClass().getResource("CreateJobStatement.fxml"));

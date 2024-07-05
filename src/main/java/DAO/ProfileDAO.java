@@ -165,7 +165,7 @@ public class ProfileDAO {
     public void createContactInfo(int id ,String address, String email, String phoneNumber_home, String phoneNumber_work, String phoneNumber_personal, String socialMedia1, String socialMedia2, String socialMedia3, String website) throws ProfileDAOException {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "INSERT INTO contactinfo(userId, address, email, phoneNumber_home, phoneNumber_work, phoneNumber_personal, socialMedia1, socialMedia2, socialMedia3, website) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                    "INSERT INTO contact_info(userId, address, email, phoneNumber_home, phoneNumber_work, phoneNumber_personal, socialMedia1, socialMedia2, socialMedia3, website) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
             );
             preparedStatement.setInt(1, id);
             preparedStatement.setString(2, address);

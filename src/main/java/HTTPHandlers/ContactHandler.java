@@ -46,9 +46,8 @@ public class ContactHandler implements HttpHandler {
 			}
 		} catch (Exception e) {
 			response = "Something went wrong with the server";
-			exchange.sendResponseHeaders(500, response.length());
 		}
-
+		exchange.sendResponseHeaders(200, response.length());
 		OutputStream os = exchange.getResponseBody();
 		os.write(response.getBytes());
 		os.close();
